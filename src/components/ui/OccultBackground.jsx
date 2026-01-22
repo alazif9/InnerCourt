@@ -43,7 +43,7 @@ export default function OccultBackground() {
       {alchemicalSymbols.map((symbol, i) => (
         <div
           key={`symbol-${i}`}
-          className="absolute text-[#d4af37]/[0.03] text-2xl font-occult select-none"
+          className="absolute text-white/[0.03] text-2xl font-occult select-none"
           style={{
             left: `${10 + (i * 9)}%`,
             top: `${15 + (i % 3) * 30}%`,

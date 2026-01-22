@@ -9,10 +9,10 @@ export default function GlassCard({
   ...props 
 }) {
   const glowStyles = {
-    gold: 'border-[#d4af37]/30 shadow-[0_0_20px_rgba(212,175,55,0.1)]',
-    silver: 'border-[#c0c0c0]/30 shadow-[0_0_20px_rgba(192,192,192,0.1)]',
-    cyan: 'border-[#00cccc]/30 shadow-[0_0_20px_rgba(0,204,204,0.1)]',
-    purple: 'border-purple-500/30 shadow-[0_0_20px_rgba(147,51,234,0.1)]',
+    gold: 'border-white/30 shadow-[0_0_20px_rgba(255,255,255,0.1)]',
+    silver: 'border-white/30 shadow-[0_0_20px_rgba(255,255,255,0.1)]',
+    cyan: 'border-white/30 shadow-[0_0_20px_rgba(255,255,255,0.1)]',
+    purple: 'border-white/30 shadow-[0_0_20px_rgba(255,255,255,0.1)]',
   };
 
   return (

@@ -39,24 +39,24 @@ export default function Home() {
         </h1>
         
         {/* Subtitle */}
-        <div className="font-data text-xs text-[#00cccc] tracking-[0.2em] uppercase">
+        <div className="font-data text-xs text-white/70 tracking-[0.2em] uppercase">
           Archetypal Matrix Online
         </div>
         
         {/* Status line */}
         <div className="flex items-center justify-center gap-2 font-data text-[10px] text-white/40">
           <span>SYSTEM STATUS:</span>
-          <span className="text-[#00ff41]">OPERATIONAL</span>
+          <span className="text-white">OPERATIONAL</span>
           <span className="text-white/20">•</span>
           <span>ACTIVE NODES:</span>
-          <span className="text-[#00cccc]">{activeNodes}</span>
+          <span className="text-white/70">{activeNodes}</span>
           <span className="text-white/20">•</span>
           <span>SYNC:</span>
-          <span className="text-[#00ff41]">98.7%</span>
+          <span className="text-white">98.7%</span>
         </div>
 
         {/* Ornamental divider */}
-        <div className="flex items-center justify-center gap-2 text-[#d4af37]/30 text-xs">
+        <div className="flex items-center justify-center gap-2 text-white/30 text-xs">
           ⟨ ◈ ✦ ◈ ⟩
         </div>
       </motion.div>

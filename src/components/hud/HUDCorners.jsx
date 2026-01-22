@@ -16,13 +16,13 @@ export default function HUDCorners() {
       {/* Top Left HUD */}
       <div className="fixed top-20 left-4 z-20 font-data text-[9px] leading-tight">
         <div className="text-white/20 mb-1">┌─────────────</div>
-        <div className="text-[#00cccc]/60">│ RESONANCE</div>
-        <div className="flex items-center gap-1 text-[#00cccc]/80">
-          │ <span className="text-[#00ff41]">████████</span><span className="text-white/20">░░</span> 87%
+        <div className="text-[#ffffff]/60">│ RESONANCE</div>
+        <div className="flex items-center gap-1 text-[#ffffff]/80">
+          │ <span className="text-[#ffffff]">████████</span><span className="text-white/20">░░</span> 87%
         </div>
-        <div className="text-[#00cccc]/60">│ COHERENCE</div>
-        <div className="flex items-center gap-1 text-[#00cccc]/80">
-          │ <span className="text-[#00ff41]">██████</span><span className="text-white/20">░░░░</span> 63%
+        <div className="text-[#ffffff]/60">│ COHERENCE</div>
+        <div className="flex items-center gap-1 text-[#ffffff]/80">
+          │ <span className="text-[#ffffff]">██████</span><span className="text-white/20">░░░░</span> 63%
         </div>
         <div className="text-white/20">└─────────────</div>
       </div>
@@ -30,26 +30,26 @@ export default function HUDCorners() {
       {/* Top Right HUD */}
       <div className="fixed top-20 right-4 z-20 font-data text-[9px] text-right leading-tight">
         <div className="text-white/30">{formatTime(time)} GMT-3</div>
-        <div className="text-[#00cccc]/50 mt-1">LAST SYNC: <span className="text-[#00ff41]">2m ago</span></div>
-        <div className="text-white/30">SESSIONS: <span className="text-[#00cccc]">3 active</span></div>
+        <div className="text-[#ffffff]/50 mt-1">LAST SYNC: <span className="text-[#ffffff]">2m ago</span></div>
+        <div className="text-white/30">SESSIONS: <span className="text-[#ffffff]">3 active</span></div>
         <div className="flex items-center justify-end gap-1 text-white/30">
-          BANDWIDTH: <span className="text-[#00ff41]">████</span><span className="text-white/20">░</span>
+          BANDWIDTH: <span className="text-[#ffffff]">████</span><span className="text-white/20">░</span>
         </div>
       </div>
 
       {/* Bottom Left Mini Graph */}
       <motion.div 
-        className="fixed bottom-24 left-4 z-20 p-2 rounded bg-black/40 backdrop-blur-sm border border-[#00cccc]/20"
+        className="fixed bottom-24 left-4 z-20 p-2 rounded bg-black/40 backdrop-blur-sm border border-[#ffffff]/20"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.5 }}
       >
-        <div className="font-data text-[8px] text-[#00cccc]/50 mb-1">ACTIVITY_LOG</div>
+        <div className="font-data text-[8px] text-[#ffffff]/50 mb-1">ACTIVITY_LOG</div>
         <div className="flex items-end gap-0.5 h-4">
           {[40, 65, 45, 80, 55, 70, 90, 60, 75, 85].map((h, i) => (
             <motion.div
               key={i}
-              className="w-1 bg-gradient-to-t from-[#00cccc]/60 to-[#00ff41]/60"
+              className="w-1 bg-gradient-to-t from-[#ffffff]/60 to-[#ffffff]/60"
               initial={{ height: 0 }}
               animate={{ height: `${h}%` }}
               transition={{ delay: i * 0.05, duration: 0.3 }}
@@ -69,26 +69,26 @@ export default function HUDCorners() {
           <circle cx="20" cy="20" r="16" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="2" />
           <circle 
             cx="20" cy="20" r="16" fill="none" 
-            stroke="#d4af37" strokeWidth="2"
+            stroke="#ffffff" strokeWidth="2"
             strokeDasharray="75 100"
             strokeLinecap="round"
           />
         </svg>
-        <div className="absolute inset-0 flex items-center justify-center font-data text-[8px] text-[#d4af37]">
+        <div className="absolute inset-0 flex items-center justify-center font-data text-[8px] text-[#ffffff]">
           75%
         </div>
       </motion.div>
 
       {/* Bottom Right Alerts */}
       <motion.div 
-        className="fixed bottom-24 right-4 z-20 p-2 rounded bg-black/40 backdrop-blur-sm border border-[#d4af37]/20"
+        className="fixed bottom-24 right-4 z-20 p-2 rounded bg-black/40 backdrop-blur-sm border border-[#ffffff]/20"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.6 }}
       >
-        <div className="font-data text-[8px] text-[#d4af37]/50">ALERTS</div>
+        <div className="font-data text-[8px] text-[#ffffff]/50">ALERTS</div>
         <div className="flex items-center gap-1 mt-1">
-          <div className="w-1.5 h-1.5 rounded-full bg-[#00ff41] animate-pulse" />
+          <div className="w-1.5 h-1.5 rounded-full bg-[#ffffff] animate-pulse" />
           <span className="font-data text-[9px] text-white/40">3 pending</span>
         </div>
       </motion.div>

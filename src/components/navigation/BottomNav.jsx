@@ -24,7 +24,7 @@ export default function BottomNav() {
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 px-2 pb-2">
       <div className="max-w-md mx-auto">
-        <div className="flex justify-around items-center py-1 bg-black border-t border-[#d4af37]/30">
+        <div className="flex justify-around items-center py-1 bg-black border-t border-[#ffffff]/30">
           {navItems.map((item) => {
             const active = isActive(item.page);
             return (
@@ -33,14 +33,14 @@ export default function BottomNav() {
                 to={createPageUrl(item.page)}
                 className={cn(
                   "relative flex flex-col items-center gap-0.5 px-4 py-2 transition-all",
-                  active && "border border-[#d4af37]/50 rounded bg-[#d4af37]/5"
+                  active && "border border-[#ffffff]/50 rounded bg-[#ffffff]/5"
                 )}
                 style={active ? { boxShadow: '0 0 10px rgba(212,175,55,0.2)' } : {}}
               >
                 <span 
                   className={cn(
                     "text-base transition-colors",
-                    active ? "text-[#d4af37]" : "text-white/40"
+                    active ? "text-[#ffffff]" : "text-white/40"
                   )}
                 >
                   {item.symbol}
@@ -48,7 +48,7 @@ export default function BottomNav() {
                 <span 
                   className={cn(
                     "text-[9px] font-data tracking-wider relative z-10",
-                    active ? "text-[#d4af37]" : "text-white/40"
+                    active ? "text-[#ffffff]" : "text-white/40"
                   )}
                 >
                   {item.label}

@@ -8,13 +8,13 @@ export default function Header({ user }) {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 px-4 pt-2">
       <div className="max-w-md mx-auto">
-        <div className="flex items-center justify-between py-2 px-3 bg-black border-b border-[#d4af37]/40">
+        <div className="flex items-center justify-between py-2 px-3 bg-black border-b border-[#ffffff]/40">
           {/* Logo */}
           <Link to={createPageUrl('Home')} className="flex items-center gap-2">
-            <div className="w-5 h-5 rounded-full border border-[#d4af37]/60 flex items-center justify-center">
-              <span className="text-xs text-[#d4af37]">☉</span>
+            <div className="w-5 h-5 rounded-full border border-[#ffffff]/60 flex items-center justify-center">
+              <span className="text-xs text-[#ffffff]">☉</span>
             </div>
-            <span className="font-occult text-sm font-medium text-[#d4af37] tracking-wider">
+            <span className="font-occult text-sm font-medium text-[#ffffff] tracking-wider">
               SOL SYSTEM
             </span>
           </Link>
