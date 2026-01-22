@@ -58,7 +58,7 @@ export default function Analytics() {
           <h1 className="font-occult text-2xl font-semibold text-gradient-gold">
             Intelligence Report
           </h1>
-          <div className="font-data text-xs text-[#00cccc]/60 uppercase tracking-widest">
+          <div className="font-data text-xs text-white/70/60 uppercase tracking-widest">
             Real-Time
           </div>
         </div>
@@ -75,7 +75,7 @@ export default function Analytics() {
       >
         <GlassCard glowColor="gold" className="p-4">
           <div className="mb-3">
-            <h2 className="font-occult text-[#d4af37] font-medium text-sm mb-0.5">
+            <h2 className="font-occult text-white font-medium text-sm mb-0.5">
               Wheel of Life Matrix
             </h2>
             <div className="font-data text-[10px] text-white/30 uppercase tracking-wider">
@@ -98,7 +98,7 @@ export default function Analytics() {
       >
         <GlassCard glowColor="cyan" className="p-4">
           <div className="mb-3">
-            <h2 className="font-occult text-[#00cccc] font-medium text-sm mb-0.5">
+            <h2 className="font-occult text-white/70 font-medium text-sm mb-0.5">
               Archetypal Distribution
             </h2>
             <div className="font-data text-[10px] text-white/30 uppercase tracking-wider">
@@ -111,7 +111,7 @@ export default function Analytics() {
             <div className="absolute inset-0 opacity-5 pointer-events-none">
               <svg className="w-full h-full" viewBox="0 0 100 100">
                 {[...Array(7)].map((_, i) => (
-                  <line key={i} x1="0" y1={i * 14.3} x2="100" y2={i * 14.3} stroke="#00cccc" strokeWidth="0.3" />
+                  <line key={i} x1="0" y1={i * 14.3} x2="100" y2={i * 14.3} stroke="#ffffff" strokeWidth="0.3" />
                 ))}
               </svg>
             </div>
@@ -121,7 +121,7 @@ export default function Analytics() {
                 <YAxis 
                   type="category" 
                   dataKey="name" 
-                  tick={{ fill: 'rgba(0,204,204,0.7)', fontSize: 9, fontFamily: 'IBM Plex Mono' }}
+                  tick={{ fill: 'rgba(255,255,255,0.7)', fontSize: 9, fontFamily: 'IBM Plex Mono' }}
                   width={80}
                 />
                 <Bar dataKey="value" radius={[0, 2, 2, 0]}>
@@ -149,34 +149,34 @@ export default function Analytics() {
         className="grid grid-cols-2 gap-3"
       >
         <GlassCard glowColor="silver" className="p-3">
-          <div className="font-data text-[10px] text-[#c0c0c0]/60 uppercase tracking-wider mb-1">
+          <div className="font-data text-[10px] text-white/60 uppercase tracking-wider mb-1">
             Journal Ops
           </div>
           <p className="text-gradient-silver font-bold text-2xl font-data">23</p>
           <div className="flex items-center gap-1 mt-1">
-            <div className="w-1 h-1 rounded-full bg-[#00cccc]" />
+            <div className="w-1 h-1 rounded-full bg-white" />
             <span className="font-data text-[9px] text-white/30">RECORDED</span>
           </div>
         </GlassCard>
         
         <GlassCard glowColor="silver" className="p-3">
-          <div className="font-data text-[10px] text-[#c0c0c0]/60 uppercase tracking-wider mb-1">
+          <div className="font-data text-[10px] text-white/60 uppercase tracking-wider mb-1">
             Chat Sessions
           </div>
           <p className="text-gradient-silver font-bold text-2xl font-data">47</p>
           <div className="flex items-center gap-1 mt-1">
-            <div className="w-1 h-1 rounded-full bg-[#00cccc]" />
+            <div className="w-1 h-1 rounded-full bg-white" />
             <span className="font-data text-[9px] text-white/30">ACTIVE</span>
           </div>
         </GlassCard>
         
         <GlassCard glowColor="gold" className="p-3">
-          <div className="font-data text-[10px] text-[#d4af37]/60 uppercase tracking-wider mb-1">
+          <div className="font-data text-[10px] text-white/60 uppercase tracking-wider mb-1">
             Streak Counter
           </div>
           <p className="text-gradient-gold font-bold text-2xl font-data">12</p>
           <div className="flex items-center gap-1 mt-1">
-            <div className="w-1 h-1 rounded-full bg-[#d4af37]" />
+            <div className="w-1 h-1 rounded-full bg-white" />
             <span className="font-data text-[9px] text-white/30">DAYS</span>
           </div>
         </GlassCard>

@@ -65,8 +65,8 @@ export default function TopographicSphere({ data = {}, overallScore = 63 }) {
     sphereRef.current = globeGroup;
 
     // Gold color
-    const goldColor = new THREE.Color(0xd4af37);
-    const brightGold = new THREE.Color(0xffd700);
+    const goldColor = new THREE.Color(0xffffff);
+    const brightGold = new THREE.Color(0xffffff);
 
     // Create wireframe sphere (latitude lines)
     const latitudeCount = 12;
@@ -156,7 +156,7 @@ export default function TopographicSphere({ data = {}, overallScore = 63 }) {
       // Main orb
       const orbSize = 0.04 + (dim.value / 100) * 0.04;
       const orbGeometry = new THREE.SphereGeometry(orbSize, 16, 16);
-      const orbColor = dim.value > 70 ? 0xfffde7 : dim.value > 50 ? 0xffd700 : 0x8a7f3b;
+      const orbColor = dim.value > 70 ? 0xffffff : dim.value > 50 ? 0xffffff : 0x888888;
       const orbMaterial = new THREE.MeshBasicMaterial({ 
         color: orbColor,
         transparent: true,
@@ -169,7 +169,7 @@ export default function TopographicSphere({ data = {}, overallScore = 63 }) {
       // Glow effect
       const glowGeometry = new THREE.SphereGeometry(orbSize * 2.5, 16, 16);
       const glowMaterial = new THREE.MeshBasicMaterial({ 
-        color: 0xd4af37,
+        color: 0xffffff,
         transparent: true,
         opacity: 0.15
       });
@@ -224,7 +224,7 @@ export default function TopographicSphere({ data = {}, overallScore = 63 }) {
     const rimMaterial = new THREE.ShaderMaterial({
       transparent: true,
       uniforms: {
-        glowColor: { value: new THREE.Color(0xd4af37) },
+        glowColor: { value: new THREE.Color(0xffffff) },
         viewVector: { value: camera.position }
       },
       vertexShader: `
@@ -253,7 +253,7 @@ export default function TopographicSphere({ data = {}, overallScore = 63 }) {
     // Inner glow
     const innerGeometry = new THREE.SphereGeometry(0.95, 32, 32);
     const innerMaterial = new THREE.MeshBasicMaterial({
-      color: 0xd4af37,
+      color: 0xffffff,
       transparent: true,
       opacity: 0.03,
       side: THREE.BackSide
@@ -320,17 +320,17 @@ export default function TopographicSphere({ data = {}, overallScore = 63 }) {
       {/* HUD - Left Corner */}
       <div className="absolute top-2 left-2 font-data text-[8px] leading-tight z-10">
         <div className="text-white/30">┌─ BALANCE SCAN ────┐</div>
-        <div className="text-[#00cccc]/70">│ SYNC: <span className="text-[#d4af37]">{avgScore}/100</span></div>
-        <div className="text-[#00cccc]/70">│ VARIANCE: <span className="text-white/50">±{variance}</span></div>
-        <div className="text-[#00cccc]/70">│ HARMONICS: <span className="text-[#00ff41]">████</span><span className="text-white/20">░</span></div>
-        <div className="text-[#00cccc]/70">│ REFRESH: <span className="text-white/40">2m ago</span></div>
+        <div className="text-[#ffffff]/70">│ SYNC: <span className="text-[#ffffff]">{avgScore}/100</span></div>
+        <div className="text-[#ffffff]/70">│ VARIANCE: <span className="text-white/50">±{variance}</span></div>
+        <div className="text-[#ffffff]/70">│ HARMONICS: <span className="text-[#ffffff]">████</span><span className="text-white/20">░</span></div>
+        <div className="text-[#ffffff]/70">│ REFRESH: <span className="text-white/40">2m ago</span></div>
         <div className="text-white/30">└───────────────────┘</div>
       </div>
 
       {/* Score Display - Right Corner */}
-      <div className="absolute top-2 right-2 flex items-center gap-2 px-2 py-1 rounded border border-[#d4af37]/40 bg-black/60 z-10">
+      <div className="absolute top-2 right-2 flex items-center gap-2 px-2 py-1 rounded border border-[#ffffff]/40 bg-black/60 z-10">
         <span className="font-data text-[8px] text-white/40">BALANCE</span>
-        <span className="font-occult text-xl text-[#d4af37]">{avgScore}</span>
+        <span className="font-occult text-xl text-[#ffffff]">{avgScore}</span>
       </div>
 
       {/* Three.js Container */}
@@ -351,7 +351,7 @@ export default function TopographicSphere({ data = {}, overallScore = 63 }) {
         {scores.map((dim) => (
           <motion.div
             key={dim.key}
-            className="text-center p-1.5 rounded bg-black/40 border border-[#d4af37]/20"
+            className="text-center p-1.5 rounded bg-black/40 border border-[#ffffff]/20"
             whileHover={{ borderColor: 'rgba(212,175,55,0.5)', scale: 1.02 }}
           >
             <div className="font-data text-[7px] text-white/40 uppercase tracking-wider">
@@ -359,7 +359,7 @@ export default function TopographicSphere({ data = {}, overallScore = 63 }) {
             </div>
             <div 
               className="font-data text-xs font-medium"
-              style={{ color: dim.value > 70 ? '#00ff41' : dim.value > 50 ? '#d4af37' : '#cc4444' }}
+              style={{ color: dim.value > 70 ? '#ffffff' : dim.value > 50 ? '#ffffff' : '#cc4444' }}
             >
               {dim.value}%
             </div>
@@ -370,7 +370,7 @@ export default function TopographicSphere({ data = {}, overallScore = 63 }) {
       {/* Bottom Status Bar */}
       <div className="mt-3 flex items-center justify-center gap-4 font-data text-[8px] text-white/30">
         <span className="flex items-center gap-1">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#00ff41] animate-pulse" />
+          <span className="w-1.5 h-1.5 rounded-full bg-[#ffffff] animate-pulse" />
           TOPOLOGY REFRESH: LIVE
         </span>
         <span>•</span>

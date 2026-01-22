@@ -23,12 +23,12 @@ const archetypeSymbols = {
   SHADOW: '♄', ANIMA: '♀', CHILD: '☆', TRICKSTER: '☌'
 };
 const moods = [
-  { value: 'transcendent', label: 'Transcendent', symbol: '△', color: '#d4af37' },
-  { value: 'peaceful', label: 'Peaceful', symbol: '◯', color: '#00cccc' },
-  { value: 'curious', label: 'Curious', symbol: '◈', color: '#9966ff' },
-  { value: 'challenged', label: 'Challenged', symbol: '⬡', color: '#cc4444' },
+  { value: 'transcendent', label: 'Transcendent', symbol: '△', color: '#ffffff' },
+  { value: 'peaceful', label: 'Peaceful', symbol: '◯', color: '#cccccc' },
+  { value: 'curious', label: 'Curious', symbol: '◈', color: '#aaaaaa' },
+  { value: 'challenged', label: 'Challenged', symbol: '⬡', color: '#888888' },
   { value: 'struggling', label: 'Struggling', symbol: '◐', color: '#666666' },
-  { value: 'transforming', label: 'Transforming', symbol: '∞', color: '#00ff41' },
+  { value: 'transforming', label: 'Transforming', symbol: '∞', color: '#dddddd' },
 ];
 
 export default function Journal() {
@@ -87,17 +87,17 @@ export default function Journal() {
         <h1 className="font-occult text-3xl font-semibold text-gradient-gold tracking-wide">
           Soul Chronicle
         </h1>
-        <div className="font-data text-xs text-[#00cccc] tracking-[0.2em] uppercase">
+        <div className="font-data text-xs text-white/70 tracking-[0.2em] uppercase">
           Consciousness Archive
         </div>
         <div className="flex items-center justify-center gap-2 font-data text-[10px] text-white/40">
           <span>ENTRIES:</span>
-          <span className="text-[#d4af37]">{entries.length}</span>
+          <span className="text-white">{entries.length}</span>
           <span className="text-white/20">•</span>
           <span>PROTOCOL:</span>
-          <span className="text-[#00ff41]">HERMETIC_LOG</span>
+          <span className="text-white">HERMETIC_LOG</span>
         </div>
-        <div className="flex items-center justify-center gap-2 text-[#d4af37]/30 text-xs">
+        <div className="flex items-center justify-center gap-2 text-white/30 text-xs">
           ⟨ ◈ ✦ ◈ ⟩
         </div>
       </motion.div>
@@ -111,8 +111,8 @@ export default function Journal() {
       >
         <Button
           onClick={() => setShowForm(!showForm)}
-          className="bg-black/60 hover:bg-black/80 text-[#d4af37] border border-[#d4af37]/40 font-data text-xs tracking-wider"
-          style={{ boxShadow: '0 0 15px rgba(212,175,55,0.15)' }}
+          className="bg-black/60 hover:bg-black/80 text-white border border-white/40 font-data text-xs tracking-wider"
+          style={{ boxShadow: '0 0 15px rgba(255,255,255,0.15)' }}
         >
           <Plus className="w-4 h-4 mr-2" />
           NEW TRANSMISSION
@@ -128,7 +128,7 @@ export default function Journal() {
             exit={{ opacity: 0, height: 0 }}
           >
             <GlassCard glowColor="gold" className="p-4 space-y-4">
-              <div className="font-data text-[8px] text-[#00cccc]/60 uppercase tracking-widest mb-2">
+              <div className="font-data text-[8px] text-white/70/60 uppercase tracking-widest mb-2">
                 ┌─ NEW ENTRY PROTOCOL ─┐
               </div>
               
@@ -136,14 +136,14 @@ export default function Journal() {
                 placeholder="TRANSMISSION TITLE (OPTIONAL)"
                 value={newEntry.title}
                 onChange={(e) => setNewEntry({ ...newEntry, title: e.target.value })}
-                className="bg-black/40 border-[#d4af37]/30 text-white placeholder-white/30 font-data text-xs"
+                className="bg-black/40 border-white/30 text-white placeholder-white/30 font-data text-xs"
               />
               
               <Textarea
                 placeholder="Record consciousness data..."
                 value={newEntry.content}
                 onChange={(e) => setNewEntry({ ...newEntry, content: e.target.value })}
-                className="bg-black/40 border-[#d4af37]/30 text-white placeholder-white/30 min-h-[100px] resize-none font-data text-xs"
+                className="bg-black/40 border-white/30 text-white placeholder-white/30 min-h-[100px] resize-none font-data text-xs"
               />
               
               <div className="flex gap-3">
@@ -151,13 +151,13 @@ export default function Journal() {
                   value={newEntry.archetype}
                   onValueChange={(value) => setNewEntry({ ...newEntry, archetype: value })}
                 >
-                  <SelectTrigger className="bg-black/40 border-[#d4af37]/30 text-white font-data text-xs">
+                  <SelectTrigger className="bg-black/40 border-white/30 text-white font-data text-xs">
                     <SelectValue placeholder="NODE" />
                   </SelectTrigger>
-                  <SelectContent className="bg-black border-[#d4af37]/30">
+                  <SelectContent className="bg-black border-white/30">
                     {archetypes.map((arch) => (
-                      <SelectItem key={arch} value={arch} className="text-white hover:bg-[#d4af37]/10 font-data text-xs">
-                        <span className="text-[#d4af37] mr-2">{archetypeSymbols[arch]}</span>
+                      <SelectItem key={arch} value={arch} className="text-white hover:bg-white/10 font-data text-xs">
+                        <span className="text-white mr-2">{archetypeSymbols[arch]}</span>
                         {arch}
                       </SelectItem>
                     ))}
@@ -168,12 +168,12 @@ export default function Journal() {
                   value={newEntry.mood}
                   onValueChange={(value) => setNewEntry({ ...newEntry, mood: value })}
                 >
-                  <SelectTrigger className="bg-black/40 border-[#d4af37]/30 text-white font-data text-xs">
+                  <SelectTrigger className="bg-black/40 border-white/30 text-white font-data text-xs">
                     <SelectValue placeholder="STATE" />
                   </SelectTrigger>
-                  <SelectContent className="bg-black border-[#d4af37]/30">
+                  <SelectContent className="bg-black border-white/30">
                     {moods.map((mood) => (
-                      <SelectItem key={mood.value} value={mood.value} className="text-white hover:bg-[#d4af37]/10 font-data text-xs">
+                      <SelectItem key={mood.value} value={mood.value} className="text-white hover:bg-white/10 font-data text-xs">
                         <span style={{ color: mood.color }} className="mr-2">{mood.symbol}</span>
                         {mood.label}
                       </SelectItem>
@@ -193,7 +193,7 @@ export default function Journal() {
                 <Button
                   onClick={handleSubmit}
                   disabled={!newEntry.content.trim() || createMutation.isPending}
-                  className="bg-[#d4af37]/20 hover:bg-[#d4af37]/30 text-[#d4af37] border border-[#d4af37]/40 font-data text-xs"
+                  className="bg-white/20 hover:bg-white/30 text-white border border-white/40 font-data text-xs"
                 >
                   {createMutation.isPending ? 'ENCODING...' : 'TRANSMIT'}
                 </Button>
@@ -211,7 +211,7 @@ export default function Journal() {
               {[0, 1, 2].map(i => (
                 <motion.span
                   key={i}
-                  className="w-1.5 h-1.5 bg-[#d4af37] rounded-full"
+                  className="w-1.5 h-1.5 bg-white rounded-full"
                   animate={{ opacity: [0.3, 1, 0.3] }}
                   transition={{ duration: 1, repeat: Infinity, delay: i * 0.2 }}
                 />
@@ -220,7 +220,7 @@ export default function Journal() {
           </div>
         ) : entries.length === 0 ? (
           <GlassCard glowColor="gold" className="p-8 text-center">
-            <div className="text-3xl text-[#d4af37]/30 mb-3">◈</div>
+            <div className="text-3xl text-white/30 mb-3">◈</div>
             <p className="text-white/50 font-data text-xs uppercase tracking-wider">Archive Empty</p>
             <p className="text-white/30 font-data text-[10px] mt-1">Initialize first transmission</p>
           </GlassCard>
@@ -234,14 +234,14 @@ export default function Journal() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.05 }}
               >
-                <GlassCard glowColor="gold" className="p-3 hover:border-[#d4af37]/50 transition-all cursor-pointer group">
+                <GlassCard glowColor="gold" className="p-3 hover:border-white/50 transition-all cursor-pointer group">
                   <div className="flex items-start gap-3">
                     {/* Archetype Symbol */}
                     <div 
-                      className="w-10 h-10 rounded border border-[#d4af37]/30 bg-black/40 flex items-center justify-center flex-shrink-0"
-                      style={{ boxShadow: '0 0 10px rgba(212,175,55,0.1)' }}
+                      className="w-10 h-10 rounded border border-white/30 bg-black/40 flex items-center justify-center flex-shrink-0"
+                      style={{ boxShadow: '0 0 10px rgba(255,255,255,0.1)' }}
                     >
-                      <span className="text-[#d4af37] text-lg font-occult">
+                      <span className="text-white text-lg font-occult">
                         {entry.archetype ? archetypeSymbols[entry.archetype] : '◇'}
                       </span>
                     </div>
@@ -284,13 +284,13 @@ export default function Journal() {
                         {entry.archetype && (
                           <>
                             <span className="text-white/20">•</span>
-                            <span className="text-[#d4af37]/60">{entry.archetype}</span>
+                            <span className="text-white/60">{entry.archetype}</span>
                           </>
                         )}
                       </div>
                     </div>
                     
-                    <ChevronRight className="w-4 h-4 text-white/20 flex-shrink-0 group-hover:text-[#d4af37]/60 transition-colors" />
+                    <ChevronRight className="w-4 h-4 text-white/20 flex-shrink-0 group-hover:text-white/60 transition-colors" />
                   </div>
                 </GlassCard>
               </motion.div>

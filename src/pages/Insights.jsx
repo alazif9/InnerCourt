@@ -68,8 +68,8 @@ export default function Insights() {
         animate={{ opacity: 1, y: 0 }}
         className="text-center"
       >
-        <div className="w-16 h-16 mx-auto rounded-full bg-purple-500/20 flex items-center justify-center mb-4">
-          <Eye className="w-8 h-8 text-purple-400" />
+        <div className="w-16 h-16 mx-auto rounded-full bg-white/10 flex items-center justify-center mb-4">
+          <Eye className="w-8 h-8 text-white" />
         </div>
         <h1 className="font-['Cinzel',serif] text-2xl font-semibold text-white">
           Soul Insights
@@ -104,14 +104,14 @@ export default function Insights() {
         transition={{ delay: 0.2 }}
       >
         <GlassCard glowColor="purple" className="p-5 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full blur-3xl" />
+          <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full blur-3xl" />
           
           <div className="flex items-start gap-3 mb-4">
-            <div className="w-10 h-10 rounded-full bg-amber-500/20 flex items-center justify-center">
-              <Lightbulb className="w-5 h-5 text-amber-400" />
+            <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
+              <Lightbulb className="w-5 h-5 text-white" />
             </div>
             <div>
-              <p className="text-amber-400/80 text-xs font-medium uppercase tracking-wider">
+              <p className="text-white/80 text-xs font-medium uppercase tracking-wider">
                 Today's Revelation
               </p>
               <h3 className="font-['Cinzel',serif] text-white font-medium mt-1">
@@ -130,7 +130,7 @@ export default function Insights() {
             <span className="text-white/40 text-xs flex items-center gap-1">
               <Calendar className="w-3 h-3" /> Generated today
             </span>
-            <button className="flex items-center gap-1 text-amber-400 text-sm hover:text-amber-300">
+            <button className="flex items-center gap-1 text-white text-sm hover:text-white/80">
               Explore <ArrowRight className="w-3 h-3" />
             </button>
           </div>
@@ -174,7 +174,7 @@ export default function Insights() {
                     <span className="text-white/30 text-xs">
                       {format(insight.date, 'MMM d')}
                     </span>
-                    <span className="text-purple-400/80 text-xs">
+                    <span className="text-white/80 text-xs">
                       {insightCategories.find(c => c.id === insight.category)?.name}
                     </span>
                   </div>
@@ -191,10 +191,10 @@ export default function Insights() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6 }}
       >
-        <GlassCard className="p-5 border-amber-500/20">
+        <GlassCard className="p-5 border-white/20">
           <div className="flex items-center gap-3 mb-3">
-            <Stars className="w-5 h-5 text-amber-400" />
-            <h3 className="font-['Cinzel',serif] text-amber-400 font-medium">
+            <Stars className="w-5 h-5 text-white" />
+            <h3 className="font-['Cinzel',serif] text-white font-medium">
               Recommended Action
             </h3>
           </div>
@@ -202,7 +202,7 @@ export default function Insights() {
             Based on your insights, consider having a conversation with your Shadow archetype
             about the avoidance pattern that has emerged.
           </p>
-          <button className="w-full py-2 rounded-lg bg-gradient-to-r from-amber-500/20 to-purple-500/20 text-white text-sm font-medium hover:from-amber-500/30 hover:to-purple-500/30 transition-colors">
+          <button className="w-full py-2 rounded-lg bg-gradient-to-r from-white/10 to-white/5 text-white text-sm font-medium hover:from-white/20 hover:to-white/10 transition-colors">
             Start Shadow Dialogue →
           </button>
         </GlassCard>
