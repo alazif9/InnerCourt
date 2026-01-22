@@ -40,17 +40,16 @@ export default function TreeOfLife({ archetypeScores = {}, onSelectArchetype }) 
   };
 
   return (
-    <div className="relative w-full h-[500px] mt-4">
-      {/* Sacred geometry background pattern */}
-      <svg className="absolute inset-0 w-full h-full opacity-10" viewBox="0 0 400 500">
+    <div className="relative w-full h-[420px]">
+      {/* Connection lines with data flow effect */}
+      <svg className="absolute inset-0 w-full h-full" viewBox="0 0 400 420">
         <defs>
-          <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#D4AF37" stopOpacity="0.3" />
-            <stop offset="100%" stopColor="#7C3AED" stopOpacity="0.3" />
+          <linearGradient id="pathGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#d4af37" stopOpacity="0.4" />
+            <stop offset="100%" stopColor="#00cccc" stopOpacity="0.2" />
           </linearGradient>
         </defs>
         
-        {/* Connection lines */}
         {connections.map((conn, i) => {
           const fromPos = positions[conn.from];
           const toPos = positions[conn.to];
@@ -66,25 +65,26 @@ export default function TreeOfLife({ archetypeScores = {}, onSelectArchetype }) 
               y1={`${fromY + 5}%`}
               x2={`${toX}%`}
               y2={`${toY + 5}%`}
-              stroke="url(#lineGradient)"
-              strokeWidth="1"
-              initial={{ pathLength: 0, opacity: 0 }}
-              animate={{ pathLength: 1, opacity: 1 }}
-              transition={{ duration: 1.5, delay: i * 0.1 }}
+              stroke="url(#pathGradient)"
+              strokeWidth="0.5"
+              strokeDasharray="4 2"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: i * 0.05 }}
             />
           );
         })}
       </svg>
 
-      {/* Archetype Orbs */}
+      {/* Archetype Nodes */}
       {Object.entries(positions).map(([name, pos]) => (
         <motion.div
           key={name}
           className="absolute -translate-x-1/2 -translate-y-1/2"
           style={{ top: pos.top, left: pos.left }}
-          initial={{ opacity: 0, scale: 0.5 }}
+          initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
+          transition={{ duration: 0.4, delay: 0.1 }}
         >
           <ArchetypeOrb
             name={name}
@@ -96,12 +96,12 @@ export default function TreeOfLife({ archetypeScores = {}, onSelectArchetype }) 
         </motion.div>
       ))}
 
-      {/* Ethereal glow behind SOL */}
+      {/* SOL central glow */}
       <div 
-        className="absolute top-0 left-1/2 -translate-x-1/2 w-40 h-40 rounded-full"
+        className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-32 rounded-full pointer-events-none"
         style={{
-          background: 'radial-gradient(circle, rgba(212,175,55,0.2) 0%, transparent 70%)',
-          filter: 'blur(20px)',
+          background: 'radial-gradient(circle, rgba(212,175,55,0.15) 0%, transparent 70%)',
+          filter: 'blur(15px)',
         }}
       />
     </div>
