@@ -49,78 +49,27 @@ export default function ArchetypeOrb({
       whileTap={{ scale: 0.95 }}
     >
       <div className="relative">
-        {/* Outer glow */}
-        <motion.div
-          className={cn(
-            "absolute inset-0 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity",
-            `bg-gradient-radial ${config.bgGlow} to-transparent`
-          )}
-          style={{ transform: 'scale(1.5)' }}
-          animate={isActive ? { opacity: [0.3, 0.6, 0.3] } : {}}
-          transition={{ duration: 2, repeat: Infinity }}
-        />
-        
         {/* Main orb */}
-        <motion.div
+        <div
           className={cn(
             sizeClasses[size],
             "relative rounded-full",
-            "bg-gradient-to-br from-white/10 to-white/5",
-            "border border-white/20",
-            "backdrop-blur-md",
-            "flex items-center justify-center",
-            "shadow-lg shadow-black/30",
-            "overflow-hidden"
+            "bg-black",
+            "border-2 border-white",
+            "flex items-center justify-center"
           )}
-          animate={isActive ? { 
-            boxShadow: [
-              `0 0 20px ${config.color}40`,
-              `0 0 40px ${config.color}60`,
-              `0 0 20px ${config.color}40`,
-            ]
-          } : {}}
-          transition={{ duration: 2, repeat: Infinity }}
         >
-          {/* Inner color glow */}
-          <div 
-            className="absolute inset-2 rounded-full opacity-30"
-            style={{ backgroundColor: config.color }}
-          />
-          
-          {/* Activation ring */}
-          {activationLevel > 0 && (
-            <svg className="absolute inset-0 w-full h-full -rotate-90">
-              <circle
-                cx="50%"
-                cy="50%"
-                r="45%"
-                fill="none"
-                stroke={config.color}
-                strokeWidth="2"
-                strokeDasharray={`${activationLevel * 2.83} 283`}
-                className="opacity-60"
-              />
-            </svg>
-          )}
-          
           {/* Icon */}
-          <span className={cn(iconSizes[size], "relative z-10 filter drop-shadow-lg")}>
+          <span className={cn(iconSizes[size], "relative z-10 text-white")}>
             {config.icon}
           </span>
-        </motion.div>
-
-        {/* Connection point indicator */}
-        <div 
-          className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full"
-          style={{ backgroundColor: config.color, opacity: 0.6 }}
-        />
+        </div>
       </div>
       
       {showLabel && (
         <span className={cn(
           textSizes[size],
-          "font-medium tracking-wider text-white/80",
-          "font-['Cinzel',serif]"
+          "font-mono uppercase text-white tracking-wider"
         )}>
           {name}
         </span>

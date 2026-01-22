@@ -18,26 +18,11 @@ export default function Layout({ children, currentPageName }) {
     <div className="min-h-screen relative">
       {/* Custom CSS for fonts and gradients */}
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Inter:wght@300;400;500;600&display=swap');
         
         body {
           font-family: 'Inter', sans-serif;
-          background-color: #0A0A0F;
-        }
-        
-        .font-mystical {
-          font-family: 'Cinzel', serif;
-        }
-        
-        .bg-gradient-radial {
-          background: radial-gradient(circle, var(--tw-gradient-stops));
-        }
-        
-        .text-gradient-gold {
-          background: linear-gradient(135deg, #D4AF37 0%, #F5D67A 50%, #D4AF37 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
+          background-color: #000000;
         }
         
         /* Hide scrollbar but keep functionality */
