@@ -9,7 +9,7 @@ const navItems = [
   { icon: TreePine, label: 'TREE', page: 'Home', symbol: '△' },
   { icon: BookOpen, label: 'JOURNAL', page: 'Journal', symbol: '◐' },
   { icon: BarChart3, label: 'ANALYTICS', page: 'Analytics', symbol: '▭' },
-  { icon: Eye, label: 'INSIGHTS', page: 'Insights', symbol: '◉' },
+  { icon: Eye, label: 'NETWORK', page: 'Friends', symbol: '◎' },
 ];
 
 export default function BottomNav() {
