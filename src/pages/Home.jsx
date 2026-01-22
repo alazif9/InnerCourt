@@ -32,14 +32,17 @@ export default function Home() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="text-center pt-2"
+        className="text-center pt-2 space-y-1"
       >
-        <h1 className="font-['Cinzel',serif] text-2xl font-semibold text-white mb-1">
-          Welcome, Seeker
+        <div className="font-data text-xs text-[#00cccc]/60 uppercase tracking-widest">
+          Intelligence Interface Active
+        </div>
+        <h1 className="font-occult text-2xl font-semibold text-gradient-gold">
+          The Great Work
         </h1>
-        <p className="text-white/60 text-sm">
-          Your journey through the archetypes awaits
-        </p>
+        <div className="font-data text-xs text-white/40 uppercase tracking-wide">
+          Archetypal Matrix Online
+        </div>
       </motion.div>
 
       {/* Tree of Life Navigation */}

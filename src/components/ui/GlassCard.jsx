@@ -4,35 +4,28 @@ import { cn } from "@/lib/utils";
 export default function GlassCard({ 
   children, 
   className, 
-  glowColor = 'white',
-  intensity = 'normal',
+  glowColor = 'gold',
+  variant = 'default',
   ...props 
 }) {
   const glowStyles = {
-    white: 'shadow-white/5',
-    gold: 'shadow-amber-500/20 border-amber-500/20',
-    purple: 'shadow-purple-500/20 border-purple-500/20',
-    cyan: 'shadow-cyan-500/20 border-cyan-500/20',
-  };
-
-  const intensityStyles = {
-    subtle: 'bg-white/[0.03]',
-    normal: 'bg-white/[0.05]',
-    strong: 'bg-white/[0.08]',
+    gold: 'border-[#d4af37]/30 shadow-[0_0_20px_rgba(212,175,55,0.1)]',
+    silver: 'border-[#c0c0c0]/30 shadow-[0_0_20px_rgba(192,192,192,0.1)]',
+    cyan: 'border-[#00cccc]/30 shadow-[0_0_20px_rgba(0,204,204,0.1)]',
+    purple: 'border-purple-500/30 shadow-[0_0_20px_rgba(147,51,234,0.1)]',
   };
 
   return (
     <div
       className={cn(
-        "relative rounded-2xl border border-white/10",
-        "backdrop-blur-xl",
-        intensityStyles[intensity],
+        "relative rounded-lg border bg-black/40 backdrop-blur-md",
         glowStyles[glowColor],
-        "shadow-2xl",
         className
       )}
       {...props}
     >
+      {/* Subtle inner glow */}
+      <div className="absolute inset-0 rounded-lg bg-gradient-to-br from-white/[0.02] to-transparent pointer-events-none" />
       {children}
     </div>
   );

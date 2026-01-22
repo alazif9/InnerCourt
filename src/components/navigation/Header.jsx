@@ -8,42 +8,32 @@ export default function Header({ user }) {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 px-4 pt-4">
       <div className="max-w-md mx-auto">
-        <div className="flex items-center justify-between py-3 px-5 rounded-2xl bg-white/[0.05] backdrop-blur-xl border border-white/10">
+        <div className="flex items-center justify-between py-2 px-4 rounded-md bg-black/60 backdrop-blur-md border border-[#d4af37]/30">
           {/* Logo */}
           <Link to={createPageUrl('Home')} className="flex items-center gap-2">
-            <motion.div
-              className="w-8 h-8 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center shadow-lg shadow-amber-500/30"
-              animate={{ 
-                boxShadow: [
-                  '0 0 15px rgba(251, 191, 36, 0.3)',
-                  '0 0 25px rgba(251, 191, 36, 0.5)',
-                  '0 0 15px rgba(251, 191, 36, 0.3)',
-                ]
-              }}
-              transition={{ duration: 3, repeat: Infinity }}
-            >
-              <span className="text-lg">☀️</span>
-            </motion.div>
-            <span className="font-['Cinzel',serif] text-lg font-semibold text-white tracking-wider">
-              SOL
+            <div className="w-6 h-6 rounded-full border border-[#d4af37]/50 flex items-center justify-center">
+              <span className="text-sm text-[#d4af37]">☉</span>
+            </div>
+            <span className="font-occult text-base font-medium text-[#d4af37] tracking-wider">
+              SOL SYSTEM
             </span>
           </Link>
 
           {/* Right side */}
-          <div className="flex items-center gap-3">
-            <button className="relative p-2 rounded-full hover:bg-white/10 transition-colors">
-              <Bell className="w-5 h-5 text-white/70" />
-              <span className="absolute top-1 right-1 w-2 h-2 bg-amber-400 rounded-full" />
+          <div className="flex items-center gap-2">
+            <button className="relative p-1.5 rounded border border-[#c0c0c0]/30 hover:border-[#c0c0c0]/50 transition-colors">
+              <Bell className="w-4 h-4 text-[#c0c0c0]/70" />
+              <span className="absolute -top-1 -right-1 w-2 h-2 bg-[#00cccc] rounded-full" />
             </button>
             
             <Link 
               to={createPageUrl('Profile')}
-              className="w-9 h-9 rounded-full bg-gradient-to-br from-purple-500/30 to-amber-500/30 border border-white/20 flex items-center justify-center overflow-hidden"
+              className="w-7 h-7 rounded border border-[#c0c0c0]/30 flex items-center justify-center overflow-hidden"
             >
               {user?.avatar ? (
-                <img src={user.avatar} alt="" className="w-full h-full object-cover" />
+                <img src={user.avatar} alt="" className="w-full h-full object-cover grayscale" />
               ) : (
-                <User className="w-4 h-4 text-white/70" />
+                <User className="w-3.5 h-3.5 text-[#c0c0c0]/70" />
               )}
             </Link>
           </div>

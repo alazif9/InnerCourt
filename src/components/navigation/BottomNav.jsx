@@ -22,34 +22,30 @@ export default function BottomNav() {
   };
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 px-4 pb-6 pt-2">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 px-4 pb-4 pt-2">
       <div className="max-w-md mx-auto">
-        <div className="flex justify-around items-center py-3 px-4 rounded-2xl bg-white/[0.05] backdrop-blur-xl border border-white/10 shadow-2xl">
+        <div className="flex justify-around items-center py-2 px-3 rounded-md bg-black/60 backdrop-blur-md border border-[#d4af37]/30">
           {navItems.map((item) => {
             const active = isActive(item.page);
             return (
               <Link
                 key={item.page}
                 to={createPageUrl(item.page)}
-                className="relative flex flex-col items-center gap-1 px-4 py-2"
+                className="relative flex flex-col items-center gap-0.5 px-3 py-1.5"
               >
                 {active && (
-                  <motion.div
-                    layoutId="activeTab"
-                    className="absolute inset-0 bg-gradient-to-r from-amber-500/20 to-purple-500/20 rounded-xl"
-                    transition={{ type: "spring", duration: 0.5 }}
-                  />
+                  <div className="absolute inset-0 rounded border border-[#d4af37]/40 bg-[#d4af37]/5" />
                 )}
                 <item.icon 
                   className={cn(
-                    "w-5 h-5 transition-colors relative z-10",
-                    active ? "text-amber-400" : "text-white/50"
+                    "w-4 h-4 transition-colors relative z-10",
+                    active ? "text-[#d4af37]" : "text-white/40"
                   )} 
                 />
                 <span 
                   className={cn(
-                    "text-xs font-medium tracking-wide relative z-10",
-                    active ? "text-amber-400" : "text-white/50"
+                    "text-[10px] font-data tracking-wider uppercase relative z-10",
+                    active ? "text-[#d4af37]" : "text-white/40"
                   )}
                 >
                   {item.label}

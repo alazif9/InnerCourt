@@ -3,14 +3,14 @@ import { motion } from 'framer-motion';
 import { cn } from "@/lib/utils";
 
 const archetypeConfig = {
-  SOL: { color: '#D4AF37', glow: 'amber', icon: '☀️', bgGlow: 'from-amber-500/40' },
-  SAGE: { color: '#8B7355', glow: 'amber', icon: '🦉', bgGlow: 'from-amber-700/30' },
-  HERO: { color: '#C0C0C0', glow: 'slate', icon: '⚔️', bgGlow: 'from-slate-400/30' },
-  MOTHER: { color: '#EC4899', glow: 'pink', icon: '🌸', bgGlow: 'from-pink-500/30' },
-  SHADOW: { color: '#DC2626', glow: 'red', icon: '🌑', bgGlow: 'from-red-500/30' },
-  ANIMA: { color: '#7C3AED', glow: 'purple', icon: '🔮', bgGlow: 'from-purple-500/30' },
-  CHILD: { color: '#FBBF24', glow: 'yellow', icon: '✨', bgGlow: 'from-yellow-400/30' },
-  TRICKSTER: { color: '#00FFFF', glow: 'cyan', icon: '🃏', bgGlow: 'from-cyan-500/30' },
+  SOL: { color: '#d4af37', symbol: '☉', sigil: '◉', name: 'Kether' },
+  SAGE: { color: '#8B7355', symbol: '☿', sigil: '▽', name: 'Binah' },
+  HERO: { color: '#C0C0C0', symbol: '♂', sigil: '△', name: 'Chokmah' },
+  MOTHER: { color: '#EC4899', symbol: '♀', sigil: '◇', name: 'Chesed' },
+  SHADOW: { color: '#DC2626', symbol: '♄', sigil: '◆', name: 'Geburah' },
+  ANIMA: { color: '#7C3AED', symbol: '♃', sigil: '◈', name: 'Tiphareth' },
+  CHILD: { color: '#FBBF24', symbol: '☽', sigil: '○', name: 'Yesod' },
+  TRICKSTER: { color: '#00FFFF', symbol: '☾', sigil: '◐', name: 'Hod' },
 };
 
 export default function ArchetypeOrb({ 
@@ -45,84 +45,63 @@ export default function ArchetypeOrb({
     <motion.button
       onClick={onClick}
       className="flex flex-col items-center gap-2 group"
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
     >
       <div className="relative">
-        {/* Outer glow */}
-        <motion.div
-          className={cn(
-            "absolute inset-0 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity",
-            `bg-gradient-radial ${config.bgGlow} to-transparent`
-          )}
-          style={{ transform: 'scale(1.5)' }}
-          animate={isActive ? { opacity: [0.3, 0.6, 0.3] } : {}}
-          transition={{ duration: 2, repeat: Infinity }}
-        />
-        
-        {/* Main orb */}
-        <motion.div
+        {/* Main sigil container */}
+        <div
           className={cn(
             sizeClasses[size],
             "relative rounded-full",
-            "bg-gradient-to-br from-white/10 to-white/5",
-            "border border-white/20",
-            "backdrop-blur-md",
-            "flex items-center justify-center",
-            "shadow-lg shadow-black/30",
-            "overflow-hidden"
+            "bg-black/60 backdrop-blur-sm",
+            "border flex items-center justify-center",
+            "transition-all duration-300"
           )}
-          animate={isActive ? { 
-            boxShadow: [
-              `0 0 20px ${config.color}40`,
-              `0 0 40px ${config.color}60`,
-              `0 0 20px ${config.color}40`,
-            ]
-          } : {}}
-          transition={{ duration: 2, repeat: Infinity }}
+          style={{ 
+            borderColor: `${config.color}40`,
+            boxShadow: isActive ? `0 0 20px ${config.color}60, inset 0 0 15px ${config.color}20` : 'none'
+          }}
         >
-          {/* Inner color glow */}
-          <div 
-            className="absolute inset-2 rounded-full opacity-30"
-            style={{ backgroundColor: config.color }}
-          />
+          {/* Alchemical symbol */}
+          <span 
+            className={cn(iconSizes[size], "relative z-10 font-bold font-occult")}
+            style={{ color: config.color }}
+          >
+            {config.symbol}
+          </span>
           
-          {/* Activation ring */}
+          {/* Activation hexagram */}
           {activationLevel > 0 && (
-            <svg className="absolute inset-0 w-full h-full -rotate-90">
-              <circle
-                cx="50%"
-                cy="50%"
-                r="45%"
+            <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100">
+              <polygon
+                points="50,15 65,35 85,35 70,50 85,65 65,65 50,85 35,65 15,65 30,50 15,35 35,35"
                 fill="none"
                 stroke={config.color}
-                strokeWidth="2"
-                strokeDasharray={`${activationLevel * 2.83} 283`}
-                className="opacity-60"
+                strokeWidth="1"
+                opacity={activationLevel / 100}
               />
             </svg>
           )}
-          
-          {/* Icon */}
-          <span className={cn(iconSizes[size], "relative z-10 filter drop-shadow-lg")}>
-            {config.icon}
-          </span>
-        </motion.div>
+        </div>
 
-        {/* Connection point indicator */}
-        <div 
-          className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full"
-          style={{ backgroundColor: config.color, opacity: 0.6 }}
-        />
+        {/* Orbital ring for active state */}
+        {isActive && (
+          <motion.div
+            className="absolute inset-0 rounded-full border"
+            style={{ borderColor: `${config.color}30` }}
+            animate={{ rotate: 360 }}
+            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+          />
+        )}
       </div>
       
       {showLabel && (
-        <span className={cn(
-          textSizes[size],
-          "font-medium tracking-wider text-white/80",
-          "font-['Cinzel',serif]"
-        )}>
-          {name}
+        <span 
+          className={cn(textSizes[size], "font-data tracking-wider uppercase text-xs")}
+          style={{ color: `${config.color}cc` }}
+        >
+          {config.name}
         </span>
       )}
     </motion.button>
