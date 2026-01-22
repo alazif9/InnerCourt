@@ -6,6 +6,7 @@ import Journal from './pages/Journal';
 import Onboarding from './pages/Onboarding';
 import Profile from './pages/Profile';
 import Friends from './pages/Friends';
+import AboutYou from './pages/AboutYou';
 import __Layout from './Layout.jsx';
 
 
@@ -18,6 +19,7 @@ export const PAGES = {
     "Onboarding": Onboarding,
     "Profile": Profile,
     "Friends": Friends,
+    "AboutYou": AboutYou,
 }
 
 export const pagesConfig = {

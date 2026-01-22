@@ -6,8 +6,10 @@ import GlassCard from '@/components/ui/GlassCard';
 import HUDCorners from '@/components/hud/HUDCorners';
 import { 
   User, Settings, Moon, Bell, Shield, LogOut, 
-  ChevronRight, Calendar
+  ChevronRight, Calendar, Sparkles
 } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { createPageUrl } from '@/utils';
 import { format } from 'date-fns';
 import { Button } from "@/components/ui/button";
 
@@ -139,6 +141,30 @@ export default function Profile() {
             </span>
           </div>
         )}
+      </motion.div>
+
+      {/* About You Button */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.18 }}
+      >
+        <Link to={createPageUrl('AboutYou')}>
+          <GlassCard className="p-4 hover:bg-white/5 transition-colors cursor-pointer group">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full border border-white/30 bg-black/40 flex items-center justify-center">
+                  <Sparkles className="w-5 h-5 text-white/70" />
+                </div>
+                <div>
+                  <p className="font-data text-[11px] text-white/80 uppercase tracking-wider">About You</p>
+                  <p className="font-data text-[9px] text-white/40">Astral Intelligence Report</p>
+                </div>
+              </div>
+              <ChevronRight className="w-5 h-5 text-white/20 group-hover:text-white/50 transition-colors" />
+            </div>
+          </GlassCard>
+        </Link>
       </motion.div>
 
       {/* Stats Grid */}
