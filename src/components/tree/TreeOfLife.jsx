@@ -41,16 +41,16 @@ export default function TreeOfLife({ archetypeScores = {}, onSelectArchetype }) 
 
   return (
     <div className="relative w-full h-[500px] mt-4">
-      {/* Tree of Life background image */}
-      <div 
-        className="absolute inset-0 opacity-20 bg-contain bg-center bg-no-repeat"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 600' xmlns='http://www.w3.org/2000/svg'%3E%3Cg stroke='%23666' fill='none' stroke-width='2'%3E%3Ccircle cx='200' cy='50' r='30'/%3E%3Ccircle cx='120' cy='130' r='25'/%3E%3Ccircle cx='280' cy='130' r='25'/%3E%3Ccircle cx='200' cy='130' r='25'/%3E%3Ccircle cx='150' cy='250' r='25'/%3E%3Ccircle cx='250' cy='250' r='25'/%3E%3Ccircle cx='175' cy='370' r='25'/%3E%3Ccircle cx='225' cy='370' r='25'/%3E%3Ccircle cx='200' cy='480' r='25'/%3E%3Cline x1='200' y1='80' x2='120' y2='105'/%3E%3Cline x1='200' y1='80' x2='280' y2='105'/%3E%3Cline x1='200' y1='80' x2='200' y2='105'/%3E%3Cline x1='120' y1='155' x2='150' y2='225'/%3E%3Cline x1='280' y1='155' x2='250' y2='225'/%3E%3Cline x1='150' y1='275' x2='175' y2='345'/%3E%3Cline x1='250' y1='275' x2='225' y2='345'/%3E%3Cline x1='175' y1='395' x2='200' y2='455'/%3E%3Cline x1='225' y1='395' x2='200' y2='455'/%3E%3C/g%3E%3C/svg%3E")`
-        }}
-      />
-
-      {/* Connection lines */}
-      <svg className="absolute inset-0 w-full h-full opacity-30" viewBox="0 0 400 500">
+      {/* Sacred geometry background pattern */}
+      <svg className="absolute inset-0 w-full h-full opacity-10" viewBox="0 0 400 500">
+        <defs>
+          <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#D4AF37" stopOpacity="0.3" />
+            <stop offset="100%" stopColor="#7C3AED" stopOpacity="0.3" />
+          </linearGradient>
+        </defs>
+        
+        {/* Connection lines */}
         {connections.map((conn, i) => {
           const fromPos = positions[conn.from];
           const toPos = positions[conn.to];
@@ -60,14 +60,17 @@ export default function TreeOfLife({ archetypeScores = {}, onSelectArchetype }) 
           const toY = parseFloat(toPos.top);
           
           return (
-            <line
+            <motion.line
               key={i}
               x1={`${fromX}%`}
               y1={`${fromY + 5}%`}
               x2={`${toX}%`}
               y2={`${toY + 5}%`}
-              stroke="#fff"
+              stroke="url(#lineGradient)"
               strokeWidth="1"
+              initial={{ pathLength: 0, opacity: 0 }}
+              animate={{ pathLength: 1, opacity: 1 }}
+              transition={{ duration: 1.5, delay: i * 0.1 }}
             />
           );
         })}
@@ -92,6 +95,15 @@ export default function TreeOfLife({ archetypeScores = {}, onSelectArchetype }) 
           />
         </motion.div>
       ))}
+
+      {/* Ethereal glow behind SOL */}
+      <div 
+        className="absolute top-0 left-1/2 -translate-x-1/2 w-40 h-40 rounded-full"
+        style={{
+          background: 'radial-gradient(circle, rgba(212,175,55,0.2) 0%, transparent 70%)',
+          filter: 'blur(20px)',
+        }}
+      />
     </div>
   );
 }

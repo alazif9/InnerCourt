@@ -18,34 +18,26 @@ export default function Layout({ children, currentPageName }) {
     <div className="min-h-screen relative">
       {/* Custom CSS for fonts and gradients */}
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&family=Share+Tech+Mono&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
         
         body {
-          font-family: 'Share Tech Mono', monospace;
-          background-color: #000000;
-          color: #00ff00;
+          font-family: 'Inter', sans-serif;
+          background-color: #0A0A0F;
         }
         
-        /* Terminal text glow */
-        .terminal-glow {
-          text-shadow: 0 0 5px rgba(0, 255, 0, 0.7), 0 0 10px rgba(0, 255, 0, 0.3);
+        .font-mystical {
+          font-family: 'Cinzel', serif;
         }
         
-        /* Dungeon text */
-        .dungeon-text {
-          font-family: 'VT323', monospace;
-          color: #d97706;
-          text-shadow: 0 0 8px rgba(217, 119, 6, 0.5);
+        .bg-gradient-radial {
+          background: radial-gradient(circle, var(--tw-gradient-stops));
         }
         
-        /* CRT flicker */
-        @keyframes flicker {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.97; }
-        }
-        
-        body {
-          animation: flicker 0.15s infinite;
+        .text-gradient-gold {
+          background: linear-gradient(135deg, #D4AF37 0%, #F5D67A 50%, #D4AF37 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
         }
         
         /* Hide scrollbar but keep functionality */

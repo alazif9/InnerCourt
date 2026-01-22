@@ -34,15 +34,12 @@ export default function Home() {
         animate={{ opacity: 1, y: 0 }}
         className="text-center pt-2"
       >
-        <div className="font-mono text-sm text-green-400 terminal-glow mb-2">
-          {'>'} SYSTEM INITIALIZED
-        </div>
-        <h1 className="font-mono text-xl text-green-500 terminal-glow mb-1">
-          Welcome, [SEEKER_001].
+        <h1 className="font-['Cinzel',serif] text-2xl font-semibold text-white mb-1">
+          Welcome, Seeker
         </h1>
-        <div className="font-mono text-xs text-green-700">
-          ARCHETYPE_MATRIX: ACTIVE
-        </div>
+        <p className="text-white/60 text-sm">
+          Your journey through the archetypes awaits
+        </p>
       </motion.div>
 
       {/* Tree of Life Navigation */}
