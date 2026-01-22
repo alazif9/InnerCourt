@@ -1,296 +1,365 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useMemo } from 'react';
+import * as THREE from 'three';
 import { motion } from 'framer-motion';
 
 const dimensions = [
-  { key: 'career', label: 'Career', angle: 0 },
-  { key: 'finance', label: 'Finance', angle: 45 },
-  { key: 'health', label: 'Health', angle: 90 },
-  { key: 'relationships', label: 'Relations', angle: 135 },
-  { key: 'personal', label: 'Personal', angle: 180 },
-  { key: 'spiritual', label: 'Spiritual', angle: 225 },
-  { key: 'recreation', label: 'Recreation', angle: 270 },
-  { key: 'environment', label: 'Environ', angle: 315 },
+  { key: 'career', label: 'Career', phi: 0.3, theta: 0 },           // North
+  { key: 'finance', label: 'Finance', phi: 0.6, theta: Math.PI/4 }, // NE
+  { key: 'health', label: 'Health', phi: Math.PI/2, theta: Math.PI/2 }, // E
+  { key: 'relationships', label: 'Relations', phi: 0.6, theta: 3*Math.PI/4 }, // SE
+  { key: 'personal', label: 'Personal', phi: 0.3, theta: Math.PI }, // S
+  { key: 'spiritual', label: 'Spiritual', phi: 0.6, theta: 5*Math.PI/4 }, // SW
+  { key: 'recreation', label: 'Recreation', phi: Math.PI/2, theta: 3*Math.PI/2 }, // W
+  { key: 'environment', label: 'Environ', phi: 0.6, theta: 7*Math.PI/4 }, // NW
 ];
 
 export default function TopographicSphere({ data = {}, overallScore = 63 }) {
-  const canvasRef = useRef(null);
-  const [rotation, setRotation] = useState({ x: 15, y: 0 });
+  const containerRef = useRef(null);
+  const rendererRef = useRef(null);
+  const sceneRef = useRef(null);
+  const cameraRef = useRef(null);
+  const sphereRef = useRef(null);
   const [isDragging, setIsDragging] = useState(false);
-  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
-  const animationRef = useRef(null);
-  const autoRotateRef = useRef(0);
+  const dragStartRef = useRef({ x: 0, y: 0 });
+  const rotationRef = useRef({ x: 0.4, y: 0 });
+  const autoRotateRef = useRef(true);
 
-  // Get scores for each dimension
-  const scores = dimensions.map(d => ({
+  const scores = useMemo(() => dimensions.map(d => ({
     ...d,
     value: data[d.key] || Math.floor(Math.random() * 40 + 40)
-  }));
+  })), [data]);
 
   const avgScore = Math.round(scores.reduce((a, b) => a + b.value, 0) / scores.length);
   const variance = Math.round(Math.sqrt(scores.reduce((a, b) => a + Math.pow(b.value - avgScore, 2), 0) / scores.length));
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    const width = canvas.width;
-    const height = canvas.height;
-    const centerX = width / 2;
-    const centerY = height / 2;
-    const radius = Math.min(width, height) * 0.35;
+    if (!containerRef.current) return;
 
-    const draw = () => {
-      ctx.clearRect(0, 0, width, height);
+    const width = 320;
+    const height = 320;
+
+    // Scene setup
+    const scene = new THREE.Scene();
+    sceneRef.current = scene;
+
+    // Camera
+    const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+    camera.position.z = 4;
+    cameraRef.current = camera;
+
+    // Renderer
+    const renderer = new THREE.WebGLRenderer({ 
+      antialias: true, 
+      alpha: true,
+      powerPreference: 'high-performance'
+    });
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setClearColor(0x000000, 0);
+    containerRef.current.appendChild(renderer.domElement);
+    rendererRef.current = renderer;
+
+    // Create main group for rotation
+    const globeGroup = new THREE.Group();
+    scene.add(globeGroup);
+    sphereRef.current = globeGroup;
+
+    // Gold color
+    const goldColor = new THREE.Color(0xd4af37);
+    const brightGold = new THREE.Color(0xffd700);
+
+    // Create wireframe sphere (latitude lines)
+    const latitudeCount = 12;
+    for (let i = 0; i <= latitudeCount; i++) {
+      const phi = (i / latitudeCount) * Math.PI;
+      const radius = 1;
+      const y = Math.cos(phi) * radius;
+      const ringRadius = Math.sin(phi) * radius;
       
-      const rotX = (rotation.x * Math.PI) / 180;
-      const rotY = ((rotation.y + autoRotateRef.current) * Math.PI) / 180;
+      if (ringRadius > 0.01) {
+        const curve = new THREE.EllipseCurve(0, 0, ringRadius, ringRadius, 0, 2 * Math.PI, false, 0);
+        const points = curve.getPoints(64);
+        const geometry = new THREE.BufferGeometry().setFromPoints(
+          points.map(p => new THREE.Vector3(p.x, y, p.y))
+        );
+        const material = new THREE.LineBasicMaterial({ 
+          color: goldColor, 
+          transparent: true, 
+          opacity: 0.2,
+          linewidth: 1
+        });
+        const line = new THREE.Line(geometry, material);
+        globeGroup.add(line);
+      }
+    }
 
-      // Helper: 3D to 2D projection
-      const project = (lat, lon, r = radius) => {
-        const x3d = r * Math.cos(lat) * Math.sin(lon);
-        const y3d = r * Math.sin(lat);
-        const z3d = r * Math.cos(lat) * Math.cos(lon);
-        
-        // Rotate around X
-        const y1 = y3d * Math.cos(rotX) - z3d * Math.sin(rotX);
-        const z1 = y3d * Math.sin(rotX) + z3d * Math.cos(rotX);
-        
-        // Rotate around Y
-        const x2 = x3d * Math.cos(rotY) + z1 * Math.sin(rotY);
-        const z2 = -x3d * Math.sin(rotY) + z1 * Math.cos(rotY);
-        
-        return {
-          x: centerX + x2,
-          y: centerY - y1,
-          z: z2,
-          visible: z2 > -radius * 0.3
-        };
-      };
+    // Longitude lines (meridians)
+    const longitudeCount = 24;
+    for (let i = 0; i < longitudeCount; i++) {
+      const theta = (i / longitudeCount) * Math.PI * 2;
+      const points = [];
+      for (let j = 0; j <= 64; j++) {
+        const phi = (j / 64) * Math.PI;
+        const x = Math.sin(phi) * Math.cos(theta);
+        const y = Math.cos(phi);
+        const z = Math.sin(phi) * Math.sin(theta);
+        points.push(new THREE.Vector3(x, y, z));
+      }
+      const geometry = new THREE.BufferGeometry().setFromPoints(points);
+      const material = new THREE.LineBasicMaterial({ 
+        color: goldColor, 
+        transparent: true, 
+        opacity: 0.15
+      });
+      const line = new THREE.Line(geometry, material);
+      globeGroup.add(line);
+    }
 
-      // Draw inner glow
-      const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, radius);
-      gradient.addColorStop(0, 'rgba(212, 175, 55, 0.08)');
-      gradient.addColorStop(0.7, 'rgba(212, 175, 55, 0.02)');
-      gradient.addColorStop(1, 'transparent');
-      ctx.fillStyle = gradient;
-      ctx.beginPath();
-      ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
-      ctx.fill();
+    // Grid intersection points (luminous dots)
+    const dotGeometry = new THREE.BufferGeometry();
+    const dotPositions = [];
+    for (let lat = 1; lat < latitudeCount; lat++) {
+      const phi = (lat / latitudeCount) * Math.PI;
+      const y = Math.cos(phi);
+      const ringRadius = Math.sin(phi);
+      for (let lon = 0; lon < longitudeCount; lon++) {
+        const theta = (lon / longitudeCount) * Math.PI * 2;
+        const x = ringRadius * Math.cos(theta);
+        const z = ringRadius * Math.sin(theta);
+        dotPositions.push(x, y, z);
+      }
+    }
+    dotGeometry.setAttribute('position', new THREE.Float32BufferAttribute(dotPositions, 3));
+    const dotMaterial = new THREE.PointsMaterial({ 
+      color: brightGold, 
+      size: 0.02, 
+      transparent: true, 
+      opacity: 0.6,
+      sizeAttenuation: true
+    });
+    const dots = new THREE.Points(dotGeometry, dotMaterial);
+    globeGroup.add(dots);
 
-      // Draw latitude lines
-      for (let lat = -75; lat <= 75; lat += 15) {
-        const latRad = (lat * Math.PI) / 180;
-        ctx.beginPath();
-        let started = false;
-        
-        for (let lon = 0; lon <= 360; lon += 5) {
-          const lonRad = (lon * Math.PI) / 180;
-          const p = project(latRad, lonRad);
-          
-          if (p.visible) {
-            const opacity = 0.1 + (p.z / radius) * 0.15;
-            ctx.strokeStyle = `rgba(212, 175, 55, ${opacity})`;
-            
-            if (!started) {
-              ctx.moveTo(p.x, p.y);
-              started = true;
-            } else {
-              ctx.lineTo(p.x, p.y);
-            }
-          } else {
-            if (started) {
-              ctx.stroke();
-              ctx.beginPath();
-              started = false;
-            }
-          }
+    // Create data points (dimension markers) with elevation
+    const dataPointsGroup = new THREE.Group();
+    scores.forEach((dim, i) => {
+      const elevation = dim.value > 80 ? 0.25 : dim.value > 60 ? 0.15 : dim.value > 30 ? 0.05 : -0.05;
+      const baseRadius = 1 + elevation;
+      
+      // Position on sphere
+      const phi = Math.PI / 2 - (dim.phi - Math.PI/2) * 0.5;
+      const theta = dim.theta;
+      const x = baseRadius * Math.sin(phi) * Math.cos(theta);
+      const y = baseRadius * Math.cos(phi);
+      const z = baseRadius * Math.sin(phi) * Math.sin(theta);
+
+      // Main orb
+      const orbSize = 0.04 + (dim.value / 100) * 0.04;
+      const orbGeometry = new THREE.SphereGeometry(orbSize, 16, 16);
+      const orbColor = dim.value > 70 ? 0xfffde7 : dim.value > 50 ? 0xffd700 : 0x8a7f3b;
+      const orbMaterial = new THREE.MeshBasicMaterial({ 
+        color: orbColor,
+        transparent: true,
+        opacity: 0.9
+      });
+      const orb = new THREE.Mesh(orbGeometry, orbMaterial);
+      orb.position.set(x, y, z);
+      dataPointsGroup.add(orb);
+
+      // Glow effect
+      const glowGeometry = new THREE.SphereGeometry(orbSize * 2.5, 16, 16);
+      const glowMaterial = new THREE.MeshBasicMaterial({ 
+        color: 0xd4af37,
+        transparent: true,
+        opacity: 0.15
+      });
+      const glow = new THREE.Mesh(glowGeometry, glowMaterial);
+      glow.position.set(x, y, z);
+      dataPointsGroup.add(glow);
+
+      // Connecting line to sphere surface
+      const surfaceX = Math.sin(phi) * Math.cos(theta);
+      const surfaceY = Math.cos(phi);
+      const surfaceZ = Math.sin(phi) * Math.sin(theta);
+      const lineGeometry = new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector3(surfaceX, surfaceY, surfaceZ),
+        new THREE.Vector3(x, y, z)
+      ]);
+      const lineMaterial = new THREE.LineBasicMaterial({ 
+        color: goldColor, 
+        transparent: true, 
+        opacity: 0.4 
+      });
+      const line = new THREE.Line(lineGeometry, lineMaterial);
+      dataPointsGroup.add(line);
+    });
+    globeGroup.add(dataPointsGroup);
+
+    // Data polygon connecting all dimension points
+    const polygonPoints = [];
+    scores.forEach((dim) => {
+      const elevation = dim.value > 80 ? 0.25 : dim.value > 60 ? 0.15 : dim.value > 30 ? 0.05 : -0.05;
+      const baseRadius = 1 + elevation;
+      const phi = Math.PI / 2 - (dim.phi - Math.PI/2) * 0.5;
+      const theta = dim.theta;
+      const x = baseRadius * Math.sin(phi) * Math.cos(theta);
+      const y = baseRadius * Math.cos(phi);
+      const z = baseRadius * Math.sin(phi) * Math.sin(theta);
+      polygonPoints.push(new THREE.Vector3(x, y, z));
+    });
+    polygonPoints.push(polygonPoints[0].clone()); // Close the loop
+    
+    const polygonGeometry = new THREE.BufferGeometry().setFromPoints(polygonPoints);
+    const polygonMaterial = new THREE.LineBasicMaterial({ 
+      color: brightGold, 
+      transparent: true, 
+      opacity: 0.6,
+      linewidth: 2
+    });
+    const polygon = new THREE.Line(polygonGeometry, polygonMaterial);
+    globeGroup.add(polygon);
+
+    // Rim glow (fresnel-like effect using a slightly larger sphere)
+    const rimGeometry = new THREE.SphereGeometry(1.02, 64, 64);
+    const rimMaterial = new THREE.ShaderMaterial({
+      transparent: true,
+      uniforms: {
+        glowColor: { value: new THREE.Color(0xd4af37) },
+        viewVector: { value: camera.position }
+      },
+      vertexShader: `
+        uniform vec3 viewVector;
+        varying float intensity;
+        void main() {
+          vec3 vNormal = normalize(normalMatrix * normal);
+          vec3 vNormel = normalize(normalMatrix * viewVector);
+          intensity = pow(1.0 - abs(dot(vNormal, vNormel)), 2.0);
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
         }
-        ctx.lineWidth = 0.5;
-        ctx.stroke();
-      }
-
-      // Draw longitude lines
-      for (let lon = 0; lon < 360; lon += 22.5) {
-        const lonRad = (lon * Math.PI) / 180;
-        ctx.beginPath();
-        let started = false;
-        
-        for (let lat = -90; lat <= 90; lat += 5) {
-          const latRad = (lat * Math.PI) / 180;
-          const p = project(latRad, lonRad);
-          
-          if (p.visible) {
-            const opacity = 0.1 + (p.z / radius) * 0.15;
-            ctx.strokeStyle = `rgba(212, 175, 55, ${opacity})`;
-            
-            if (!started) {
-              ctx.moveTo(p.x, p.y);
-              started = true;
-            } else {
-              ctx.lineTo(p.x, p.y);
-            }
-          } else {
-            if (started) {
-              ctx.stroke();
-              ctx.beginPath();
-              started = false;
-            }
-          }
+      `,
+      fragmentShader: `
+        uniform vec3 glowColor;
+        varying float intensity;
+        void main() {
+          gl_FragColor = vec4(glowColor, intensity * 0.4);
         }
-        ctx.lineWidth = 0.5;
-        ctx.stroke();
+      `,
+      side: THREE.FrontSide,
+      blending: THREE.AdditiveBlending
+    });
+    const rimMesh = new THREE.Mesh(rimGeometry, rimMaterial);
+    globeGroup.add(rimMesh);
+
+    // Inner glow
+    const innerGeometry = new THREE.SphereGeometry(0.95, 32, 32);
+    const innerMaterial = new THREE.MeshBasicMaterial({
+      color: 0xd4af37,
+      transparent: true,
+      opacity: 0.03,
+      side: THREE.BackSide
+    });
+    const innerMesh = new THREE.Mesh(innerGeometry, innerMaterial);
+    globeGroup.add(innerMesh);
+
+    // Initial tilt
+    globeGroup.rotation.x = 0.4;
+
+    // Animation
+    let animationId;
+    const animate = () => {
+      animationId = requestAnimationFrame(animate);
+
+      if (autoRotateRef.current && !isDragging) {
+        globeGroup.rotation.y += 0.002; // ~40s per rotation
       }
 
-      // Draw topographic data points and connections
-      const dataPoints = scores.map((dim, i) => {
-        const angle = (dim.angle * Math.PI) / 180;
-        const elevation = dim.value / 100;
-        const r = radius * (0.85 + elevation * 0.3);
-        return project(0, angle, r);
-      });
+      // Pulse dots
+      const time = Date.now() * 0.001;
+      dotMaterial.opacity = 0.4 + Math.sin(time * 0.5) * 0.2;
 
-      // Draw data polygon
-      ctx.beginPath();
-      dataPoints.forEach((p, i) => {
-        if (i === 0) ctx.moveTo(p.x, p.y);
-        else ctx.lineTo(p.x, p.y);
-      });
-      ctx.closePath();
-      
-      const dataGradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, radius * 1.2);
-      dataGradient.addColorStop(0, 'rgba(212, 175, 55, 0.15)');
-      dataGradient.addColorStop(1, 'rgba(212, 175, 55, 0.05)');
-      ctx.fillStyle = dataGradient;
-      ctx.fill();
-      ctx.strokeStyle = 'rgba(212, 175, 55, 0.6)';
-      ctx.lineWidth = 1.5;
-      ctx.stroke();
-
-      // Draw data points with elevation glow
-      dataPoints.forEach((p, i) => {
-        const score = scores[i].value;
-        const intensity = score / 100;
-        
-        // Outer glow
-        const glow = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, 15);
-        glow.addColorStop(0, `rgba(212, 175, 55, ${0.4 * intensity})`);
-        glow.addColorStop(1, 'transparent');
-        ctx.fillStyle = glow;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, 15, 0, Math.PI * 2);
-        ctx.fill();
-        
-        // Point
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, 3 + intensity * 2, 0, Math.PI * 2);
-        ctx.fillStyle = score > 70 ? '#fffacd' : score > 50 ? '#d4af37' : '#8a7f3b';
-        ctx.fill();
-      });
-
-      // Draw fresnel rim glow
-      ctx.beginPath();
-      ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
-      ctx.strokeStyle = 'rgba(212, 175, 55, 0.2)';
-      ctx.lineWidth = 2;
-      ctx.stroke();
-
-      // Auto-rotate
-      if (!isDragging) {
-        autoRotateRef.current += 0.15;
-      }
-      
-      animationRef.current = requestAnimationFrame(draw);
+      renderer.render(scene, camera);
     };
-
-    draw();
+    animate();
 
     return () => {
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
+      cancelAnimationFrame(animationId);
+      renderer.dispose();
+      if (containerRef.current && renderer.domElement) {
+        containerRef.current.removeChild(renderer.domElement);
       }
     };
-  }, [rotation, isDragging, scores]);
+  }, [scores]);
 
-  const handleMouseDown = (e) => {
+  // Drag handlers
+  const handlePointerDown = (e) => {
     setIsDragging(true);
-    setDragStart({ x: e.clientX, y: e.clientY });
+    autoRotateRef.current = false;
+    dragStartRef.current = { x: e.clientX || e.touches?.[0]?.clientX, y: e.clientY || e.touches?.[0]?.clientY };
   };
 
-  const handleMouseMove = (e) => {
-    if (!isDragging) return;
-    const dx = e.clientX - dragStart.x;
-    const dy = e.clientY - dragStart.y;
-    setRotation(prev => ({
-      x: Math.max(-60, Math.min(60, prev.x - dy * 0.3)),
-      y: prev.y + dx * 0.3
-    }));
-    setDragStart({ x: e.clientX, y: e.clientY });
+  const handlePointerMove = (e) => {
+    if (!isDragging || !sphereRef.current) return;
+    const clientX = e.clientX || e.touches?.[0]?.clientX;
+    const clientY = e.clientY || e.touches?.[0]?.clientY;
+    const dx = clientX - dragStartRef.current.x;
+    const dy = clientY - dragStartRef.current.y;
+    
+    sphereRef.current.rotation.y += dx * 0.01;
+    sphereRef.current.rotation.x = Math.max(-1, Math.min(1, sphereRef.current.rotation.x + dy * 0.005));
+    
+    dragStartRef.current = { x: clientX, y: clientY };
   };
 
-  const handleMouseUp = () => setIsDragging(false);
-
-  const handleTouchStart = (e) => {
-    setIsDragging(true);
-    setDragStart({ x: e.touches[0].clientX, y: e.touches[0].clientY });
-  };
-
-  const handleTouchMove = (e) => {
-    if (!isDragging) return;
-    const dx = e.touches[0].clientX - dragStart.x;
-    const dy = e.touches[0].clientY - dragStart.y;
-    setRotation(prev => ({
-      x: Math.max(-60, Math.min(60, prev.x - dy * 0.3)),
-      y: prev.y + dx * 0.3
-    }));
-    setDragStart({ x: e.touches[0].clientX, y: e.touches[0].clientY });
+  const handlePointerUp = () => {
+    setIsDragging(false);
+    setTimeout(() => { autoRotateRef.current = true; }, 2000);
   };
 
   return (
     <div className="relative">
-      {/* Corner HUD */}
-      <div className="absolute top-2 left-2 font-data text-[8px] leading-tight text-[#00cccc]/70">
-        <div className="text-white/30">┌─ BALANCE SCAN ─┐</div>
-        <div>│ SYNC: <span className="text-[#d4af37]">{avgScore}/100</span></div>
-        <div>│ VARIANCE: <span className="text-white/50">±{variance}</span></div>
-        <div>│ HARMONICS: <span className="text-[#00ff41]">▓▓</span><span className="text-white/20">░</span></div>
-        <div className="text-white/30">└────────────────┘</div>
+      {/* HUD - Left Corner */}
+      <div className="absolute top-2 left-2 font-data text-[8px] leading-tight z-10">
+        <div className="text-white/30">┌─ BALANCE SCAN ────┐</div>
+        <div className="text-[#00cccc]/70">│ SYNC: <span className="text-[#d4af37]">{avgScore}/100</span></div>
+        <div className="text-[#00cccc]/70">│ VARIANCE: <span className="text-white/50">±{variance}</span></div>
+        <div className="text-[#00cccc]/70">│ HARMONICS: <span className="text-[#00ff41]">████</span><span className="text-white/20">░</span></div>
+        <div className="text-[#00cccc]/70">│ REFRESH: <span className="text-white/40">2m ago</span></div>
+        <div className="text-white/30">└───────────────────┘</div>
       </div>
 
-      {/* Score Display */}
-      <div className="absolute top-2 right-2 flex items-center gap-2 px-2 py-1 rounded border border-[#d4af37]/40 bg-black/60">
+      {/* Score Display - Right Corner */}
+      <div className="absolute top-2 right-2 flex items-center gap-2 px-2 py-1 rounded border border-[#d4af37]/40 bg-black/60 z-10">
         <span className="font-data text-[8px] text-white/40">BALANCE</span>
         <span className="font-occult text-xl text-[#d4af37]">{avgScore}</span>
       </div>
 
-      {/* Canvas */}
-      <canvas
-        ref={canvasRef}
-        width={320}
-        height={320}
-        className="w-full max-w-[320px] mx-auto cursor-grab active:cursor-grabbing"
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-        onMouseLeave={handleMouseUp}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleMouseUp}
+      {/* Three.js Container */}
+      <div 
+        ref={containerRef}
+        className="w-full max-w-[320px] h-[320px] mx-auto cursor-grab active:cursor-grabbing"
+        onMouseDown={handlePointerDown}
+        onMouseMove={handlePointerMove}
+        onMouseUp={handlePointerUp}
+        onMouseLeave={handlePointerUp}
+        onTouchStart={handlePointerDown}
+        onTouchMove={handlePointerMove}
+        onTouchEnd={handlePointerUp}
       />
 
-      {/* Dimension Labels */}
+      {/* Dimension Labels Grid */}
       <div className="grid grid-cols-4 gap-2 mt-4 px-2">
         {scores.map((dim) => (
           <motion.div
             key={dim.key}
             className="text-center p-1.5 rounded bg-black/40 border border-[#d4af37]/20"
-            whileHover={{ borderColor: 'rgba(212,175,55,0.5)' }}
+            whileHover={{ borderColor: 'rgba(212,175,55,0.5)', scale: 1.02 }}
           >
             <div className="font-data text-[7px] text-white/40 uppercase tracking-wider">
               {dim.label}
             </div>
             <div 
               className="font-data text-xs font-medium"
-              style={{ color: dim.value > 70 ? '#00ff41' : dim.value > 50 ? '#d4af37' : '#cc0000' }}
+              style={{ color: dim.value > 70 ? '#00ff41' : dim.value > 50 ? '#d4af37' : '#cc4444' }}
             >
               {dim.value}%
             </div>
@@ -298,11 +367,14 @@ export default function TopographicSphere({ data = {}, overallScore = 63 }) {
         ))}
       </div>
 
-      {/* Bottom Info */}
-      <div className="mt-3 text-center font-data text-[8px] text-white/30">
-        <span>8-DIMENSIONAL BALANCE SCAN</span>
-        <span className="mx-2">•</span>
-        <span>TOPOLOGY REFRESH: 2m ago</span>
+      {/* Bottom Status Bar */}
+      <div className="mt-3 flex items-center justify-center gap-4 font-data text-[8px] text-white/30">
+        <span className="flex items-center gap-1">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#00ff41] animate-pulse" />
+          TOPOLOGY REFRESH: LIVE
+        </span>
+        <span>•</span>
+        <span>DIMENSIONAL HARMONICS: BALANCED</span>
       </div>
     </div>
   );
