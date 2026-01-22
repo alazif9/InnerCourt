@@ -3,7 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import GlassCard from '@/components/ui/GlassCard';
-import { Plus, Calendar, ChevronRight, Sparkles, Book } from 'lucide-react';
+import HUDCorners from '@/components/hud/HUDCorners';
+import { Plus, Calendar, ChevronRight, Book } from 'lucide-react';
 import { format } from 'date-fns';
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -17,13 +18,17 @@ import {
 } from "@/components/ui/select";
 
 const archetypes = ['SOL', 'SAGE', 'HERO', 'MOTHER', 'SHADOW', 'ANIMA', 'CHILD', 'TRICKSTER'];
+const archetypeSymbols = {
+  SOL: '☉', SAGE: '☿', HERO: '♂', MOTHER: '☽', 
+  SHADOW: '♄', ANIMA: '♀', CHILD: '☆', TRICKSTER: '☌'
+};
 const moods = [
-  { value: 'transcendent', label: '✨ Transcendent', color: 'amber' },
-  { value: 'peaceful', label: '🌸 Peaceful', color: 'pink' },
-  { value: 'curious', label: '🔮 Curious', color: 'purple' },
-  { value: 'challenged', label: '⚔️ Challenged', color: 'red' },
-  { value: 'struggling', label: '🌑 Struggling', color: 'slate' },
-  { value: 'transforming', label: '🦋 Transforming', color: 'emerald' },
+  { value: 'transcendent', label: 'Transcendent', symbol: '△', color: '#d4af37' },
+  { value: 'peaceful', label: 'Peaceful', symbol: '◯', color: '#00cccc' },
+  { value: 'curious', label: 'Curious', symbol: '◈', color: '#9966ff' },
+  { value: 'challenged', label: 'Challenged', symbol: '⬡', color: '#cc4444' },
+  { value: 'struggling', label: 'Struggling', symbol: '◐', color: '#666666' },
+  { value: 'transforming', label: 'Transforming', symbol: '∞', color: '#00ff41' },
 ];
 
 export default function Journal() {
@@ -70,28 +75,47 @@ export default function Journal() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 relative">
+      <HUDCorners />
+      
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="flex items-center justify-between"
+        className="text-center pt-2 space-y-2"
       >
-        <div>
-          <h1 className="font-['Cinzel',serif] text-2xl font-semibold text-white">
-            Soul Journal
-          </h1>
-          <p className="text-white/60 text-sm mt-1">
-            Record your inner journey
-          </p>
+        <h1 className="font-occult text-3xl font-semibold text-gradient-gold tracking-wide">
+          Soul Chronicle
+        </h1>
+        <div className="font-data text-xs text-[#00cccc] tracking-[0.2em] uppercase">
+          Consciousness Archive
         </div>
-        
+        <div className="flex items-center justify-center gap-2 font-data text-[10px] text-white/40">
+          <span>ENTRIES:</span>
+          <span className="text-[#d4af37]">{entries.length}</span>
+          <span className="text-white/20">•</span>
+          <span>PROTOCOL:</span>
+          <span className="text-[#00ff41]">HERMETIC_LOG</span>
+        </div>
+        <div className="flex items-center justify-center gap-2 text-[#d4af37]/30 text-xs">
+          ⟨ ◈ ✦ ◈ ⟩
+        </div>
+      </motion.div>
+
+      {/* New Entry Button */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.1 }}
+        className="flex justify-center"
+      >
         <Button
           onClick={() => setShowForm(!showForm)}
-          className="bg-amber-500/20 hover:bg-amber-500/30 text-amber-400 border border-amber-500/30"
+          className="bg-black/60 hover:bg-black/80 text-[#d4af37] border border-[#d4af37]/40 font-data text-xs tracking-wider"
+          style={{ boxShadow: '0 0 15px rgba(212,175,55,0.15)' }}
         >
           <Plus className="w-4 h-4 mr-2" />
-          New Entry
+          NEW TRANSMISSION
         </Button>
       </motion.div>
 
@@ -103,19 +127,23 @@ export default function Journal() {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
           >
-            <GlassCard className="p-5 space-y-4">
+            <GlassCard glowColor="gold" className="p-4 space-y-4">
+              <div className="font-data text-[8px] text-[#00cccc]/60 uppercase tracking-widest mb-2">
+                ┌─ NEW ENTRY PROTOCOL ─┐
+              </div>
+              
               <Input
-                placeholder="Title (optional)"
+                placeholder="TRANSMISSION TITLE (OPTIONAL)"
                 value={newEntry.title}
                 onChange={(e) => setNewEntry({ ...newEntry, title: e.target.value })}
-                className="bg-white/5 border-white/10 text-white placeholder-white/40"
+                className="bg-black/40 border-[#d4af37]/30 text-white placeholder-white/30 font-data text-xs"
               />
               
               <Textarea
-                placeholder="What's arising in your consciousness today?"
+                placeholder="Record consciousness data..."
                 value={newEntry.content}
                 onChange={(e) => setNewEntry({ ...newEntry, content: e.target.value })}
-                className="bg-white/5 border-white/10 text-white placeholder-white/40 min-h-[120px] resize-none"
+                className="bg-black/40 border-[#d4af37]/30 text-white placeholder-white/30 min-h-[100px] resize-none font-data text-xs"
               />
               
               <div className="flex gap-3">
@@ -123,12 +151,13 @@ export default function Journal() {
                   value={newEntry.archetype}
                   onValueChange={(value) => setNewEntry({ ...newEntry, archetype: value })}
                 >
-                  <SelectTrigger className="bg-white/5 border-white/10 text-white">
-                    <SelectValue placeholder="Archetype" />
+                  <SelectTrigger className="bg-black/40 border-[#d4af37]/30 text-white font-data text-xs">
+                    <SelectValue placeholder="NODE" />
                   </SelectTrigger>
-                  <SelectContent className="bg-[#1a1a2e] border-white/10">
+                  <SelectContent className="bg-black border-[#d4af37]/30">
                     {archetypes.map((arch) => (
-                      <SelectItem key={arch} value={arch} className="text-white hover:bg-white/10">
+                      <SelectItem key={arch} value={arch} className="text-white hover:bg-[#d4af37]/10 font-data text-xs">
+                        <span className="text-[#d4af37] mr-2">{archetypeSymbols[arch]}</span>
                         {arch}
                       </SelectItem>
                     ))}
@@ -139,12 +168,13 @@ export default function Journal() {
                   value={newEntry.mood}
                   onValueChange={(value) => setNewEntry({ ...newEntry, mood: value })}
                 >
-                  <SelectTrigger className="bg-white/5 border-white/10 text-white">
-                    <SelectValue placeholder="Mood" />
+                  <SelectTrigger className="bg-black/40 border-[#d4af37]/30 text-white font-data text-xs">
+                    <SelectValue placeholder="STATE" />
                   </SelectTrigger>
-                  <SelectContent className="bg-[#1a1a2e] border-white/10">
+                  <SelectContent className="bg-black border-[#d4af37]/30">
                     {moods.map((mood) => (
-                      <SelectItem key={mood.value} value={mood.value} className="text-white hover:bg-white/10">
+                      <SelectItem key={mood.value} value={mood.value} className="text-white hover:bg-[#d4af37]/10 font-data text-xs">
+                        <span style={{ color: mood.color }} className="mr-2">{mood.symbol}</span>
                         {mood.label}
                       </SelectItem>
                     ))}
@@ -152,20 +182,20 @@ export default function Journal() {
                 </Select>
               </div>
               
-              <div className="flex gap-2 justify-end">
+              <div className="flex gap-2 justify-end pt-2">
                 <Button
                   variant="ghost"
                   onClick={() => setShowForm(false)}
-                  className="text-white/60 hover:text-white hover:bg-white/10"
+                  className="text-white/40 hover:text-white hover:bg-white/5 font-data text-xs"
                 >
-                  Cancel
+                  ABORT
                 </Button>
                 <Button
                   onClick={handleSubmit}
                   disabled={!newEntry.content.trim() || createMutation.isPending}
-                  className="bg-gradient-to-r from-amber-500 to-purple-500 text-white hover:opacity-90"
+                  className="bg-[#d4af37]/20 hover:bg-[#d4af37]/30 text-[#d4af37] border border-[#d4af37]/40 font-data text-xs"
                 >
-                  {createMutation.isPending ? 'Saving...' : 'Save Entry'}
+                  {createMutation.isPending ? 'ENCODING...' : 'TRANSMIT'}
                 </Button>
               </div>
             </GlassCard>
@@ -174,14 +204,14 @@ export default function Journal() {
       </AnimatePresence>
 
       {/* Entries List */}
-      <div className="space-y-3">
+      <div className="space-y-3 mt-4">
         {isLoading ? (
           <div className="flex justify-center py-12">
             <div className="flex gap-1">
               {[0, 1, 2].map(i => (
                 <motion.span
                   key={i}
-                  className="w-2 h-2 bg-amber-400 rounded-full"
+                  className="w-1.5 h-1.5 bg-[#d4af37] rounded-full"
                   animate={{ opacity: [0.3, 1, 0.3] }}
                   transition={{ duration: 1, repeat: Infinity, delay: i * 0.2 }}
                 />
@@ -189,62 +219,89 @@ export default function Journal() {
             </div>
           </div>
         ) : entries.length === 0 ? (
-          <GlassCard className="p-8 text-center">
-            <Book className="w-12 h-12 text-white/20 mx-auto mb-4" />
-            <p className="text-white/60">Your journal awaits its first entry</p>
-            <p className="text-white/40 text-sm mt-1">Start documenting your inner journey</p>
+          <GlassCard glowColor="gold" className="p-8 text-center">
+            <div className="text-3xl text-[#d4af37]/30 mb-3">◈</div>
+            <p className="text-white/50 font-data text-xs uppercase tracking-wider">Archive Empty</p>
+            <p className="text-white/30 font-data text-[10px] mt-1">Initialize first transmission</p>
           </GlassCard>
         ) : (
-          entries.map((entry, i) => (
-            <motion.div
-              key={entry.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.05 }}
-            >
-              <GlassCard className="p-4 hover:bg-white/[0.08] transition-colors cursor-pointer">
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center flex-shrink-0">
-                    <Sparkles className="w-5 h-5 text-purple-400" />
-                  </div>
-                  
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
-                      {entry.title && (
-                        <h3 className="text-white font-medium truncate">
-                          {entry.title}
-                        </h3>
-                      )}
-                      {entry.mood && (
-                        <span className="text-sm">
-                          {moods.find(m => m.value === entry.mood)?.label.split(' ')[0]}
-                        </span>
-                      )}
-                    </div>
-                    
-                    <p className="text-white/60 text-sm line-clamp-2 mb-2">
-                      {entry.content}
-                    </p>
-                    
-                    <div className="flex items-center gap-3 text-xs text-white/40">
-                      <span className="flex items-center gap-1">
-                        <Calendar className="w-3 h-3" />
-                        {format(new Date(entry.created_date), 'MMM d, yyyy')}
+          entries.map((entry, i) => {
+            const moodData = moods.find(m => m.value === entry.mood);
+            return (
+              <motion.div
+                key={entry.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.05 }}
+              >
+                <GlassCard glowColor="gold" className="p-3 hover:border-[#d4af37]/50 transition-all cursor-pointer group">
+                  <div className="flex items-start gap-3">
+                    {/* Archetype Symbol */}
+                    <div 
+                      className="w-10 h-10 rounded border border-[#d4af37]/30 bg-black/40 flex items-center justify-center flex-shrink-0"
+                      style={{ boxShadow: '0 0 10px rgba(212,175,55,0.1)' }}
+                    >
+                      <span className="text-[#d4af37] text-lg font-occult">
+                        {entry.archetype ? archetypeSymbols[entry.archetype] : '◇'}
                       </span>
-                      {entry.archetype && (
-                        <span className="px-2 py-0.5 rounded-full bg-white/10">
-                          {entry.archetype}
-                        </span>
-                      )}
                     </div>
+                    
+                    <div className="flex-1 min-w-0">
+                      {/* Header row */}
+                      <div className="flex items-center gap-2 mb-1">
+                        {entry.title ? (
+                          <h3 className="text-white/90 font-occult text-sm truncate">
+                            {entry.title}
+                          </h3>
+                        ) : (
+                          <span className="text-white/50 font-data text-[10px] uppercase">
+                            Untitled Entry
+                          </span>
+                        )}
+                        {moodData && (
+                          <span 
+                            className="text-sm"
+                            style={{ color: moodData.color }}
+                          >
+                            {moodData.symbol}
+                          </span>
+                        )}
+                      </div>
+                      
+                      {/* Content preview */}
+                      <p className="text-white/50 font-data text-[11px] line-clamp-2 mb-2 leading-relaxed">
+                        {entry.content}
+                      </p>
+                      
+                      {/* Meta row */}
+                      <div className="flex items-center gap-3 font-data text-[9px] text-white/30">
+                        <span className="flex items-center gap-1">
+                          <Calendar className="w-3 h-3" />
+                          {format(new Date(entry.created_date), 'yyyy.MM.dd')}
+                        </span>
+                        <span className="text-white/20">•</span>
+                        <span>{format(new Date(entry.created_date), 'HH:mm')}</span>
+                        {entry.archetype && (
+                          <>
+                            <span className="text-white/20">•</span>
+                            <span className="text-[#d4af37]/60">{entry.archetype}</span>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                    
+                    <ChevronRight className="w-4 h-4 text-white/20 flex-shrink-0 group-hover:text-[#d4af37]/60 transition-colors" />
                   </div>
-                  
-                  <ChevronRight className="w-4 h-4 text-white/30 flex-shrink-0" />
-                </div>
-              </GlassCard>
-            </motion.div>
-          ))
+                </GlassCard>
+              </motion.div>
+            );
+          })
         )}
+      </div>
+
+      {/* Bottom micro-text */}
+      <div className="text-center font-data text-[8px] text-white/20 tracking-widest pt-2">
+        CHRONICLE_ID: SOL-{user?.id?.slice(0,8) || '00000000'} • CIPHER: ACTIVE
       </div>
     </div>
   );
