@@ -11,19 +11,20 @@ export default function Header({ user }) {
         {/* Profile */}
         <Link 
           to={createPageUrl('Profile')}
-          className="w-12 h-12 rounded-full bg-black border-2 border-white flex items-center justify-center overflow-hidden"
+          className="w-12 h-12 rounded-full bg-black border-2 border-green-500 flex items-center justify-center overflow-hidden"
+          style={{ boxShadow: '0 0 10px rgba(0, 255, 0, 0.4)' }}
         >
           {user?.avatar ? (
-            <img src={user.avatar} alt="" className="w-full h-full object-cover" />
+            <img src={user.avatar} alt="" className="w-full h-full object-cover grayscale" />
           ) : (
-            <User className="w-6 h-6 text-white" />
+            <User className="w-6 h-6 text-green-500" />
           )}
         </Link>
         
         {/* Notification */}
-        <button className="relative w-12 h-12 rounded-full bg-black border-2 border-white flex items-center justify-center">
-          <Bell className="w-5 h-5 text-white" />
-          <span className="absolute -top-1 -right-1 w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center text-white text-xs font-bold">
+        <button className="relative w-12 h-12 rounded-full bg-black border-2 border-green-500 flex items-center justify-center" style={{ boxShadow: '0 0 10px rgba(0, 255, 0, 0.4)' }}>
+          <Bell className="w-5 h-5 text-green-500" />
+          <span className="absolute -top-1 -right-1 w-6 h-6 bg-green-500 border border-green-400 rounded-full flex items-center justify-center text-black text-xs font-bold font-mono" style={{ boxShadow: '0 0 10px rgba(0, 255, 0, 0.6)' }}>
             1
           </span>
         </button>

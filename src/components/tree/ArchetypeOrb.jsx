@@ -3,14 +3,14 @@ import { motion } from 'framer-motion';
 import { cn } from "@/lib/utils";
 
 const archetypeConfig = {
-  SOL: { color: '#D4AF37', glow: 'amber', icon: '☀️', bgGlow: 'from-amber-500/40' },
-  SAGE: { color: '#8B4513', glow: 'amber', icon: '🦉', bgGlow: 'from-amber-700/30' },
-  HERO: { color: '#DC2626', glow: 'red', icon: '⚔️', bgGlow: 'from-red-500/30' },
-  MOTHER: { color: '#EC4899', glow: 'pink', icon: '🌸', bgGlow: 'from-pink-500/30' },
-  SHADOW: { color: '#374151', glow: 'slate', icon: '🌑', bgGlow: 'from-slate-500/30' },
-  ANIMA: { color: '#7C3AED', glow: 'purple', icon: '🔮', bgGlow: 'from-purple-500/30' },
-  CHILD: { color: '#FBBF24', glow: 'yellow', icon: '✨', bgGlow: 'from-yellow-400/30' },
-  TRICKSTER: { color: '#10B981', glow: 'emerald', icon: '🃏', bgGlow: 'from-emerald-500/30' },
+  SOL: { color: '#00ff00', icon: '♔', symbol: 'KETHER' },
+  SAGE: { color: '#d97706', icon: '◉', symbol: 'BINAH' },
+  HERO: { color: '#00ff00', icon: '◆', symbol: 'CHOKMAH' },
+  MOTHER: { color: '#00ff00', icon: '♥', symbol: 'CHESED' },
+  SHADOW: { color: '#666666', icon: '◉', symbol: 'NETZACH' },
+  ANIMA: { color: '#00ff00', icon: '✦', symbol: 'HOD' },
+  CHILD: { color: '#00ff00', icon: '⚙', symbol: 'YESOD' },
+  TRICKSTER: { color: '#00ff00', icon: '⚡', symbol: 'GEBURAH' },
 };
 
 export default function ArchetypeOrb({ 
@@ -55,23 +55,31 @@ export default function ArchetypeOrb({
             sizeClasses[size],
             "relative rounded-full",
             "bg-black",
-            "border-2 border-white",
-            "flex items-center justify-center"
+            "border-2",
+            "flex items-center justify-center",
+            "transition-all duration-300"
           )}
+          style={{ 
+            borderColor: config.color,
+            boxShadow: `0 0 15px ${config.color}80`
+          }}
         >
           {/* Icon */}
-          <span className={cn(iconSizes[size], "relative z-10 text-white")}>
+          <span 
+            className={cn(iconSizes[size], "relative z-10 font-bold")}
+            style={{ color: config.color }}
+          >
             {config.icon}
           </span>
         </div>
       </div>
       
       {showLabel && (
-        <span className={cn(
-          textSizes[size],
-          "font-mono uppercase text-white tracking-wider"
-        )}>
-          {name}
+        <span 
+          className={cn(textSizes[size], "font-mono uppercase tracking-wider")}
+          style={{ color: config.color }}
+        >
+          {config.symbol}
         </span>
       )}
     </motion.button>

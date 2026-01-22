@@ -18,11 +18,34 @@ export default function Layout({ children, currentPageName }) {
     <div className="min-h-screen relative">
       {/* Custom CSS for fonts and gradients */}
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Inter:wght@300;400;500;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&family=Share+Tech+Mono&display=swap');
         
         body {
-          font-family: 'Inter', sans-serif;
+          font-family: 'Share Tech Mono', monospace;
           background-color: #000000;
+          color: #00ff00;
+        }
+        
+        /* Terminal text glow */
+        .terminal-glow {
+          text-shadow: 0 0 5px rgba(0, 255, 0, 0.7), 0 0 10px rgba(0, 255, 0, 0.3);
+        }
+        
+        /* Dungeon text */
+        .dungeon-text {
+          font-family: 'VT323', monospace;
+          color: #d97706;
+          text-shadow: 0 0 8px rgba(217, 119, 6, 0.5);
+        }
+        
+        /* CRT flicker */
+        @keyframes flicker {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.97; }
+        }
+        
+        body {
+          animation: flicker 0.15s infinite;
         }
         
         /* Hide scrollbar but keep functionality */
