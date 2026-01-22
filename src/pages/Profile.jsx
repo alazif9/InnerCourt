@@ -14,7 +14,7 @@ import { format } from 'date-fns';
 import { Button } from "@/components/ui/button";
 
 const menuItems = [
-  { icon: User, label: 'EDIT PROFILE', action: 'profile', symbol: '◇' },
+  { icon: User, label: 'EDIT PROFILE', action: 'profile', symbol: '◇', page: 'EditProfile' },
   { icon: Bell, label: 'NOTIFICATIONS', action: 'notifications', symbol: '◈' },
   { icon: Moon, label: 'APPEARANCE', action: 'appearance', symbol: '☽' },
   { icon: Shield, label: 'PRIVACY', action: 'privacy', symbol: '△' },
@@ -229,19 +229,39 @@ export default function Profile() {
         transition={{ delay: 0.3 }}
       >
         <GlassCard className="divide-y divide-white/10">
-          {menuItems.map((item) => (
-            <button
-              key={item.action}
-              className="w-full flex items-center justify-between p-3 hover:bg-white/5 transition-colors group"
-            >
-              <div className="flex items-center gap-3">
-                <span className="text-white/40 text-sm">{item.symbol}</span>
-                <span className="font-data text-[11px] text-white/70 uppercase tracking-wider">{item.label}</span>
-              </div>
-              <ChevronRight className="w-4 h-4 text-white/20 group-hover:text-white/50 transition-colors" />
-            </button>
-          ))}
-        </GlassCard>
+            {menuItems.map((item) => {
+              const content = (
+                <>
+                  <div className="flex items-center gap-3">
+                    <span className="text-white/40 text-sm">{item.symbol}</span>
+                    <span className="font-data text-[11px] text-white/70 uppercase tracking-wider">{item.label}</span>
+                  </div>
+                  <ChevronRight className="w-4 h-4 text-white/20 group-hover:text-white/50 transition-colors" />
+                </>
+              );
+
+              if (item.page) {
+                return (
+                  <Link
+                    key={item.action}
+                    to={createPageUrl(item.page)}
+                    className="w-full flex items-center justify-between p-3 hover:bg-white/5 transition-colors group"
+                  >
+                    {content}
+                  </Link>
+                );
+              }
+
+              return (
+                <button
+                  key={item.action}
+                  className="w-full flex items-center justify-between p-3 hover:bg-white/5 transition-colors group"
+                >
+                  {content}
+                </button>
+              );
+            })}
+          </GlassCard>
       </motion.div>
 
       {/* Logout */}

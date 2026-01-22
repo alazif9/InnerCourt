@@ -7,6 +7,7 @@ import Onboarding from './pages/Onboarding';
 import Profile from './pages/Profile';
 import Friends from './pages/Friends';
 import AboutYou from './pages/AboutYou';
+import EditProfile from './pages/EditProfile';
 import __Layout from './Layout.jsx';
 
 
@@ -20,6 +21,7 @@ export const PAGES = {
     "Profile": Profile,
     "Friends": Friends,
     "AboutYou": AboutYou,
+    "EditProfile": EditProfile,
 }
 
 export const pagesConfig = {
