@@ -3,22 +3,15 @@ import { motion } from 'framer-motion';
 import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import GlassCard from '@/components/ui/GlassCard';
+import HUDCorners from '@/components/hud/HUDCorners';
 import TopographicSphere from '@/components/analytics/TopographicSphere';
 import { 
   ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Cell
 } from 'recharts';
 
-
-
-const archetypeColors = {
-  SHADOW: '#DC2626',
-  HERO: '#C0C0C0',
-  SAGE: '#8B7355',
-  CHILD: '#FBBF24',
-  MOTHER: '#EC4899',
-  TRICKSTER: '#00FFFF',
-  ANIMA: '#7C3AED',
-  SOL: '#d4af37',
+const archetypeSymbols = {
+  SHADOW: '♄', HERO: '♂', SAGE: '☿', CHILD: '☆',
+  MOTHER: '☽', TRICKSTER: '☌', ANIMA: '♀', SOL: '☉',
 };
 
 export default function Analytics() {
@@ -36,35 +29,48 @@ export default function Analytics() {
     enabled: !!user?.email,
   });
 
-  const archetypeData = Object.keys(archetypeColors).map(arch => ({
+  const archetypeData = Object.keys(archetypeSymbols).map(arch => ({
     name: arch,
+    symbol: archetypeSymbols[arch],
     value: userProfile?.archetype_scores?.[arch] || Math.floor(Math.random() * 60 + 20),
-    color: archetypeColors[arch],
   }));
 
   const wheelValues = ['career', 'finance', 'health', 'relationships', 'personal', 'spiritual', 'recreation', 'environment']
     .map(k => userProfile?.wheel_of_life?.[k] || Math.floor(Math.random() * 40 + 40));
   const overallScore = Math.round(wheelValues.reduce((a, b) => a + b, 0) / wheelValues.length);
+  
+  const totalArchetypeScore = archetypeData.reduce((a, b) => a + b.value, 0);
+  const avgArchetype = Math.round(totalArchetypeScore / archetypeData.length);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 relative">
+      <HUDCorners />
+      
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="space-y-2"
+        className="text-center pt-2 space-y-2"
       >
-        <div className="flex items-center justify-between">
-          <h1 className="font-occult text-2xl font-semibold text-gradient-gold">
-            Intelligence Report
-          </h1>
-          <div className="font-data text-xs text-white/70/60 uppercase tracking-widest">
-            Real-Time
-          </div>
+        <h1 className="font-occult text-3xl font-semibold text-gradient-gold tracking-wide">
+          Intelligence Report
+        </h1>
+        <div className="font-data text-xs text-white/70 tracking-[0.2em] uppercase">
+          Archetypal Matrix Analysis
         </div>
-        <p className="font-data text-xs text-white/40 uppercase tracking-wide">
-          Archetypal Matrix Analysis • Hermetic Metrics
-        </p>
+        <div className="flex items-center justify-center gap-2 font-data text-[10px] text-white/40">
+          <span>SCAN MODE:</span>
+          <span className="text-white">DEEP</span>
+          <span className="text-white/20">•</span>
+          <span>VECTORS:</span>
+          <span className="text-white">{archetypeData.length}</span>
+          <span className="text-white/20">•</span>
+          <span>AVG:</span>
+          <span className="text-white">{avgArchetype}%</span>
+        </div>
+        <div className="flex items-center justify-center gap-2 text-white/30 text-xs">
+          ⟨ ◈ ✦ ◈ ⟩
+        </div>
       </motion.div>
 
       {/* Wheel of Life - 3D Topographic Sphere */}
@@ -73,13 +79,22 @@ export default function Analytics() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
       >
-        <GlassCard glowColor="gold" className="p-4">
-          <div className="mb-3">
-            <h2 className="font-occult text-white font-medium text-sm mb-0.5">
-              Wheel of Life Matrix
-            </h2>
-            <div className="font-data text-[10px] text-white/30 uppercase tracking-wider">
-              3D Topographic Balance Sphere
+        <GlassCard className="p-4">
+          <div className="flex items-center justify-between mb-3">
+            <div>
+              <div className="font-data text-[8px] text-white/40 uppercase tracking-widest">
+                ┌─ MODULE_01 ─┐
+              </div>
+              <h2 className="font-occult text-white font-medium text-sm">
+                Wheel of Life Matrix
+              </h2>
+              <div className="font-data text-[9px] text-white/30 uppercase tracking-wider">
+                3D Topographic Balance Sphere
+              </div>
+            </div>
+            <div className="text-right font-data text-[9px]">
+              <div className="text-white/40">HARMONY_IDX</div>
+              <div className="text-white text-lg">{overallScore}%</div>
             </div>
           </div>
           
@@ -96,47 +111,57 @@ export default function Analytics() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
       >
-        <GlassCard glowColor="cyan" className="p-4">
-          <div className="mb-3">
-            <h2 className="font-occult text-white/70 font-medium text-sm mb-0.5">
-              Archetypal Distribution
-            </h2>
-            <div className="font-data text-[10px] text-white/30 uppercase tracking-wider">
-              Hermetic Power Levels • Alchemical Balance
+        <GlassCard className="p-4">
+          <div className="flex items-center justify-between mb-3">
+            <div>
+              <div className="font-data text-[8px] text-white/40 uppercase tracking-widest">
+                ┌─ MODULE_02 ─┐
+              </div>
+              <h2 className="font-occult text-white font-medium text-sm">
+                Archetypal Distribution
+              </h2>
+              <div className="font-data text-[9px] text-white/30 uppercase tracking-wider">
+                Hermetic Power Levels
+              </div>
+            </div>
+            <div className="text-right font-data text-[9px]">
+              <div className="text-white/40">TOTAL_PWR</div>
+              <div className="text-white text-lg">{totalArchetypeScore}</div>
             </div>
           </div>
           
-          <div className="relative h-52">
-            {/* Hexagram grid overlay */}
-            <div className="absolute inset-0 opacity-5 pointer-events-none">
-              <svg className="w-full h-full" viewBox="0 0 100 100">
-                {[...Array(7)].map((_, i) => (
-                  <line key={i} x1="0" y1={i * 14.3} x2="100" y2={i * 14.3} stroke="#ffffff" strokeWidth="0.3" />
-                ))}
-              </svg>
-            </div>
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={archetypeData} layout="vertical" margin={{ left: -20 }}>
-                <XAxis type="number" domain={[0, 100]} hide />
-                <YAxis 
-                  type="category" 
-                  dataKey="name" 
-                  tick={{ fill: 'rgba(255,255,255,0.7)', fontSize: 9, fontFamily: 'IBM Plex Mono' }}
-                  width={80}
-                />
-                <Bar dataKey="value" radius={[0, 2, 2, 0]}>
-                  {archetypeData.map((entry, index) => (
-                    <Cell 
-                      key={`cell-${index}`} 
-                      fill={entry.color} 
-                      fillOpacity={0.6}
-                      stroke={entry.color}
-                      strokeWidth={1}
-                    />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
+          {/* Custom Bar Display */}
+          <div className="space-y-2">
+            {archetypeData.map((arch, i) => (
+              <motion.div 
+                key={arch.name}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.3 + i * 0.05 }}
+                className="flex items-center gap-2"
+              >
+                <span className="w-4 text-white/50 text-sm">{arch.symbol}</span>
+                <span className="w-16 font-data text-[9px] text-white/60 uppercase">{arch.name}</span>
+                <div className="flex-1 h-3 bg-white/5 border border-white/10 relative overflow-hidden">
+                  <motion.div
+                    className="h-full bg-gradient-to-r from-white/60 to-white/30"
+                    initial={{ width: 0 }}
+                    animate={{ width: `${arch.value}%` }}
+                    transition={{ delay: 0.4 + i * 0.05, duration: 0.5 }}
+                  />
+                  {/* Scan line effect */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent" 
+                       style={{ backgroundSize: '200% 100%', animation: 'shimmer 2s infinite' }} />
+                </div>
+                <span className="w-8 font-data text-[10px] text-white text-right">{arch.value}</span>
+              </motion.div>
+            ))}
+          </div>
+          
+          {/* Bottom micro-text */}
+          <div className="mt-3 pt-2 border-t border-white/10 flex justify-between font-data text-[8px] text-white/30">
+            <span>ANALYSIS: COMPLETE</span>
+            <span>VARIANCE: ±{Math.round(Math.random() * 5 + 2)}%</span>
           </div>
         </GlassCard>
       </motion.div>
@@ -146,52 +171,110 @@ export default function Analytics() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
-        className="grid grid-cols-2 gap-3"
       >
-        <GlassCard glowColor="silver" className="p-3">
-          <div className="font-data text-[10px] text-white/60 uppercase tracking-wider mb-1">
-            Journal Ops
-          </div>
-          <p className="text-gradient-silver font-bold text-2xl font-data">23</p>
-          <div className="flex items-center gap-1 mt-1">
-            <div className="w-1 h-1 rounded-full bg-white" />
-            <span className="font-data text-[9px] text-white/30">RECORDED</span>
-          </div>
-        </GlassCard>
-        
-        <GlassCard glowColor="silver" className="p-3">
-          <div className="font-data text-[10px] text-white/60 uppercase tracking-wider mb-1">
-            Chat Sessions
-          </div>
-          <p className="text-gradient-silver font-bold text-2xl font-data">47</p>
-          <div className="flex items-center gap-1 mt-1">
-            <div className="w-1 h-1 rounded-full bg-white" />
-            <span className="font-data text-[9px] text-white/30">ACTIVE</span>
-          </div>
-        </GlassCard>
-        
-        <GlassCard glowColor="gold" className="p-3">
-          <div className="font-data text-[10px] text-white/60 uppercase tracking-wider mb-1">
-            Streak Counter
-          </div>
-          <p className="text-gradient-gold font-bold text-2xl font-data">12</p>
-          <div className="flex items-center gap-1 mt-1">
-            <div className="w-1 h-1 rounded-full bg-white" />
-            <span className="font-data text-[9px] text-white/30">DAYS</span>
-          </div>
-        </GlassCard>
-        
-        <GlassCard glowColor="purple" className="p-3">
-          <div className="font-data text-[10px] text-purple-400/60 uppercase tracking-wider mb-1">
-            Dominant Node
-          </div>
-          <p className="text-purple-400 font-bold text-xl font-occult">Hero</p>
-          <div className="flex items-center gap-1 mt-1">
-            <div className="w-1 h-1 rounded-full bg-purple-500" />
-            <span className="font-data text-[9px] text-white/30">ARCHETYPE</span>
-          </div>
-        </GlassCard>
+        <div className="font-data text-[8px] text-white/40 uppercase tracking-widest mb-2">
+          ┌─ METRICS_GRID ─┐
+        </div>
+        <div className="grid grid-cols-2 gap-2">
+          <GlassCard className="p-3">
+            <div className="flex items-start justify-between">
+              <div>
+                <div className="font-data text-[8px] text-white/40 uppercase tracking-wider mb-1">
+                  Journal Ops
+                </div>
+                <p className="text-white font-data text-2xl">23</p>
+              </div>
+              <span className="text-white/30 text-lg">◐</span>
+            </div>
+            <div className="flex items-center gap-1 mt-2">
+              <div className="flex-1 h-1 bg-white/10">
+                <motion.div 
+                  className="h-full bg-white/60" 
+                  initial={{ width: 0 }}
+                  animate={{ width: '76%' }}
+                  transition={{ delay: 0.5 }}
+                />
+              </div>
+              <span className="font-data text-[8px] text-white/40">76%</span>
+            </div>
+          </GlassCard>
+          
+          <GlassCard className="p-3">
+            <div className="flex items-start justify-between">
+              <div>
+                <div className="font-data text-[8px] text-white/40 uppercase tracking-wider mb-1">
+                  Chat Sessions
+                </div>
+                <p className="text-white font-data text-2xl">47</p>
+              </div>
+              <span className="text-white/30 text-lg">◎</span>
+            </div>
+            <div className="flex items-center gap-1 mt-2">
+              <div className="flex-1 h-1 bg-white/10">
+                <motion.div 
+                  className="h-full bg-white/60" 
+                  initial={{ width: 0 }}
+                  animate={{ width: '89%' }}
+                  transition={{ delay: 0.55 }}
+                />
+              </div>
+              <span className="font-data text-[8px] text-white/40">89%</span>
+            </div>
+          </GlassCard>
+          
+          <GlassCard className="p-3">
+            <div className="flex items-start justify-between">
+              <div>
+                <div className="font-data text-[8px] text-white/40 uppercase tracking-wider mb-1">
+                  Streak Counter
+                </div>
+                <p className="text-white font-data text-2xl">12</p>
+              </div>
+              <span className="text-white/30 text-lg">✦</span>
+            </div>
+            <div className="flex items-center gap-1 mt-2">
+              <div className="flex-1 h-1 bg-white/10">
+                <motion.div 
+                  className="h-full bg-white/60" 
+                  initial={{ width: 0 }}
+                  animate={{ width: '40%' }}
+                  transition={{ delay: 0.6 }}
+                />
+              </div>
+              <span className="font-data text-[8px] text-white/40">40%</span>
+            </div>
+          </GlassCard>
+          
+          <GlassCard className="p-3">
+            <div className="flex items-start justify-between">
+              <div>
+                <div className="font-data text-[8px] text-white/40 uppercase tracking-wider mb-1">
+                  Dominant Node
+                </div>
+                <p className="text-white font-occult text-xl">
+                  {userProfile?.dominant_archetype || 'Hero'}
+                </p>
+              </div>
+              <span className="text-white/30 text-lg">
+                {archetypeSymbols[userProfile?.dominant_archetype] || '♂'}
+              </span>
+            </div>
+            <div className="flex items-center gap-1 mt-2">
+              <motion.div 
+                className="w-2 h-2 rounded-full bg-white"
+                animate={{ opacity: [1, 0.3, 1] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              />
+              <span className="font-data text-[8px] text-white/40">ACTIVE</span>
+            </div>
+          </GlassCard>
+        </div>
       </motion.div>
+
+      {/* Footer */}
+      <div className="text-center font-data text-[8px] text-white/20 tracking-widest pt-2">
+        REPORT_ID: ANA-{user?.id?.slice(0,6) || '000000'} • GENERATED: {new Date().toISOString().split('T')[0]} • CIPHER: ACTIVE
+      </div>
     </div>
   );
 }
