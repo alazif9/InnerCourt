@@ -1,5 +1,5 @@
 import React from 'react';
-import StarField from './components/ui/StarField';
+import OccultBackground from './components/ui/OccultBackground';
 import Header from './components/navigation/Header';
 import BottomNav from './components/navigation/BottomNav';
 import { base44 } from '@/api/base44Client';
@@ -60,8 +60,8 @@ export default function Layout({ children, currentPageName }) {
         }
       `}</style>
 
-      {/* Animated star background */}
-      <StarField />
+      {/* Occult background layers */}
+      <OccultBackground />
 
       {/* Header */}
       {showNav && <Header user={user} />}

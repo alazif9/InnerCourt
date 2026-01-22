@@ -6,10 +6,10 @@ import { motion } from 'framer-motion';
 import { cn } from "@/lib/utils";
 
 const navItems = [
-  { icon: TreePine, label: 'Tree', page: 'Home', sigil: '△' },
-  { icon: BookOpen, label: 'Journal', page: 'Journal', sigil: '◐' },
-  { icon: BarChart3, label: 'Analytics', page: 'Analytics', sigil: '▭' },
-  { icon: Eye, label: 'Insights', page: 'Insights', sigil: '◉' },
+  { icon: TreePine, label: 'TREE', page: 'Home', symbol: '△' },
+  { icon: BookOpen, label: 'JOURNAL', page: 'Journal', symbol: '◐' },
+  { icon: BarChart3, label: 'ANALYTICS', page: 'Analytics', symbol: '▭' },
+  { icon: Eye, label: 'INSIGHTS', page: 'Insights', symbol: '◉' },
 ];
 
 export default function BottomNav() {
@@ -22,38 +22,33 @@ export default function BottomNav() {
   };
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 px-3 pb-3 pt-2">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 px-2 pb-2">
       <div className="max-w-md mx-auto">
-        <div className="flex justify-around items-center py-2 px-2 rounded bg-black/80 backdrop-blur-md border border-[#d4af37]/20">
+        <div className="flex justify-around items-center py-1 bg-black border-t border-[#d4af37]/30">
           {navItems.map((item) => {
             const active = isActive(item.page);
             return (
               <Link
                 key={item.page}
                 to={createPageUrl(item.page)}
-                className="relative flex flex-col items-center gap-0.5 px-4 py-1"
-              >
-                {active && (
-                  <div 
-                    className="absolute inset-0 rounded border bg-[#d4af37]/5" 
-                    style={{ 
-                      borderColor: 'rgba(212,175,55,0.4)',
-                      boxShadow: '0 0 10px rgba(212,175,55,0.2)'
-                    }}
-                  />
+                className={cn(
+                  "relative flex flex-col items-center gap-0.5 px-4 py-2 transition-all",
+                  active && "border border-[#d4af37]/50 rounded bg-[#d4af37]/5"
                 )}
+                style={active ? { boxShadow: '0 0 10px rgba(212,175,55,0.2)' } : {}}
+              >
                 <span 
                   className={cn(
-                    "text-base font-occult relative z-10 transition-colors",
-                    active ? "text-[#d4af37]" : "text-white/30"
+                    "text-base transition-colors",
+                    active ? "text-[#d4af37]" : "text-white/40"
                   )}
                 >
-                  {item.sigil}
+                  {item.symbol}
                 </span>
                 <span 
                   className={cn(
-                    "text-[8px] font-data tracking-[0.15em] uppercase relative z-10",
-                    active ? "text-[#d4af37]" : "text-white/30"
+                    "text-[9px] font-data tracking-wider relative z-10",
+                    active ? "text-[#d4af37]" : "text-white/40"
                   )}
                 >
                   {item.label}
