@@ -3,20 +3,26 @@ import { motion } from 'framer-motion';
 import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import GlassCard from '@/components/ui/GlassCard';
+import HUDCorners from '@/components/hud/HUDCorners';
 import { 
   User, Settings, Moon, Bell, Shield, LogOut, 
-  ChevronRight, Star, Calendar, Sparkles 
+  ChevronRight, Calendar
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { Button } from "@/components/ui/button";
 
 const menuItems = [
-  { icon: User, label: 'Edit Profile', action: 'profile' },
-  { icon: Bell, label: 'Notifications', action: 'notifications' },
-  { icon: Moon, label: 'Appearance', action: 'appearance' },
-  { icon: Shield, label: 'Privacy', action: 'privacy' },
-  { icon: Settings, label: 'Settings', action: 'settings' },
+  { icon: User, label: 'EDIT PROFILE', action: 'profile', symbol: '◇' },
+  { icon: Bell, label: 'NOTIFICATIONS', action: 'notifications', symbol: '◈' },
+  { icon: Moon, label: 'APPEARANCE', action: 'appearance', symbol: '☽' },
+  { icon: Shield, label: 'PRIVACY', action: 'privacy', symbol: '△' },
+  { icon: Settings, label: 'SETTINGS', action: 'settings', symbol: '⚙' },
 ];
+
+const archetypeSymbols = {
+  SOL: '☉', SAGE: '☿', HERO: '♂', MOTHER: '☽', 
+  SHADOW: '♄', ANIMA: '♀', CHILD: '☆', TRICKSTER: '☌'
+};
 
 export default function Profile() {
   const { data: user } = useQuery({
@@ -37,77 +43,127 @@ export default function Profile() {
     base44.auth.logout();
   };
 
+  const dominantSymbol = userProfile?.dominant_archetype 
+    ? archetypeSymbols[userProfile.dominant_archetype] || '◈' 
+    : '◈';
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 relative">
+      <HUDCorners />
+      
       {/* Profile Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="text-center"
+        className="text-center pt-2 space-y-2"
       >
-        <div className="relative inline-block">
-          <div className="w-24 h-24 rounded-full bg-gradient-to-br from-amber-500/30 to-purple-500/30 border-2 border-white/20 flex items-center justify-center mx-auto overflow-hidden">
+        <h1 className="font-occult text-3xl font-semibold text-gradient-gold tracking-wide">
+          Operator Profile
+        </h1>
+        <div className="font-data text-xs text-white/70 tracking-[0.2em] uppercase">
+          Identity Matrix
+        </div>
+        <div className="flex items-center justify-center gap-2 font-data text-[10px] text-white/40">
+          <span>STATUS:</span>
+          <span className="text-white">ACTIVE</span>
+          <span className="text-white/20">•</span>
+          <span>CLEARANCE:</span>
+          <span className="text-white">LEVEL 7</span>
+        </div>
+        <div className="flex items-center justify-center gap-2 text-white/30 text-xs">
+          ⟨ ◈ ✦ ◈ ⟩
+        </div>
+      </motion.div>
+
+      {/* Avatar Section */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.1 }}
+        className="flex justify-center"
+      >
+        <div className="relative">
+          {/* Outer ring */}
+          <motion.div 
+            className="absolute inset-0 rounded-full border border-white/20"
+            style={{ width: 104, height: 104, top: -4, left: -4 }}
+            animate={{ rotate: 360 }}
+            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+          />
+          
+          {/* Avatar container */}
+          <div 
+            className="w-24 h-24 rounded-full border-2 border-white/30 bg-black/60 flex items-center justify-center overflow-hidden"
+            style={{ boxShadow: '0 0 30px rgba(255,255,255,0.1)' }}
+          >
             {user?.avatar ? (
               <img src={user.avatar} alt="" className="w-full h-full object-cover" />
             ) : (
-              <User className="w-10 h-10 text-white/60" />
+              <span className="text-white/80 text-3xl font-occult">{dominantSymbol}</span>
             )}
           </div>
-          <motion.div
-            className="absolute -bottom-1 -right-1 w-8 h-8 rounded-full bg-amber-500 flex items-center justify-center"
-            animate={{ 
-              boxShadow: [
-                '0 0 10px rgba(251, 191, 36, 0.3)',
-                '0 0 20px rgba(251, 191, 36, 0.5)',
-                '0 0 10px rgba(251, 191, 36, 0.3)',
-              ]
-            }}
-            transition={{ duration: 2, repeat: Infinity }}
+          
+          {/* Status indicator */}
+          <div 
+            className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full border border-white/50 bg-black flex items-center justify-center"
+            style={{ boxShadow: '0 0 10px rgba(255,255,255,0.3)' }}
           >
-            <span className="text-sm">☀️</span>
-          </motion.div>
+            <motion.div 
+              className="w-2 h-2 rounded-full bg-white"
+              animate={{ opacity: [1, 0.4, 1] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            />
+          </div>
         </div>
-        
-        <h1 className="font-['Cinzel',serif] text-xl font-semibold text-white mt-4">
+      </motion.div>
+
+      {/* User Info */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.15 }}
+        className="text-center space-y-1"
+      >
+        <h2 className="font-occult text-xl text-white">
           {user?.full_name || 'Seeker'}
-        </h1>
-        <p className="text-white/50 text-sm">
+        </h2>
+        <p className="font-data text-[10px] text-white/40 tracking-wider">
           {user?.email}
         </p>
         
         {userProfile?.dominant_archetype && (
-          <div className="inline-flex items-center gap-2 mt-3 px-3 py-1 rounded-full bg-purple-500/20 border border-purple-500/30">
-            <Sparkles className="w-3 h-3 text-purple-400" />
-            <span className="text-purple-300 text-sm">
+          <div className="inline-flex items-center gap-2 mt-2 px-3 py-1 border border-white/30 bg-black/40">
+            <span className="text-white font-occult">{dominantSymbol}</span>
+            <span className="font-data text-[10px] text-white/70 uppercase tracking-wider">
               {userProfile.dominant_archetype} Path
             </span>
           </div>
         )}
       </motion.div>
 
-      {/* Stats */}
+      {/* Stats Grid */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.1 }}
-        className="grid grid-cols-3 gap-3"
+        transition={{ delay: 0.2 }}
+        className="grid grid-cols-3 gap-2"
       >
         <GlassCard className="p-3 text-center">
-          <Star className="w-5 h-5 text-amber-400 mx-auto mb-1" />
-          <p className="text-white font-bold">Level 7</p>
-          <p className="text-white/40 text-xs">Awareness</p>
+          <div className="text-white/50 text-lg mb-1">✦</div>
+          <p className="text-white font-data text-lg">7</p>
+          <p className="font-data text-[8px] text-white/40 uppercase tracking-wider">Level</p>
         </GlassCard>
         
         <GlassCard className="p-3 text-center">
-          <Calendar className="w-5 h-5 text-purple-400 mx-auto mb-1" />
-          <p className="text-white font-bold">45</p>
-          <p className="text-white/40 text-xs">Days Active</p>
+          <div className="text-white/50 text-lg mb-1">◎</div>
+          <p className="text-white font-data text-lg">45</p>
+          <p className="font-data text-[8px] text-white/40 uppercase tracking-wider">Days</p>
         </GlassCard>
         
         <GlassCard className="p-3 text-center">
-          <Sparkles className="w-5 h-5 text-emerald-400 mx-auto mb-1" />
-          <p className="text-white font-bold">12</p>
-          <p className="text-white/40 text-xs">Insights</p>
+          <div className="text-white/50 text-lg mb-1">◈</div>
+          <p className="text-white font-data text-lg">12</p>
+          <p className="font-data text-[8px] text-white/40 uppercase tracking-wider">Insights</p>
         </GlassCard>
       </motion.div>
 
@@ -116,23 +172,23 @@ export default function Profile() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
+          transition={{ delay: 0.25 }}
         >
-          <GlassCard glowColor="purple" className="p-4">
-            <h3 className="font-['Cinzel',serif] text-purple-400 font-medium mb-3">
-              Soul Origins
-            </h3>
-            <div className="space-y-2 text-sm">
-              <div className="flex justify-between">
-                <span className="text-white/50">Birth Date</span>
-                <span className="text-white">
-                  {format(new Date(userProfile.birth_date), 'MMMM d, yyyy')}
+          <GlassCard className="p-4">
+            <div className="font-data text-[8px] text-white/40 uppercase tracking-widest mb-3">
+              ┌─ SOUL ORIGINS ─┐
+            </div>
+            <div className="space-y-2">
+              <div className="flex justify-between items-center">
+                <span className="font-data text-[10px] text-white/50 uppercase">Birth Date</span>
+                <span className="font-data text-xs text-white">
+                  {format(new Date(userProfile.birth_date), 'yyyy.MM.dd')}
                 </span>
               </div>
               {userProfile.birth_location && (
-                <div className="flex justify-between">
-                  <span className="text-white/50">Location</span>
-                  <span className="text-white">{userProfile.birth_location}</span>
+                <div className="flex justify-between items-center">
+                  <span className="font-data text-[10px] text-white/50 uppercase">Location</span>
+                  <span className="font-data text-xs text-white">{userProfile.birth_location}</span>
                 </div>
               )}
             </div>
@@ -146,17 +202,17 @@ export default function Profile() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
       >
-        <GlassCard className="divide-y divide-white/5">
-          {menuItems.map((item, i) => (
+        <GlassCard className="divide-y divide-white/10">
+          {menuItems.map((item) => (
             <button
               key={item.action}
-              className="w-full flex items-center justify-between p-4 hover:bg-white/5 transition-colors"
+              className="w-full flex items-center justify-between p-3 hover:bg-white/5 transition-colors group"
             >
               <div className="flex items-center gap-3">
-                <item.icon className="w-5 h-5 text-white/50" />
-                <span className="text-white/80">{item.label}</span>
+                <span className="text-white/40 text-sm">{item.symbol}</span>
+                <span className="font-data text-[11px] text-white/70 uppercase tracking-wider">{item.label}</span>
               </div>
-              <ChevronRight className="w-4 h-4 text-white/30" />
+              <ChevronRight className="w-4 h-4 text-white/20 group-hover:text-white/50 transition-colors" />
             </button>
           ))}
         </GlassCard>
@@ -166,22 +222,22 @@ export default function Profile() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.4 }}
+        transition={{ delay: 0.35 }}
       >
         <Button
           onClick={handleLogout}
           variant="ghost"
-          className="w-full text-red-400 hover:text-red-300 hover:bg-red-500/10"
+          className="w-full border border-white/20 bg-black/40 text-white/60 hover:text-white hover:bg-white/5 hover:border-white/40 font-data text-xs uppercase tracking-wider"
         >
           <LogOut className="w-4 h-4 mr-2" />
-          Sign Out
+          Terminate Session
         </Button>
       </motion.div>
 
       {/* Version */}
-      <p className="text-center text-white/20 text-xs pb-4">
-        SOL System v1.0 • Crafted with 🌟
-      </p>
+      <div className="text-center font-data text-[8px] text-white/20 tracking-widest pt-2">
+        OPERATOR_ID: {user?.id?.slice(0,8) || '00000000'} • SYSTEM v2.1 • CIPHER: ACTIVE
+      </div>
     </div>
   );
 }
