@@ -4,9 +4,49 @@ import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import GlassCard from '@/components/ui/GlassCard';
 import HUDCorners from '@/components/hud/HUDCorners';
+import AstralHexagram from '@/components/astral/AstralHexagram';
 import { ArrowLeft, Loader2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
+
+// Default chart data for demo/fallback
+const defaultChartData = {
+  planets: {
+    sun: { sign: 'Cancer', house: 5, degree: "3°13'" },
+    moon: { sign: 'Capricorn', house: 12, degree: "23°15'" },
+    mercury: { sign: 'Cancer', house: 5, degree: "3°52'" },
+    venus: { sign: 'Leo', house: 7, degree: "11°19'" },
+    mars: { sign: 'Taurus', house: 4, degree: "23°36'" },
+    jupiter: { sign: 'Scorpio', house: 10, degree: "4°51'" },
+    saturn: { sign: 'Pisces', house: 2, degree: "12°24'" },
+    uranus: { sign: 'Capricorn', house: 12, degree: "25°13'" },
+    neptune: { sign: 'Capricorn', house: 12, degree: "22°29'" },
+    pluto: { sign: 'Scorpio', house: 10, degree: "25°44'" },
+  },
+  angles: {
+    ascendant: { sign: 'Aquarius', degree: "11°20'" },
+    midheaven: { sign: 'Scorpio', degree: "11°9'" },
+    descendant: { sign: 'Leo', degree: "11°20'" },
+    imumCoeli: { sign: 'Taurus', degree: "11°9'" },
+  },
+  analysis: {
+    personality: "A deeply intuitive and emotionally intelligent individual with a Cancer Sun in the 5th house of creativity. The Moon in Capricorn brings emotional maturity and ambition, while Mercury in Cancer enhances empathic communication. This is someone who feels deeply but expresses with controlled wisdom.",
+    strengths: [
+      "Deep emotional intelligence and empathy",
+      "Creative self-expression and artistic talent",
+      "Strong ambition balanced with nurturing instincts",
+      "Ability to transform challenges into growth",
+      "Natural leadership in transformative situations"
+    ],
+    shadows: [
+      "Tendency to retreat into emotional shells when threatened",
+      "Over-identification with material security",
+      "Difficulty releasing control in relationships",
+      "Suppressed emotional expression due to fear of vulnerability"
+    ],
+    lifePath: "Your destiny involves integrating the nurturing waters of Cancer with the ambitious mountain-climbing energy of Capricorn. You are here to build emotional structures that support others while honoring your own need for creative expression. The Scorpio planets in your 10th house suggest a career involving transformation, healing, or uncovering hidden truths."
+  }
+};
 
 const zodiacSigns = {
   aries: { symbol: '♈', name: 'Aries', color: '#FF5733' },
@@ -64,13 +104,17 @@ export default function AboutYou() {
 
   useEffect(() => {
     const generateChart = async () => {
+      setLoading(true);
+
+      // If no birth date, use default chart data
       if (!userProfile?.birth_date) {
+        setChartData(defaultChartData.planets);
+        setAnalysis(defaultChartData);
         setLoading(false);
         return;
       }
 
-      setLoading(true);
-
+      // Generate personalized chart with AI
       const response = await base44.integrations.Core.InvokeLLM({
         prompt: `Generate an astrological natal chart analysis for someone born on ${userProfile.birth_date}${userProfile.birth_location ? ` in ${userProfile.birth_location}` : ''}.
 
@@ -133,7 +177,8 @@ Also provide:
       setLoading(false);
     };
 
-    if (userProfile) {
+    // Start generating as soon as userProfile query is resolved (even if null)
+    if (userProfile !== undefined) {
       generateChart();
     }
   }, [userProfile]);
@@ -188,17 +233,25 @@ Also provide:
             Calculating celestial positions...
           </p>
         </motion.div>
-      ) : !userProfile?.birth_date ? (
-        <GlassCard className="p-6 text-center">
-          <p className="font-data text-xs text-white/60">
-            Birth date required for astral analysis.
-          </p>
-          <p className="font-data text-[10px] text-white/40 mt-2">
-            Update your profile with birth information.
-          </p>
-        </GlassCard>
       ) : (
         <>
+          {/* 3D Astral Hexagram */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.05 }}
+          >
+            <GlassCard className="p-2 overflow-hidden">
+              <AstralHexagram chartData={chartData || {}} />
+            </GlassCard>
+          </motion.div>
+
+          {!userProfile?.birth_date && (
+            <div className="text-center font-data text-[9px] text-white/40 bg-white/5 border border-white/10 p-2 rounded">
+              ⚠ SAMPLE DATA • Add birth date in profile for personalized chart
+            </div>
+          )}
+
           {/* Planetary Positions Table */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
