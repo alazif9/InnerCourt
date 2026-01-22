@@ -1,18 +1,18 @@
 import React from 'react';
 
 const zodiacSigns = [
-  { key: 'aries', symbol: '♈', color: '#FF5733' },
-  { key: 'taurus', symbol: '♉', color: '#7CB342' },
-  { key: 'gemini', symbol: '♊', color: '#FFD700' },
-  { key: 'cancer', symbol: '♋', color: '#4FC3F7' },
-  { key: 'leo', symbol: '♌', color: '#FF9800' },
-  { key: 'virgo', symbol: '♍', color: '#8D6E63' },
-  { key: 'libra', symbol: '♎', color: '#EC407A' },
-  { key: 'scorpio', symbol: '♏', color: '#9C27B0' },
-  { key: 'sagittarius', symbol: '♐', color: '#7C4DFF' },
-  { key: 'capricorn', symbol: '♑', color: '#607D8B' },
-  { key: 'aquarius', symbol: '♒', color: '#00BCD4' },
-  { key: 'pisces', symbol: '♓', color: '#3F51B5' },
+  { key: 'aries', symbol: '♈' },
+  { key: 'taurus', symbol: '♉' },
+  { key: 'gemini', symbol: '♊' },
+  { key: 'cancer', symbol: '♋' },
+  { key: 'leo', symbol: '♌' },
+  { key: 'virgo', symbol: '♍' },
+  { key: 'libra', symbol: '♎' },
+  { key: 'scorpio', symbol: '♏' },
+  { key: 'sagittarius', symbol: '♐' },
+  { key: 'capricorn', symbol: '♑' },
+  { key: 'aquarius', symbol: '♒' },
+  { key: 'pisces', symbol: '♓' },
 ];
 
 const planetData = [
@@ -29,11 +29,11 @@ const planetData = [
 ];
 
 const aspectColors = {
-  conjunction: '#ffffff',
-  sextile: '#4FC3F7',
-  square: '#FF5733',
-  trine: '#4FC3F7',
-  opposition: '#FF5733',
+  conjunction: 'rgba(255,255,255,0.6)',
+  sextile: 'rgba(255,255,255,0.4)',
+  square: 'rgba(255,255,255,0.3)',
+  trine: 'rgba(255,255,255,0.4)',
+  opposition: 'rgba(255,255,255,0.3)',
 };
 
 export default function NatalChart2D({ chartData = {} }) {
@@ -66,13 +66,11 @@ export default function NatalChart2D({ chartData = {} }) {
   const planets = planetData.map(p => {
     const data = chartData[p.key];
     if (!data) return null;
-    const signInfo = zodiacSigns.find(z => z.key === data.sign?.toLowerCase());
     const absDeg = getAbsoluteDegree(data.sign, data.degree);
     return {
       ...p,
       ...data,
       absDeg,
-      color: signInfo?.color || '#ffffff',
     };
   }).filter(Boolean);
 
@@ -172,11 +170,11 @@ export default function NatalChart2D({ chartData = {} }) {
               <text
                 x={symbolPos.x}
                 y={symbolPos.y}
-                fill={sign.color}
-                fontSize="14"
+                fill="rgba(255,255,255,0.7)"
+                fontSize="12"
                 textAnchor="middle"
                 dominantBaseline="middle"
-                style={{ fontFamily: 'serif' }}
+                className="font-data"
               >
                 {sign.symbol}
               </text>
@@ -248,27 +246,27 @@ export default function NatalChart2D({ chartData = {} }) {
               <circle
                 cx={pos.x}
                 cy={pos.y}
-                r={10}
-                fill={planet.color}
-                fillOpacity={0.15}
+                r={12}
+                fill="rgba(255,255,255,0.1)"
               />
               {/* Planet circle */}
               <circle
                 cx={pos.x}
                 cy={pos.y}
-                r={6}
-                fill={planet.color}
-                stroke="rgba(0,0,0,0.5)"
+                r={7}
+                fill="rgba(255,255,255,0.9)"
+                stroke="rgba(255,255,255,0.3)"
                 strokeWidth="1"
               />
               {/* Planet symbol */}
               <text
                 x={pos.x}
-                y={pos.y}
+                y={pos.y + 0.5}
                 fill="#000"
-                fontSize="8"
+                fontSize="9"
                 textAnchor="middle"
                 dominantBaseline="middle"
+                className="font-data"
                 fontWeight="bold"
               >
                 {planet.symbol}
@@ -276,7 +274,7 @@ export default function NatalChart2D({ chartData = {} }) {
               {/* Degree label */}
               <text
                 x={pos.x}
-                y={pos.y + 14}
+                y={pos.y + 16}
                 fill="rgba(255,255,255,0.5)"
                 fontSize="6"
                 textAnchor="middle"
@@ -298,16 +296,16 @@ export default function NatalChart2D({ chartData = {} }) {
       <div className="flex justify-center gap-3 mt-3 flex-wrap px-2">
         {planets.slice(0, 5).map(planet => (
           <div key={planet.key} className="flex items-center gap-1">
-            <span style={{ color: planet.color }} className="text-sm">{planet.symbol}</span>
-            <span className="font-data text-[8px] text-white/50">{planet.sign?.slice(0,3).toUpperCase()}</span>
+            <span className="text-white/80 text-sm font-data">{planet.symbol}</span>
+            <span className="font-data text-[8px] text-white/40">{planet.sign?.slice(0,3).toUpperCase()}</span>
           </div>
         ))}
       </div>
       <div className="flex justify-center gap-3 mt-1 flex-wrap px-2">
         {planets.slice(5).map(planet => (
           <div key={planet.key} className="flex items-center gap-1">
-            <span style={{ color: planet.color }} className="text-sm">{planet.symbol}</span>
-            <span className="font-data text-[8px] text-white/50">{planet.sign?.slice(0,3).toUpperCase()}</span>
+            <span className="text-white/80 text-sm font-data">{planet.symbol}</span>
+            <span className="font-data text-[8px] text-white/40">{planet.sign?.slice(0,3).toUpperCase()}</span>
           </div>
         ))}
       </div>
