@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import GlassCard from '@/components/ui/GlassCard';
 import HUDCorners from '@/components/hud/HUDCorners';
-import TreeOfLife from '@/components/tree/TreeOfLife';
+import NatalChart2D from '@/components/astral/NatalChart2D';
 import { ArrowLeft, Loader2, RefreshCw } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
@@ -182,9 +182,9 @@ Also provide:
           animate={{ opacity: 1, y: 0 }}
           className="space-y-4"
         >
-          {/* Tree of Life - Static Preview */}
+          {/* Natal Chart - Static Preview */}
           <GlassCard className="p-4">
-            <TreeOfLife archetypeScores={{}} />
+            <NatalChart2D chartData={{}} />
           </GlassCard>
           
           <Button
@@ -213,14 +213,14 @@ Also provide:
         </motion.div>
       ) : (
         <>
-          {/* Tree of Life */}
+          {/* 2D Natal Chart */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.05 }}
           >
             <GlassCard className="p-4">
-              <TreeOfLife archetypeScores={{}} />
+              <NatalChart2D chartData={chartData} />
             </GlassCard>
           </motion.div>
 
