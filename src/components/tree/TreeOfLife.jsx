@@ -37,25 +37,26 @@ export default function TreeOfLife({ archetypeScores = {}, onSelectArchetype }) 
   };
 
   // Proper Kabbalistic Tree of Life positions
-  // Traditional layout: 3 pillars (left, middle, right)
+  // Traditional layout: 3 pillars (Severity-left, Middle, Mercy-right)
+  // Following the reference: Chokmah(2) right, Binah(3) left, etc.
   const positions = {
-    // Row 1 - Top (Supernal Triad area)
-    HERO: { top: '8%', left: '25%' },      // Chokmah (right pillar top)
-    SAGE: { top: '8%', left: '75%' },      // Binah (left pillar top)
+    // Row 1 - Supernal (Chokmah right, Binah left)
+    HERO: { top: '10%', left: '75%' },      // Chokmah (2) - right pillar
+    SAGE: { top: '10%', left: '25%' },      // Binah (3) - left pillar
     
-    // Row 2 - Upper middle
-    MOTHER: { top: '28%', left: '20%' },   // Chesed (right pillar)
-    SHADOW: { top: '28%', left: '80%' },   // Geburah (left pillar)
+    // Row 2 - Ethical (Chesed right, Geburah left)
+    MOTHER: { top: '32%', left: '75%' },    // Chesed (4) - right pillar (mercy)
+    SHADOW: { top: '32%', left: '25%' },    // Geburah (5) - left pillar (severity)
     
-    // Row 3 - Center (Heart)
-    SOL: { top: '48%', left: '50%' },      // Tiphareth (middle pillar - center)
+    // Row 3 - Center (Tiphareth)
+    SOL: { top: '50%', left: '50%' },       // Tiphareth (6) - middle pillar
     
-    // Row 4 - Lower middle
-    ANIMA: { top: '68%', left: '25%' },    // Netzach (right pillar)
-    TRICKSTER: { top: '68%', left: '75%' }, // Hod (left pillar)
+    // Row 4 - Astral (Netzach right, Hod left)
+    ANIMA: { top: '68%', left: '75%' },     // Netzach (7) - right pillar
+    TRICKSTER: { top: '68%', left: '25%' }, // Hod (8) - left pillar
     
-    // Row 5 - Bottom
-    CHILD: { top: '88%', left: '50%' },    // Yesod (middle pillar)
+    // Row 5 - Foundation (Yesod)
+    CHILD: { top: '86%', left: '50%' },     // Yesod (9) - middle pillar
   };
 
   return (
