@@ -178,7 +178,7 @@ export default function TreeOfLife({ archetypeScores = {}, onSelectArchetype }) 
             
             {/* Archetype name */}
             <div className="font-data text-[7px] text-white/40">
-              {data.archetype}
+              {key}
             </div>
           </motion.div>
         );
