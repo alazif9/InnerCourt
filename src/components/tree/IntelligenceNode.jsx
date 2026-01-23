@@ -3,14 +3,14 @@ import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
 const nodeConfig = {
-  SOL: { color: '#d4af37', symbol: '☉', name: 'TIPHARETH', hex: '0x6A3F' },
-  SAGE: { color: '#8b4789', symbol: '☿', name: 'BINAH', hex: '0x3B21' },
-  HERO: { color: '#4a9eff', symbol: '♂', name: 'CHOKMAH', hex: '0x2C15' },
-  MOTHER: { color: '#ff69b4', symbol: '♀', name: 'CHESED', hex: '0x4D28' },
-  SHADOW: { color: '#cc0000', symbol: '♄', name: 'GEBURAH', hex: '0x5E37' },
-  ANIMA: { color: '#7C3AED', symbol: '♃', name: 'NETZACH', hex: '0x7F4A' },
-  CHILD: { color: '#FBBF24', symbol: '☽', name: 'YESOD', hex: '0x8G52' },
-  TRICKSTER: { color: '#00cccc', symbol: '☊', name: 'HOD', hex: '0x1A09' },
+  SOL: { color: '#d4af37', symbol: '☉', sephira: 'TIPHARETH', archetype: 'SOL', hex: '0x6A3F' },
+  SAGE: { color: '#8b4789', symbol: '☿', sephira: 'BINAH', archetype: 'SAGE', hex: '0x3B21' },
+  HERO: { color: '#4a9eff', symbol: '♂', sephira: 'CHOKMAH', archetype: 'HERO', hex: '0x2C15' },
+  MOTHER: { color: '#ff69b4', symbol: '♀', sephira: 'CHESED', archetype: 'MOTHER', hex: '0x4D28' },
+  SHADOW: { color: '#cc0000', symbol: '♄', sephira: 'GEBURAH', archetype: 'SHADOW', hex: '0x5E37' },
+  ANIMA: { color: '#7C3AED', symbol: '♃', sephira: 'NETZACH', archetype: 'ANIMA', hex: '0x7F4A' },
+  CHILD: { color: '#FBBF24', symbol: '☽', sephira: 'YESOD', archetype: 'CHILD', hex: '0x8G52' },
+  TRICKSTER: { color: '#00cccc', symbol: '☊', sephira: 'HOD', archetype: 'TRICKSTER', hex: '0x1A09' },
 };
 
 export default function IntelligenceNode({ 
@@ -122,12 +122,19 @@ export default function IntelligenceNode({
         {config.hex}
       </div>
 
-      {/* Label */}
+      {/* Sephira Label */}
       <div 
         className="absolute -bottom-7 left-1/2 -translate-x-1/2 font-data text-[8px] tracking-wider whitespace-nowrap"
         style={{ color: `${config.color}99` }}
       >
-        {config.name}
+        {config.sephira}
+      </div>
+      
+      {/* Archetype Label */}
+      <div 
+        className="absolute -bottom-11 left-1/2 -translate-x-1/2 font-data text-[7px] tracking-wider whitespace-nowrap text-white/40"
+      >
+        {config.archetype}
       </div>
     </motion.button>
   );
