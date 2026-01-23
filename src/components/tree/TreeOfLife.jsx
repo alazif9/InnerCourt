@@ -4,17 +4,25 @@ import ArchetypeOrb from './ArchetypeOrb';
 import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 
+// Kabbalistic Tree of Life connections (22 paths)
 const connections = [
-  { from: 'SOL', to: 'SAGE' },
-  { from: 'SOL', to: 'HERO' },
-  { from: 'SOL', to: 'MOTHER' },
-  { from: 'SAGE', to: 'SHADOW' },
-  { from: 'HERO', to: 'SHADOW' },
-  { from: 'HERO', to: 'ANIMA' },
-  { from: 'MOTHER', to: 'ANIMA' },
-  { from: 'SHADOW', to: 'CHILD' },
-  { from: 'ANIMA', to: 'TRICKSTER' },
-  { from: 'CHILD', to: 'TRICKSTER' },
+  // From Kether (SOL at top) - traditional positioning
+  { from: 'HERO', to: 'SOL' },      // Chokmah to Tiphareth
+  { from: 'SAGE', to: 'SOL' },      // Binah to Tiphareth
+  { from: 'MOTHER', to: 'SOL' },    // Chesed to Tiphareth
+  { from: 'SHADOW', to: 'SOL' },    // Geburah to Tiphareth
+  { from: 'HERO', to: 'SAGE' },     // Across the top
+  { from: 'HERO', to: 'MOTHER' },   // Chokmah to Chesed
+  { from: 'SAGE', to: 'SHADOW' },   // Binah to Geburah
+  { from: 'MOTHER', to: 'SHADOW' }, // Chesed to Geburah
+  { from: 'MOTHER', to: 'ANIMA' },  // Chesed to Netzach
+  { from: 'SHADOW', to: 'TRICKSTER' }, // Geburah to Hod
+  { from: 'SOL', to: 'ANIMA' },     // Tiphareth to Netzach
+  { from: 'SOL', to: 'TRICKSTER' }, // Tiphareth to Hod
+  { from: 'SOL', to: 'CHILD' },     // Tiphareth to Yesod
+  { from: 'ANIMA', to: 'TRICKSTER' }, // Netzach to Hod
+  { from: 'ANIMA', to: 'CHILD' },   // Netzach to Yesod
+  { from: 'TRICKSTER', to: 'CHILD' }, // Hod to Yesod
 ];
 
 export default function TreeOfLife({ archetypeScores = {}, onSelectArchetype }) {
@@ -28,25 +36,36 @@ export default function TreeOfLife({ archetypeScores = {}, onSelectArchetype }) 
     }
   };
 
+  // Proper Kabbalistic Tree of Life positions
+  // Traditional layout: 3 pillars (left, middle, right)
   const positions = {
-    SOL: { top: '5%', left: '50%' },
-    SAGE: { top: '22%', left: '20%' },
-    HERO: { top: '22%', left: '50%' },
-    MOTHER: { top: '22%', left: '80%' },
-    SHADOW: { top: '48%', left: '30%' },
-    ANIMA: { top: '48%', left: '70%' },
-    CHILD: { top: '72%', left: '35%' },
-    TRICKSTER: { top: '72%', left: '65%' },
+    // Row 1 - Top (Supernal Triad area)
+    HERO: { top: '8%', left: '25%' },      // Chokmah (right pillar top)
+    SAGE: { top: '8%', left: '75%' },      // Binah (left pillar top)
+    
+    // Row 2 - Upper middle
+    MOTHER: { top: '28%', left: '20%' },   // Chesed (right pillar)
+    SHADOW: { top: '28%', left: '80%' },   // Geburah (left pillar)
+    
+    // Row 3 - Center (Heart)
+    SOL: { top: '48%', left: '50%' },      // Tiphareth (middle pillar - center)
+    
+    // Row 4 - Lower middle
+    ANIMA: { top: '68%', left: '25%' },    // Netzach (right pillar)
+    TRICKSTER: { top: '68%', left: '75%' }, // Hod (left pillar)
+    
+    // Row 5 - Bottom
+    CHILD: { top: '88%', left: '50%' },    // Yesod (middle pillar)
   };
 
   return (
-    <div className="relative w-full h-[420px]">
-      {/* Connection lines with data flow effect */}
-      <svg className="absolute inset-0 w-full h-full" viewBox="0 0 400 420">
+    <div className="relative w-full h-[450px]">
+      {/* Connection lines */}
+      <svg className="absolute inset-0 w-full h-full" viewBox="0 0 400 450">
         <defs>
-          <linearGradient id="pathGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#d4af37" stopOpacity="0.4" />
-            <stop offset="100%" stopColor="#00cccc" stopOpacity="0.2" />
+          <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="rgba(255,255,255,0.3)" />
+            <stop offset="100%" stopColor="rgba(255,255,255,0.1)" />
           </linearGradient>
         </defs>
         
@@ -62,18 +81,26 @@ export default function TreeOfLife({ archetypeScores = {}, onSelectArchetype }) 
             <motion.line
               key={i}
               x1={`${fromX}%`}
-              y1={`${fromY + 5}%`}
+              y1={`${fromY}%`}
               x2={`${toX}%`}
-              y2={`${toY + 5}%`}
-              stroke="url(#pathGradient)"
+              y2={`${toY}%`}
+              stroke="url(#lineGradient)"
               strokeWidth="0.5"
-              strokeDasharray="4 2"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: i * 0.05 }}
+              transition={{ duration: 0.5, delay: i * 0.03 }}
             />
           );
         })}
+
+        {/* Central vertical pillar line */}
+        <line
+          x1="50%" y1="48%"
+          x2="50%" y2="88%"
+          stroke="rgba(255,255,255,0.15)"
+          strokeWidth="0.5"
+          strokeDasharray="4 2"
+        />
       </svg>
 
       {/* Archetype Nodes */}
@@ -98,10 +125,10 @@ export default function TreeOfLife({ archetypeScores = {}, onSelectArchetype }) 
 
       {/* SOL central glow */}
       <div 
-        className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-32 rounded-full pointer-events-none"
+        className="absolute top-[48%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 rounded-full pointer-events-none"
         style={{
-          background: 'radial-gradient(circle, rgba(212,175,55,0.15) 0%, transparent 70%)',
-          filter: 'blur(15px)',
+          background: 'radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%)',
+          filter: 'blur(20px)',
         }}
       />
     </div>

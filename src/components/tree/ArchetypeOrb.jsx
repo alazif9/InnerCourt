@@ -3,14 +3,14 @@ import { motion } from 'framer-motion';
 import { cn } from "@/lib/utils";
 
 const archetypeConfig = {
-  SOL: { color: '#d4af37', symbol: '☉', name: 'Tiphareth', nodeId: '0x01' },
-  SAGE: { color: '#8b4789', symbol: '☿', name: 'Binah', nodeId: '0x03' },
-  HERO: { color: '#6b8cce', symbol: '♂', name: 'Chokmah', nodeId: '0x02' },
-  MOTHER: { color: '#ff69b4', symbol: '♀', name: 'Chesed', nodeId: '0x04' },
-  SHADOW: { color: '#cc0000', symbol: '♄', name: 'Geburah', nodeId: '0x05' },
-  ANIMA: { color: '#7C3AED', symbol: '♃', name: 'Netzach', nodeId: '0x07' },
-  CHILD: { color: '#FBBF24', symbol: '☽', name: 'Yesod', nodeId: '0x09' },
-  TRICKSTER: { color: '#00cccc', symbol: '☾', name: 'Hod', nodeId: '0x08' },
+  SOL: { symbol: '☉', sephira: 'TIPHARETH', archetype: 'The Self', nodeId: '0x06' },
+  SAGE: { symbol: '☿', sephira: 'BINAH', archetype: 'The Sage', nodeId: '0x03' },
+  HERO: { symbol: '♂', sephira: 'CHOKMAH', archetype: 'The Hero', nodeId: '0x02' },
+  MOTHER: { symbol: '♀', sephira: 'CHESED', archetype: 'The Mother', nodeId: '0x04' },
+  SHADOW: { symbol: '♄', sephira: 'GEBURAH', archetype: 'The Shadow', nodeId: '0x05' },
+  ANIMA: { symbol: '♃', sephira: 'NETZACH', archetype: 'The Anima', nodeId: '0x07' },
+  CHILD: { symbol: '☽', sephira: 'YESOD', archetype: 'The Child', nodeId: '0x09' },
+  TRICKSTER: { symbol: '☾', sephira: 'HOD', archetype: 'The Trickster', nodeId: '0x08' },
 };
 
 export default function ArchetypeOrb({ 
@@ -24,21 +24,21 @@ export default function ArchetypeOrb({
   const config = archetypeConfig[name] || archetypeConfig.SOL;
   
   const sizeClasses = {
-    sm: 'w-14 h-14',
-    md: 'w-20 h-20',
-    lg: 'w-28 h-28',
+    sm: 'w-12 h-12',
+    md: 'w-16 h-16',
+    lg: 'w-20 h-20',
   };
 
   const textSizes = {
-    sm: 'text-xs',
-    md: 'text-sm',
-    lg: 'text-base',
+    sm: 'text-[8px]',
+    md: 'text-[9px]',
+    lg: 'text-[10px]',
   };
 
   const iconSizes = {
-    sm: 'text-xl',
-    md: 'text-2xl',
-    lg: 'text-4xl',
+    sm: 'text-lg',
+    md: 'text-xl',
+    lg: 'text-2xl',
   };
 
   const displayActivation = activationLevel || Math.floor(Math.random() * 40 + 50);
@@ -47,40 +47,16 @@ export default function ArchetypeOrb({
     <motion.button
       onClick={onClick}
       className="flex flex-col items-center gap-1 group"
-      whileHover={{ scale: 1.03 }}
-      whileTap={{ scale: 0.97 }}
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
     >
       <div className="relative">
-        {/* Outer technical ring */}
+        {/* Outer ring */}
         <motion.div
-          className="absolute inset-[-4px] rounded-full border"
-          style={{ borderColor: `${config.color}30` }}
+          className="absolute inset-[-3px] rounded-full border border-white/20"
           animate={isActive ? { rotate: 360 } : {}}
           transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
         />
-        
-        {/* Data orbit ring with mini metrics */}
-        <motion.div
-          className="absolute inset-[-8px] rounded-full"
-          animate={{ rotate: -360 }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-        >
-          {/* Mini bar graphs in orbit */}
-          {[0, 72, 144, 216, 288].map((deg, i) => (
-            <div 
-              key={i}
-              className="absolute w-1 bg-gradient-to-t from-transparent"
-              style={{ 
-                height: `${8 + i * 2}px`,
-                left: '50%',
-                top: '0',
-                transform: `rotate(${deg}deg) translateX(-50%)`,
-                transformOrigin: '50% 50px',
-                backgroundColor: `${config.color}60`
-              }}
-            />
-          ))}
-        </motion.div>
 
         {/* Main node container */}
         <div
@@ -88,62 +64,46 @@ export default function ArchetypeOrb({
             sizeClasses[size],
             "relative rounded-full",
             "bg-black/80 backdrop-blur-sm",
-            "border flex items-center justify-center",
-            "transition-all duration-300"
+            "border border-white/30 flex items-center justify-center",
+            "transition-all duration-300 group-hover:border-white/50"
           )}
           style={{ 
-            borderColor: `${config.color}50`,
             boxShadow: isActive 
-              ? `0 0 25px ${config.color}40, inset 0 0 20px ${config.color}15` 
-              : `0 0 10px ${config.color}20`
+              ? '0 0 20px rgba(255,255,255,0.2), inset 0 0 15px rgba(255,255,255,0.05)' 
+              : '0 0 10px rgba(255,255,255,0.1)'
           }}
         >
-          {/* Hexagonal grid behind */}
-          <svg className="absolute inset-0 w-full h-full opacity-10" viewBox="0 0 100 100">
-            <polygon points="50,10 90,30 90,70 50,90 10,70 10,30" fill="none" stroke={config.color} strokeWidth="0.5" />
-            <polygon points="50,25 75,37 75,63 50,75 25,63 25,37" fill="none" stroke={config.color} strokeWidth="0.3" />
-          </svg>
+          {/* Inner circle decoration */}
+          <div className="absolute inset-2 rounded-full border border-white/10" />
           
-          {/* Alchemical symbol */}
+          {/* Symbol */}
           <span 
-            className={cn(iconSizes[size], "relative z-10 font-occult")}
+            className={cn(iconSizes[size], "relative z-10 font-data text-white/80")}
             style={{ 
-              color: config.color,
-              textShadow: `0 0 10px ${config.color}80`
+              textShadow: isActive ? '0 0 10px rgba(255,255,255,0.5)' : 'none'
             }}
           >
             {config.symbol}
           </span>
         </div>
 
-        {/* Percentage indicator (top-right) */}
+        {/* Percentage indicator */}
         <div 
-          className="absolute -top-1 -right-2 font-data text-[8px] px-1 rounded"
-          style={{ 
-            color: config.color,
-            backgroundColor: 'rgba(0,0,0,0.8)',
-            border: `1px solid ${config.color}40`
-          }}
+          className="absolute -top-1 -right-1 font-data text-[7px] px-1 rounded bg-black/80 border border-white/20 text-white/60"
         >
           {displayActivation}%
-        </div>
-
-        {/* Status indicator (bottom-left) */}
-        <div 
-          className="absolute -bottom-1 -left-1 font-data text-[6px] px-1"
-          style={{ color: isActive ? '#00ff41' : '#666' }}
-        >
-          {isActive ? 'ACTIVE' : config.nodeId}
         </div>
       </div>
       
       {showLabel && (
-        <span 
-          className={cn(textSizes[size], "font-data tracking-wider uppercase")}
-          style={{ color: `${config.color}aa` }}
-        >
-          {config.name}
-        </span>
+        <div className="flex flex-col items-center mt-1">
+          <span className={cn(textSizes[size], "font-data tracking-widest text-white/70 uppercase")}>
+            {config.sephira}
+          </span>
+          <span className="font-data text-[7px] text-white/40">
+            {config.archetype}
+          </span>
+        </div>
       )}
     </motion.button>
   );

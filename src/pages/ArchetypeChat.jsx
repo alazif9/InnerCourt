@@ -1,23 +1,19 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
-import { ArrowLeft, Send, Mic, MoreVertical, Loader2 } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { ArrowLeft, Send, Loader2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
-import GlassCard from '@/components/ui/GlassCard';
-import StarField from '@/components/ui/StarField';
-import ReactMarkdown from 'react-markdown';
 
 const archetypeConfig = {
-  SOL: { color: '#D4AF37', icon: '☀️', greeting: "I am the source of your light. What truth do you seek today?" },
-  SAGE: { color: '#8B4513', icon: '🦉', greeting: "Wisdom awaits those who seek. What question burns within you?" },
-  HERO: { color: '#DC2626', icon: '⚔️', greeting: "Courage is not the absence of fear. What battle do you face?" },
-  MOTHER: { color: '#EC4899', icon: '🌸', greeting: "I hold space for your growth. What needs nurturing within you?" },
-  SHADOW: { color: '#374151', icon: '🌑', greeting: "I am what you hide from yourself. What darkness will you explore?" },
-  ANIMA: { color: '#7C3AED', icon: '🔮', greeting: "The soul speaks in symbols. What dreams have visited you?" },
-  CHILD: { color: '#FBBF24', icon: '✨', greeting: "Wonder is the beginning of wisdom. What makes your heart light?" },
-  TRICKSTER: { color: '#10B981', icon: '🃏', greeting: "Change wears many masks. What patterns are you ready to break?" },
+  SOL: { symbol: '☉', sephira: 'TIPHARETH', archetype: 'The Self', greeting: "I am the source of your light. What truth do you seek today?" },
+  SAGE: { symbol: '☿', sephira: 'BINAH', archetype: 'The Sage', greeting: "Wisdom awaits those who seek. What question burns within you?" },
+  HERO: { symbol: '♂', sephira: 'CHOKMAH', archetype: 'The Hero', greeting: "Courage is not the absence of fear. What battle do you face?" },
+  MOTHER: { symbol: '♀', sephira: 'CHESED', archetype: 'The Mother', greeting: "I hold space for your growth. What needs nurturing within you?" },
+  SHADOW: { symbol: '♄', sephira: 'GEBURAH', archetype: 'The Shadow', greeting: "I am what you hide from yourself. What darkness will you explore?" },
+  ANIMA: { symbol: '♃', sephira: 'NETZACH', archetype: 'The Anima', greeting: "The soul speaks in symbols. What dreams have visited you?" },
+  CHILD: { symbol: '☽', sephira: 'YESOD', archetype: 'The Child', greeting: "Wonder is the beginning of wisdom. What makes your heart light?" },
+  TRICKSTER: { symbol: '☾', sephira: 'HOD', archetype: 'The Trickster', greeting: "Change wears many masks. What patterns are you ready to break?" },
 };
 
 export default function ArchetypeChat() {
@@ -83,41 +79,31 @@ Respond as the ${archetype} archetype. Keep your response concise but meaningful
   };
 
   return (
-    <div className="fixed inset-0 flex flex-col">
-      <StarField />
-      
+    <div className="fixed inset-0 flex flex-col bg-black">
       {/* Header */}
       <div className="relative z-50 px-4 pt-4 pb-2">
-        <div className="flex items-center justify-between py-3 px-4 rounded-2xl bg-white/[0.05] backdrop-blur-xl border border-white/10">
+        <div className="flex items-center justify-between py-3 px-4 border-b border-white/20">
           <button 
             onClick={() => navigate(createPageUrl('Home'))}
-            className="p-2 rounded-full hover:bg-white/10 transition-colors"
+            className="p-2 rounded hover:bg-white/5 transition-colors"
           >
             <ArrowLeft className="w-5 h-5 text-white/70" />
           </button>
           
           <div className="flex items-center gap-3">
-            <div 
-              className="w-10 h-10 rounded-full flex items-center justify-center"
-              style={{ backgroundColor: `${config.color}30` }}
-            >
-              <span className="text-xl">{config.icon}</span>
+            <div className="w-10 h-10 rounded-full border border-white/30 bg-black/60 flex items-center justify-center">
+              <span className="text-white/80 text-xl font-data">{config.symbol}</span>
             </div>
-            <div>
-              <h2 className="font-['Cinzel',serif] text-white font-medium">{archetype}</h2>
-              <div className="flex items-center gap-1">
-                <span 
-                  className="w-2 h-2 rounded-full animate-pulse"
-                  style={{ backgroundColor: config.color }}
-                />
-                <span className="text-xs text-white/50">Guiding you</span>
-              </div>
+            <div className="text-center">
+              <h2 className="font-data text-white/90 text-xs tracking-widest">{config.sephira}</h2>
+              <p className="font-data text-[10px] text-white/40">{config.archetype}</p>
             </div>
           </div>
           
-          <button className="p-2 rounded-full hover:bg-white/10 transition-colors">
-            <MoreVertical className="w-5 h-5 text-white/70" />
-          </button>
+          <div className="flex items-center gap-1 px-2 py-1 border border-white/20 rounded">
+            <span className="w-1.5 h-1.5 rounded-full bg-white/60 animate-pulse" />
+            <span className="font-data text-[8px] text-white/40">ACTIVE</span>
+          </div>
         </div>
       </div>
 
@@ -134,27 +120,19 @@ Respond as the ${archetype} archetype. Keep your response concise but meaningful
                 className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 {msg.role === 'archetype' && (
-                  <div 
-                    className="w-8 h-8 rounded-full flex items-center justify-center mr-2 flex-shrink-0"
-                    style={{ backgroundColor: `${config.color}20` }}
-                  >
-                    <span className="text-sm">{config.icon}</span>
+                  <div className="w-8 h-8 rounded-full border border-white/30 bg-black/60 flex items-center justify-center mr-2 flex-shrink-0">
+                    <span className="text-white/70 text-sm font-data">{config.symbol}</span>
                   </div>
                 )}
                 
                 <div
-                  className={`max-w-[80%] px-4 py-3 rounded-2xl ${
+                  className={`max-w-[80%] px-4 py-3 rounded-lg ${
                     msg.role === 'user'
                       ? 'bg-white/10 border border-white/20'
-                      : ''
+                      : 'bg-white/5 border border-white/10'
                   }`}
-                  style={msg.role === 'archetype' ? {
-                    backgroundColor: `${config.color}15`,
-                    borderWidth: 1,
-                    borderColor: `${config.color}30`,
-                  } : {}}
                 >
-                  <p className="text-white/90 text-sm leading-relaxed">
+                  <p className="text-white/80 text-sm font-data leading-relaxed">
                     {msg.content}
                   </p>
                 </div>
@@ -168,26 +146,15 @@ Respond as the ${archetype} archetype. Keep your response concise but meaningful
               animate={{ opacity: 1 }}
               className="flex items-center gap-2"
             >
-              <div 
-                className="w-8 h-8 rounded-full flex items-center justify-center"
-                style={{ backgroundColor: `${config.color}20` }}
-              >
-                <span className="text-sm">{config.icon}</span>
+              <div className="w-8 h-8 rounded-full border border-white/30 bg-black/60 flex items-center justify-center">
+                <span className="text-white/70 text-sm font-data">{config.symbol}</span>
               </div>
-              <div 
-                className="px-4 py-3 rounded-2xl"
-                style={{
-                  backgroundColor: `${config.color}15`,
-                  borderWidth: 1,
-                  borderColor: `${config.color}30`,
-                }}
-              >
+              <div className="px-4 py-3 rounded-lg bg-white/5 border border-white/10">
                 <div className="flex gap-1">
                   {[0, 1, 2].map(i => (
                     <motion.span
                       key={i}
-                      className="w-2 h-2 rounded-full"
-                      style={{ backgroundColor: config.color }}
+                      className="w-1.5 h-1.5 rounded-full bg-white/60"
                       animate={{ opacity: [0.3, 1, 0.3] }}
                       transition={{ duration: 1, repeat: Infinity, delay: i * 0.2 }}
                     />
@@ -203,37 +170,33 @@ Respond as the ${archetype} archetype. Keep your response concise but meaningful
 
       {/* Input */}
       <div className="relative z-50 px-4 pb-6 pt-2">
-        <div className="flex items-center gap-2 p-2 rounded-2xl bg-white/[0.05] backdrop-blur-xl border border-white/10">
+        <div className="flex items-center gap-2 p-2 border border-white/20 bg-black/60">
           <input
             type="text"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' && handleSend()}
             placeholder="Speak your truth..."
-            className="flex-1 bg-transparent px-4 py-2 text-white placeholder-white/40 outline-none text-sm"
+            className="flex-1 bg-transparent px-4 py-2 text-white/90 placeholder-white/30 outline-none text-sm font-data"
           />
-          
-          <button className="p-3 rounded-xl hover:bg-white/10 transition-colors">
-            <Mic className="w-5 h-5 text-white/50" />
-          </button>
           
           <button 
             onClick={handleSend}
             disabled={!message.trim() || isLoading}
-            className="p-3 rounded-xl transition-all disabled:opacity-50"
-            style={{ 
-              backgroundColor: message.trim() ? `${config.color}30` : 'transparent',
-            }}
+            className="p-3 border border-white/20 hover:bg-white/5 transition-all disabled:opacity-30"
           >
             {isLoading ? (
-              <Loader2 className="w-5 h-5 text-amber-400 animate-spin" />
+              <Loader2 className="w-5 h-5 text-white/60 animate-spin" />
             ) : (
-              <Send 
-                className="w-5 h-5 transition-colors"
-                style={{ color: message.trim() ? config.color : 'rgba(255,255,255,0.3)' }}
-              />
+              <Send className="w-5 h-5 text-white/60" />
             )}
           </button>
+        </div>
+        
+        <div className="flex items-center justify-center gap-4 mt-2 font-data text-[8px] text-white/30">
+          <span>CIPHER: HERMETIC</span>
+          <span>*</span>
+          <span>CHANNEL: {config.sephira}</span>
         </div>
       </div>
     </div>
