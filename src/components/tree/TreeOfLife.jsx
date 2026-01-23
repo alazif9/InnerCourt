@@ -1,38 +1,88 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import ArchetypeOrb from './ArchetypeOrb';
 import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
-
-// Kabbalistic Tree of Life connections
-const connections = [
-  // From Tiphareth (center)
-  { from: 'SOL', to: 'HERO' },      // Tiphareth to Chokmah
-  { from: 'SOL', to: 'SAGE' },      // Tiphareth to Binah
-  
-  // Pillars
-  { from: 'HERO', to: 'MOTHER' },   // Chokmah to Chesed
-  { from: 'SAGE', to: 'SHADOW' },   // Binah to Geburah
-  
-  // Cross connections
-  { from: 'MOTHER', to: 'SHADOW' }, // Chesed to Geburah
-  { from: 'MOTHER', to: 'ANIMA' },  // Chesed to Netzach
-  { from: 'SHADOW', to: 'TRICKSTER' }, // Geburah to Hod
-  
-  // Lower connections
-  { from: 'ANIMA', to: 'TRICKSTER' }, // Netzach to Hod
-  { from: 'ANIMA', to: 'CHILD' },   // Netzach to Yesod
-  { from: 'TRICKSTER', to: 'CHILD' }, // Hod to Yesod
-  
-  // Central pillar hints
-  { from: 'SOL', to: 'ANIMA' },     // Tiphareth to Netzach
-  { from: 'SOL', to: 'TRICKSTER' }, // Tiphareth to Hod
-];
 
 export default function TreeOfLife({ archetypeScores = {}, onSelectArchetype }) {
   const navigate = useNavigate();
 
-  const handleArchetypeClick = (name) => {
+  // Arquétipos na geometria correta da Árvore da Vida
+  const archetypes = {
+    SOL: { 
+      x: 50, y: 12, 
+      symbol: '☉', 
+      sephira: 'TIPHARETH',
+      archetype: 'The Self',
+      nodeId: '0x06'
+    },
+    HERO: { 
+      x: 25, y: 30, 
+      symbol: '♂', 
+      sephira: 'CHOKMAH',
+      archetype: 'The Hero',
+      nodeId: '0x02'
+    },
+    SAGE: { 
+      x: 75, y: 30, 
+      symbol: '☿', 
+      sephira: 'BINAH',
+      archetype: 'The Sage',
+      nodeId: '0x03'
+    },
+    MOTHER: { 
+      x: 15, y: 48, 
+      symbol: '♀', 
+      sephira: 'CHESED',
+      archetype: 'The Mother',
+      nodeId: '0x04'
+    },
+    SHADOW: { 
+      x: 85, y: 48, 
+      symbol: '♄',
+      sephira: 'GEBURAH',
+      archetype: 'The Shadow',
+      nodeId: '0x05'
+    },
+    ANIMA: { 
+      x: 30, y: 66, 
+      symbol: '♃',
+      sephira: 'NETZACH',
+      archetype: 'The Anima',
+      nodeId: '0x07'
+    },
+    TRICKSTER: { 
+      x: 70, y: 66, 
+      symbol: '☾',
+      sephira: 'HOD',
+      archetype: 'The Trickster',
+      nodeId: '0x08'
+    },
+    CHILD: { 
+      x: 50, y: 84, 
+      symbol: '☽', 
+      sephira: 'YESOD',
+      archetype: 'The Child',
+      nodeId: '0x09'
+    },
+  };
+
+  // Paths conectando os sephiroth
+  const paths = [
+    ['SOL', 'HERO'],
+    ['SOL', 'SAGE'],
+    ['HERO', 'MOTHER'],
+    ['SAGE', 'SHADOW'],
+    ['MOTHER', 'SHADOW'],
+    ['MOTHER', 'ANIMA'],
+    ['SHADOW', 'TRICKSTER'],
+    ['ANIMA', 'CHILD'],
+    ['TRICKSTER', 'CHILD'],
+    ['ANIMA', 'TRICKSTER'],
+    ['SOL', 'ANIMA'],
+    ['SOL', 'TRICKSTER'],
+  ];
+
+  const handleClick = (name) => {
     if (onSelectArchetype) {
       onSelectArchetype(name);
     } else {
@@ -40,100 +90,109 @@ export default function TreeOfLife({ archetypeScores = {}, onSelectArchetype }) 
     }
   };
 
-  // Proper Kabbalistic Tree of Life positions
-  // Traditional layout: 3 pillars
-  // Left pillar (Severity): Binah, Geburah, Hod
-  // Middle pillar: Tiphareth, Yesod
-  // Right pillar (Mercy): Chokmah, Chesed, Netzach
-  const positions = {
-    // Top center - Tiphareth (Beauty/Heart)
-    SOL: { top: '8%', left: '50%' },        // Tiphareth (6) - center top
-    
-    // Row 2 - Chokmah (right) and Binah (left)
-    HERO: { top: '25%', left: '25%' },      // Chokmah (2) - left side
-    SAGE: { top: '25%', left: '75%' },      // Binah (3) - right side
-    
-    // Row 3 - Chesed (right) and Geburah (left)
-    MOTHER: { top: '42%', left: '15%' },    // Chesed (4) - left side
-    SHADOW: { top: '42%', left: '85%' },    // Geburah (5) - right side
-    
-    // Row 4 - Netzach (right) and Hod (left)
-    ANIMA: { top: '62%', left: '35%' },     // Netzach (7) - left side
-    TRICKSTER: { top: '62%', left: '65%' }, // Hod (8) - right side
-    
-    // Bottom center - Yesod (Foundation)
-    CHILD: { top: '82%', left: '50%' },     // Yesod (9) - center bottom
-  };
-
   return (
-    <div className="relative w-full h-[450px]">
-      {/* Connection lines */}
-      <svg className="absolute inset-0 w-full h-full" viewBox="0 0 400 450">
-        <defs>
-          <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="rgba(255,255,255,0.3)" />
-            <stop offset="100%" stopColor="rgba(255,255,255,0.1)" />
-          </linearGradient>
-        </defs>
-        
-        {connections.map((conn, i) => {
-          const fromPos = positions[conn.from];
-          const toPos = positions[conn.to];
-          const fromX = parseFloat(fromPos.left);
-          const fromY = parseFloat(fromPos.top);
-          const toX = parseFloat(toPos.left);
-          const toY = parseFloat(toPos.top);
-          
-          return (
-            <motion.line
-              key={i}
-              x1={`${fromX}%`}
-              y1={`${fromY}%`}
-              x2={`${toX}%`}
-              y2={`${toY}%`}
-              stroke="url(#lineGradient)"
-              strokeWidth="0.5"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: i * 0.03 }}
-            />
-          );
-        })}
-
-        {/* Central vertical pillar line */}
-        <line
-          x1="50%" y1="48%"
-          x2="50%" y2="88%"
-          stroke="rgba(255,255,255,0.15)"
-          strokeWidth="0.5"
-          strokeDasharray="4 2"
-        />
+    <div className="relative w-full h-[420px]">
+      {/* Linhas conectando os arquétipos */}
+      <svg className="absolute inset-0 w-full h-full" style={{ zIndex: 5 }}>
+        {paths.map(([from, to], idx) => (
+          <motion.line
+            key={idx}
+            x1={`${archetypes[from].x}%`}
+            y1={`${archetypes[from].y}%`}
+            x2={`${archetypes[to].x}%`}
+            y2={`${archetypes[to].y}%`}
+            stroke="rgba(255,255,255,0.15)"
+            strokeWidth="1"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: idx * 0.05 }}
+          />
+        ))}
       </svg>
 
-      {/* Archetype Nodes */}
-      {Object.entries(positions).map(([name, pos]) => (
-        <motion.div
-          key={name}
-          className="absolute -translate-x-1/2 -translate-y-1/2"
-          style={{ top: pos.top, left: pos.left }}
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.4, delay: 0.1 }}
-        >
-          <ArchetypeOrb
-            name={name}
-            size={name === 'SOL' ? 'lg' : 'md'}
-            isActive={name === 'SOL' || (archetypeScores[name] || 0) > 50}
-            activationLevel={archetypeScores[name] || 0}
-            onClick={() => handleArchetypeClick(name)}
-          />
-        </motion.div>
-      ))}
+      {/* Círculos dos arquétipos */}
+      {Object.entries(archetypes).map(([key, data]) => {
+        const activation = archetypeScores[key] || Math.floor(Math.random() * 40 + 50);
+        const isActive = key === 'SOL' || activation > 50;
+        const isCentral = key === 'SOL';
+        
+        return (
+          <motion.div
+            key={key}
+            className="absolute flex flex-col items-center cursor-pointer group"
+            style={{
+              left: `${data.x}%`,
+              top: `${data.y}%`,
+              transform: 'translate(-50%, -50%)',
+              zIndex: 10,
+            }}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.4 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => handleClick(key)}
+          >
+            {/* Percentage */}
+            <div className="font-data text-[10px] text-white/60 mb-1">
+              {activation}%
+            </div>
+
+            {/* Círculo principal */}
+            <div
+              className={`${isCentral ? 'w-16 h-16' : 'w-14 h-14'} rounded-full border border-white/30 flex items-center justify-center backdrop-blur-sm transition-all duration-300 group-hover:border-white/50`}
+              style={{
+                backgroundColor: 'rgba(0,0,0,0.6)',
+                boxShadow: isActive 
+                  ? '0 0 20px rgba(255,255,255,0.15), inset 0 0 15px rgba(255,255,255,0.05)' 
+                  : '0 0 10px rgba(255,255,255,0.05)',
+              }}
+            >
+              {/* Inner ring */}
+              <div className="absolute inset-1.5 rounded-full border border-white/10" />
+              
+              {/* Símbolo */}
+              <span className={`${isCentral ? 'text-2xl' : 'text-xl'} font-data text-white/80`}>
+                {data.symbol}
+              </span>
+            </div>
+
+            {/* Status indicator */}
+            <div className="flex items-center gap-1 mt-1.5">
+              <div 
+                className="w-1 h-1 rounded-full"
+                style={{ 
+                  backgroundColor: isActive ? 'rgba(255,255,255,0.6)' : 'rgba(255,255,255,0.2)',
+                  boxShadow: isActive ? '0 0 4px rgba(255,255,255,0.5)' : 'none'
+                }}
+              />
+              <span className="font-data text-[7px] text-white/40">
+                {isActive ? 'ACTIVE' : data.nodeId}
+              </span>
+            </div>
+
+            {/* Sephira name */}
+            <div className="font-data text-[9px] text-white/70 tracking-wider mt-0.5">
+              {data.sephira}
+            </div>
+            
+            {/* Archetype name */}
+            <div className="font-data text-[7px] text-white/40">
+              {data.archetype}
+            </div>
+          </motion.div>
+        );
+      })}
 
       {/* SOL central glow */}
       <div 
-        className="absolute top-[48%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 rounded-full pointer-events-none"
+        className="absolute pointer-events-none"
         style={{
+          left: '50%',
+          top: '12%',
+          transform: 'translate(-50%, -50%)',
+          width: '120px',
+          height: '120px',
           background: 'radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%)',
           filter: 'blur(20px)',
         }}
