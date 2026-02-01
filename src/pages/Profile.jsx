@@ -6,8 +6,14 @@ import GlassCard from '@/components/ui/GlassCard';
 import HUDCorners from '@/components/hud/HUDCorners';
 import { 
   User, Settings, LogOut, 
-  ChevronRight, Sparkles
+  ChevronRight, Sparkles, HelpCircle
 } from 'lucide-react';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { format } from 'date-fns';
@@ -171,11 +177,21 @@ export default function Profile() {
         transition={{ delay: 0.2 }}
         className="grid grid-cols-3 gap-2"
       >
-        <GlassCard className="p-3 text-center">
-          <div className="text-white/50 text-lg mb-1">✦</div>
-          <p className="text-white font-occult text-2xl">B</p>
-          <p className="font-data text-[8px] text-white/40 uppercase tracking-wider">Rank</p>
-        </GlassCard>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <GlassCard className="p-3 text-center cursor-help relative">
+                <HelpCircle className="w-3 h-3 text-white/30 absolute top-2 right-2" />
+                <div className="text-white/50 text-lg mb-1">✦</div>
+                <p className="text-white font-occult text-2xl">?</p>
+                <p className="font-data text-[8px] text-white/40 uppercase tracking-wider">Rank</p>
+              </GlassCard>
+            </TooltipTrigger>
+            <TooltipContent side="bottom" className="max-w-[200px] bg-black/90 border-white/20 text-white/80">
+              <p className="font-data text-[10px]">Rank is measured by daily use and progress in your growth objectives (C → S)</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
         
         <GlassCard className="p-3 text-center">
           <div className="text-white/50 text-lg mb-1">◎</div>
