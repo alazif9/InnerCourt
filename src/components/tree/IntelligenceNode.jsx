@@ -3,14 +3,14 @@ import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
 const nodeConfig = {
-  SOL: { color: '#d4af37', symbol: '☉', sephira: 'TIPHARETH', archetype: 'SOL', hex: '0x6A3F' },
-  SAGE: { color: '#8b4789', symbol: '☿', sephira: 'BINAH', archetype: 'SAGE', hex: '0x3B21' },
-  HERO: { color: '#4a9eff', symbol: '♂', sephira: 'CHOKMAH', archetype: 'HERO', hex: '0x2C15' },
-  MOTHER: { color: '#ff69b4', symbol: '♀', sephira: 'CHESED', archetype: 'MOTHER', hex: '0x4D28' },
-  SHADOW: { color: '#cc0000', symbol: '♄', sephira: 'GEBURAH', archetype: 'SHADOW', hex: '0x5E37' },
-  ANIMA: { color: '#7C3AED', symbol: '♃', sephira: 'NETZACH', archetype: 'ANIMA', hex: '0x7F4A' },
-  CHILD: { color: '#FBBF24', symbol: '☽', sephira: 'YESOD', archetype: 'CHILD', hex: '0x8G52' },
-  TRICKSTER: { color: '#00cccc', symbol: '☊', sephira: 'HOD', archetype: 'TRICKSTER', hex: '0x1A09' },
+  SOL: { symbol: '☉', sephira: 'TIPHARETH', archetype: 'SOL', hex: '0x6A3F' },
+  SAGE: { symbol: '☿', sephira: 'BINAH', archetype: 'SAGE', hex: '0x3B21' },
+  HERO: { symbol: '♂', sephira: 'CHOKMAH', archetype: 'HERO', hex: '0x2C15' },
+  MOTHER: { symbol: '♀', sephira: 'CHESED', archetype: 'MOTHER', hex: '0x4D28' },
+  SHADOW: { symbol: '♄', sephira: 'GEBURAH', archetype: 'SHADOW', hex: '0x5E37' },
+  ANIMA: { symbol: '♃', sephira: 'NETZACH', archetype: 'ANIMA', hex: '0x7F4A' },
+  CHILD: { symbol: '☽', sephira: 'YESOD', archetype: 'CHILD', hex: '0x8G52' },
+  TRICKSTER: { symbol: '☊', sephira: 'HOD', archetype: 'TRICKSTER', hex: '0x1A09' },
 };
 
 export default function IntelligenceNode({ 
@@ -28,7 +28,7 @@ export default function IntelligenceNode({
     lg: 'w-20 h-20',
   };
 
-  const miniBarHeights = [60, 80, 45, 90, 70];
+
 
   return (
     <motion.button
@@ -39,43 +39,10 @@ export default function IntelligenceNode({
     >
       {/* Outer technical ring with rotation */}
       <motion.div
-        className="absolute inset-0 rounded-full"
-        style={{ 
-          border: `1px solid ${config.color}40`,
-          transform: 'scale(1.3)',
-        }}
+        className="absolute inset-0 rounded-full border border-white/20"
+        style={{ transform: 'scale(1.3)' }}
         animate={{ rotate: 360 }}
         transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-      />
-      
-      {/* Data orbit with mini bars */}
-      <motion.div
-        className="absolute inset-0 rounded-full"
-        style={{ transform: 'scale(1.5)' }}
-        animate={{ rotate: -360 }}
-        transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
-      >
-        {miniBarHeights.map((h, i) => (
-          <div
-            key={i}
-            className="absolute w-0.5 origin-bottom"
-            style={{
-              height: `${h * 0.15}px`,
-              backgroundColor: `${config.color}80`,
-              left: '50%',
-              bottom: '50%',
-              transform: `rotate(${i * 72}deg) translateY(-${size === 'lg' ? 35 : 28}px)`,
-            }}
-          />
-        ))}
-      </motion.div>
-
-      {/* Hexagonal grid pattern */}
-      <div 
-        className={cn(sizeClasses[size], "absolute inset-0 rounded-full opacity-10")}
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='49' viewBox='0 0 28 49'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='${encodeURIComponent(config.color)}' fill-opacity='0.4'%3E%3Cpath d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM3 17.9v12.7l10.99 6.34 11-6.35V17.9l-11-6.34L3 17.9z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-        }}
       />
       
       {/* Main node circle */}
@@ -83,57 +50,45 @@ export default function IntelligenceNode({
         className={cn(
           sizeClasses[size],
           "relative rounded-full bg-black/80 backdrop-blur-sm",
-          "border flex items-center justify-center",
-          "transition-all duration-300"
+          "border border-white/40 flex items-center justify-center",
+          "transition-all duration-300 group-hover:border-white/60"
         )}
         style={{ 
-          borderColor: `${config.color}60`,
-          boxShadow: `0 0 20px ${config.color}40, inset 0 0 15px ${config.color}15`
+          boxShadow: '0 0 20px rgba(255,255,255,0.15), inset 0 0 15px rgba(255,255,255,0.05)'
         }}
       >
+        {/* Inner ring */}
+        <div className="absolute inset-2 rounded-full border border-white/10" />
+        
         {/* Central symbol */}
-        <span 
-          className="text-xl font-occult relative z-10"
-          style={{ color: config.color, textShadow: `0 0 10px ${config.color}` }}
-        >
+        <span className="text-xl font-occult relative z-10 text-white/90">
           {config.symbol}
         </span>
       </div>
 
       {/* Percentage indicator (top-right) */}
-      <div 
-        className="absolute -top-1 -right-1 font-data text-[8px] px-1 rounded bg-black/60"
-        style={{ color: config.color }}
-      >
+      <div className="absolute -top-1 -right-1 font-data text-[8px] px-1 rounded bg-black/60 text-white/70">
         {percentage}%
       </div>
 
       {/* Status indicator (bottom-left) */}
       <div className="absolute -bottom-1 -left-1 flex items-center gap-0.5">
-        <div 
-          className="w-1 h-1 rounded-full animate-pulse"
-          style={{ backgroundColor: '#00ff41' }}
-        />
-        <span className="font-data text-[7px] text-[#00cccc]/60">ACTIVE</span>
+        <div className="w-1 h-1 rounded-full bg-white/60 animate-pulse" />
+        <span className="font-data text-[7px] text-white/50">ACTIVE</span>
       </div>
 
       {/* Node ID (bottom) */}
-      <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 font-data text-[7px] text-white/20">
+      <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 font-data text-[7px] text-white/30">
         {config.hex}
       </div>
 
       {/* Sephira Label */}
-      <div 
-        className="absolute -bottom-7 left-1/2 -translate-x-1/2 font-data text-[8px] tracking-wider whitespace-nowrap"
-        style={{ color: `${config.color}99` }}
-      >
+      <div className="absolute -bottom-7 left-1/2 -translate-x-1/2 font-data text-[9px] tracking-wider whitespace-nowrap text-white/70">
         {config.sephira}
       </div>
       
       {/* Archetype Label */}
-      <div 
-        className="absolute -bottom-11 left-1/2 -translate-x-1/2 font-data text-[7px] tracking-wider whitespace-nowrap text-white/40"
-      >
+      <div className="absolute -bottom-11 left-1/2 -translate-x-1/2 font-data text-[7px] tracking-wider whitespace-nowrap text-white/40">
         {config.archetype}
       </div>
     </motion.button>

@@ -40,13 +40,14 @@ export default function IntelligenceTree({ archetypeScores = {} }) {
       {/* Sacred geometry paths */}
       <svg className="absolute inset-0 w-full h-full" viewBox="0 0 400 420">
         <defs>
-          <linearGradient id="pathGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#d4af37" stopOpacity="0.1" />
-            <stop offset="100%" stopColor="#00cccc" stopOpacity="0.1" />
+          <linearGradient id="beamGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="rgba(255,255,255,0.1)" />
+            <stop offset="50%" stopColor="rgba(255,255,255,0.4)" />
+            <stop offset="100%" stopColor="rgba(255,255,255,0.1)" />
           </linearGradient>
         </defs>
         
-        {/* Connection lines */}
+        {/* Connection lines - beams between spheres */}
         {connections.map((conn, i) => {
           const from = positions[conn.from];
           const to = positions[conn.to];
@@ -62,26 +63,14 @@ export default function IntelligenceTree({ archetypeScores = {} }) {
               y1={`${y1 + 3}%`}
               x2={`${x2}%`}
               y2={`${y2 + 3}%`}
-              stroke="url(#pathGrad)"
-              strokeWidth="0.5"
+              stroke="url(#beamGradient)"
+              strokeWidth="2"
               initial={{ pathLength: 0, opacity: 0 }}
               animate={{ pathLength: 1, opacity: 1 }}
               transition={{ duration: 1.5, delay: i * 0.1 }}
             />
           );
         })}
-
-        {/* Central Tree of Life overlay */}
-        <motion.path
-          d="M200,35 L200,380 M120,90 L280,90 M80,175 L320,175 M100,245 L300,245 M140,315 L260,315"
-          stroke="#d4af37"
-          strokeWidth="0.3"
-          fill="none"
-          opacity="0.05"
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: 1 }}
-          transition={{ duration: 3 }}
-        />
       </svg>
 
       {/* Intelligence Nodes */}
@@ -107,7 +96,7 @@ export default function IntelligenceTree({ archetypeScores = {} }) {
       {[...Array(8)].map((_, i) => (
         <motion.div
           key={`particle-${i}`}
-          className="absolute w-0.5 h-0.5 bg-[#00cccc]/40 rounded-full"
+          className="absolute w-0.5 h-0.5 bg-white/30 rounded-full"
           style={{
             left: `${20 + Math.random() * 60}%`,
             top: `${20 + Math.random() * 60}%`,
