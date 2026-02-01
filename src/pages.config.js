@@ -57,6 +57,7 @@ import Insights from './pages/Insights';
 import Journal from './pages/Journal';
 import Onboarding from './pages/Onboarding';
 import Profile from './pages/Profile';
+import InsightDetail from './pages/InsightDetail';
 import __Layout from './Layout.jsx';
 
 
@@ -71,6 +72,7 @@ export const PAGES = {
     "Journal": Journal,
     "Onboarding": Onboarding,
     "Profile": Profile,
+    "InsightDetail": InsightDetail,
 }
 
 export const pagesConfig = {

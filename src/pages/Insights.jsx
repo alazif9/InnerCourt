@@ -186,7 +186,10 @@ export default function Insights() {
               <span className="text-white/20">•</span>
               <span>CONFIDENCE: 94%</span>
             </div>
-            <button className="flex items-center gap-1 text-white font-data text-[10px] uppercase tracking-wider hover:text-white/70 transition-colors">
+            <button 
+              onClick={() => navigate(createPageUrl('InsightDetail'))}
+              className="flex items-center gap-1 text-white font-data text-[10px] uppercase tracking-wider hover:text-white/70 transition-colors"
+            >
               Explore <ArrowRight className="w-3 h-3" />
             </button>
           </div>
