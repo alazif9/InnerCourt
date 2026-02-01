@@ -46,16 +46,38 @@ const connections = [
 
 export default function IntelligenceTree({ archetypeScores = {} }) {
   const navigate = useNavigate();
+  const containerRef = React.useRef(null);
+  const [containerSize, setContainerSize] = React.useState({ width: 100, height: 380 });
+
+  React.useEffect(() => {
+    if (containerRef.current) {
+      const updateSize = () => {
+        setContainerSize({
+          width: containerRef.current.offsetWidth,
+          height: containerRef.current.offsetHeight
+        });
+      };
+      updateSize();
+      window.addEventListener('resize', updateSize);
+      return () => window.removeEventListener('resize', updateSize);
+    }
+  }, []);
 
   const handleNodeClick = (name) => {
     navigate(createPageUrl(`ArchetypeChat?archetype=${name}`));
   };
 
+  // Convert percentage positions to actual coordinates
+  const getCoords = (pos) => ({
+    x: (parseFloat(pos.left) / 100) * containerSize.width,
+    y: (parseFloat(pos.top) / 100) * containerSize.height
+  });
+
   return (
-    <div className="relative w-full h-[380px]">
+    <div ref={containerRef} className="relative w-full h-[380px]">
 
       {/* Connection lines between spheres - neon beams */}
-      <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 5 }} viewBox="0 0 100 100" preserveAspectRatio="none">
+      <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 5 }}>
         <defs>
           {/* Neon glow filter */}
           <filter id="neonGlow" x="-50%" y="-50%" width="200%" height="200%">
