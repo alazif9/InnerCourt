@@ -214,7 +214,10 @@ export default function Insights() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 + i * 0.08 }}
           >
-            <GlassCard className="p-3 hover:border-white/40 transition-all cursor-pointer group">
+            <GlassCard 
+              className="p-3 hover:border-white/40 transition-all cursor-pointer group"
+              onClick={() => navigate(createPageUrl('InsightDetail') + `?id=${insight.id}`)}
+            >
               <div className="flex items-start gap-3">
                 {/* Archetype Symbol */}
                 <div 
@@ -286,6 +289,7 @@ export default function Insights() {
           </p>
           
           <button 
+            onClick={() => navigate(createPageUrl('ArchetypeChat') + '?archetype=SHADOW')}
             className="w-full py-2.5 border border-white/30 bg-black/40 text-white font-data text-xs uppercase tracking-wider hover:bg-white/5 hover:border-white/50 transition-all"
             style={{ boxShadow: '0 0 15px rgba(255,255,255,0.05)' }}
           >
