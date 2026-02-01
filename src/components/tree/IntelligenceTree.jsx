@@ -112,24 +112,26 @@ export default function IntelligenceTree({ archetypeScores = {} }) {
           );
         })}
         
-        {/* Lines from each sphere to center */}
+        {/* Lines from each sphere to center - Tiphareth (SOL) is the center in traditional Tree of Life */}
         {(() => {
-          // Center point: horizontal center (50%) and vertical middle of the tree (~46.5% between top 5% and bottom 88%)
-          const centerX = containerSize.width * 0.50;
-          const centerY = containerSize.height * 0.465;
-          
+          // The center point is Tiphareth (SOL) - which is the heart of the Tree
+          const centerCoords = getCoords(positions.SOL);
+
+          // Only draw lines from specific spheres that connect through Tiphareth
+          const tipherethConnections = ['HERO', 'SAGE', 'MOTHER', 'SHADOW', 'ANIMA', 'TRICKSTER', 'CHILD'];
+
           return (
             <>
-              {Object.entries(positions).map(([name, pos], i) => {
-                const coords = getCoords(pos);
-                
+              {tipherethConnections.map((name, i) => {
+                const coords = getCoords(positions[name]);
+
                 return (
                   <motion.line
                     key={`center-${name}`}
                     x1={coords.x}
                     y1={coords.y}
-                    x2={centerX}
-                    y2={centerY}
+                    x2={centerCoords.x}
+                    y2={centerCoords.y}
                     stroke="rgba(255,255,255,0.3)"
                     strokeWidth="0.5"
                     filter="url(#neonGlow)"
@@ -139,18 +141,6 @@ export default function IntelligenceTree({ archetypeScores = {} }) {
                   />
                 );
               })}
-              
-              {/* Center convergence point */}
-              <motion.circle
-                cx={centerX}
-                cy={centerY}
-                r="4"
-                fill="rgba(255,255,255,0.9)"
-                filter="url(#neonGlow)"
-                initial={{ scale: 0, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.5, delay: 1 }}
-              />
             </>
           );
         })()}
