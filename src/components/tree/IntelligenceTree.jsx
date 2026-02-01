@@ -114,8 +114,8 @@ export default function IntelligenceTree({ archetypeScores = {} }) {
         
         {/* Lines from each sphere to center */}
         {(() => {
-          const centerX = containerSize.width * 0.52;
-          const centerY = containerSize.height * 0.40;
+          const centerX = containerSize.width * 0.54;
+          const centerY = containerSize.height * 0.43;
           
           return (
             <>
