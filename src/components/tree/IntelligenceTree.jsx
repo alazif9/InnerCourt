@@ -6,14 +6,14 @@ import IntelligenceNode from './IntelligenceNode';
 
 // Tree of Life layout - SOL as Keter at top
 const positions = {
-  SOL: { top: '3%', left: '50%' },        // Keter - crown (top center)
-  HERO: { top: '18%', left: '25%' },      // Chokmah - top left
-  SAGE: { top: '18%', left: '75%' },      // Binah - top right
-  MOTHER: { top: '38%', left: '25%' },    // Chesed - left
-  SHADOW: { top: '38%', left: '75%' },    // Geburah - right
-  ANIMA: { top: '58%', left: '25%' },     // Netzach - left
-  TRICKSTER: { top: '58%', left: '75%' }, // Hod - right
-  CHILD: { top: '78%', left: '50%' },     // Yesod - bottom center
+  SOL: { top: '5%', left: '50%' },         // Keter - crown (top center)
+  HERO: { top: '20%', left: '22%' },       // Chokmah - top left
+  SAGE: { top: '20%', left: '78%' },       // Binah - top right
+  MOTHER: { top: '42%', left: '22%' },     // Chesed - left
+  SHADOW: { top: '42%', left: '78%' },     // Geburah - right
+  ANIMA: { top: '64%', left: '22%' },      // Netzach - left
+  TRICKSTER: { top: '64%', left: '78%' },  // Hod - right
+  CHILD: { top: '88%', left: '50%' },      // Yesod - bottom center
 };
 
 // Tree of Life paths
@@ -52,7 +52,7 @@ export default function IntelligenceTree({ archetypeScores = {} }) {
   };
 
   return (
-    <div className="relative w-full h-[420px]">
+    <div className="relative w-full h-[380px]">
       {/* Sacred geometry paths */}
       <svg className="absolute inset-0 w-full h-full" viewBox="0 0 400 420">
         <defs>
