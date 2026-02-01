@@ -5,14 +5,15 @@ import { createPageUrl } from '@/utils';
 import IntelligenceNode from './IntelligenceNode';
 
 // Tree of Life layout - SOL as Keter at top
+// Using fixed pixel offsets from center for symmetry
 const positions = {
   SOL: { top: '5%', left: '50%' },         // Keter - crown (top center)
-  HERO: { top: '20%', left: '22%' },       // Chokmah - top left
-  SAGE: { top: '20%', left: '78%' },       // Binah - top right
-  MOTHER: { top: '42%', left: '22%' },     // Chesed - left
-  SHADOW: { top: '42%', left: '78%' },     // Geburah - right
-  ANIMA: { top: '64%', left: '22%' },      // Netzach - left
-  TRICKSTER: { top: '64%', left: '78%' },  // Hod - right
+  HERO: { top: '20%', left: '25%' },       // Chokmah - top left
+  SAGE: { top: '20%', left: '75%' },       // Binah - top right
+  MOTHER: { top: '42%', left: '25%' },     // Chesed - left
+  SHADOW: { top: '42%', left: '75%' },     // Geburah - right
+  ANIMA: { top: '64%', left: '25%' },      // Netzach - left
+  TRICKSTER: { top: '64%', left: '75%' },  // Hod - right
   CHILD: { top: '88%', left: '50%' },      // Yesod - bottom center
 };
 
