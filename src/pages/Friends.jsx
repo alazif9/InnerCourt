@@ -29,7 +29,21 @@ export default function Friends() {
     queryFn: async () => {
       const sent = await base44.entities.Friend.filter({ user_email: user?.email, status: 'accepted' });
       const received = await base44.entities.Friend.filter({ friend_email: user?.email, status: 'accepted' });
-      return [...sent, ...received];
+      const allFriends = [...sent, ...received];
+      
+      // Fetch profiles for all friends to get their archetypes
+      const friendEmails = allFriends.map(f => f.user_email === user?.email ? f.friend_email : f.user_email);
+      const profiles = await Promise.all(
+        friendEmails.map(email => 
+          base44.entities.UserProfile.filter({ created_by: email }).then(p => p[0] || null)
+        )
+      );
+      
+      // Attach profile data to friends
+      return allFriends.map((friend, i) => ({
+        ...friend,
+        friendProfile: profiles[i]
+      }));
     },
     enabled: !!user?.email,
   });
@@ -285,6 +299,8 @@ export default function Friends() {
             <div className="space-y-2">
               {friends.map((friend) => {
                 const display = getFriendDisplay(friend);
+                const archetype = friend.friendProfile?.dominant_archetype;
+                const socialScore = friend.friendProfile?.growth_dimensions?.social || 0;
                 return (
                   <motion.div
                     key={friend.id}
@@ -294,20 +310,35 @@ export default function Friends() {
                   >
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-full border border-white/30 bg-black/60 flex items-center justify-center">
-                        <span className="text-white/60">◈</span>
+                        <span className="text-white text-lg">
+                          {archetypeSymbols[archetype] || '◈'}
+                        </span>
                       </div>
                       <div>
                         <div className="text-white font-data text-sm">{display.name || 'Operator'}</div>
-                        <div className="font-data text-[10px] text-white/40">
-                          @{display.handle || display.email?.split('@')[0]}
+                        <div className="flex items-center gap-2">
+                          <span className="font-data text-[10px] text-white/40">
+                            @{display.handle || display.email?.split('@')[0]}
+                          </span>
+                          {archetype && (
+                            <>
+                              <span className="text-white/20">•</span>
+                              <span className="font-data text-[10px] text-white/50">{archetype}</span>
+                            </>
+                          )}
                         </div>
                       </div>
                     </div>
-                    <motion.div 
-                      className="w-2 h-2 rounded-full bg-white/60"
-                      animate={{ opacity: [1, 0.3, 1] }}
-                      transition={{ duration: 2, repeat: Infinity }}
-                    />
+                    <div className="flex items-center gap-2">
+                      <div className="font-data text-[9px] text-white/40">
+                        SOC <span className="text-white">{socialScore}%</span>
+                      </div>
+                      <motion.div 
+                        className="w-2 h-2 rounded-full bg-white/60"
+                        animate={{ opacity: [1, 0.3, 1] }}
+                        transition={{ duration: 2, repeat: Infinity }}
+                      />
+                    </div>
                   </motion.div>
                 );
               })}
