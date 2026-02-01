@@ -173,8 +173,8 @@ export default function Profile() {
       >
         <GlassCard className="p-3 text-center">
           <div className="text-white/50 text-lg mb-1">✦</div>
-          <p className="text-white font-data text-lg">7</p>
-          <p className="font-data text-[8px] text-white/40 uppercase tracking-wider">Level</p>
+          <p className="text-white font-occult text-2xl">B</p>
+          <p className="font-data text-[8px] text-white/40 uppercase tracking-wider">Rank</p>
         </GlassCard>
         
         <GlassCard className="p-3 text-center">

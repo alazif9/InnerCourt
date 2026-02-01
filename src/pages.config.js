@@ -52,6 +52,7 @@ import Analytics from './pages/Analytics';
 import ArchetypeChat from './pages/ArchetypeChat';
 import EditProfile from './pages/EditProfile';
 import Friends from './pages/Friends';
+import HelpSupport from './pages/HelpSupport';
 import Home from './pages/Home';
 import InsightDetail from './pages/InsightDetail';
 import Insights from './pages/Insights';
@@ -59,7 +60,6 @@ import Journal from './pages/Journal';
 import Onboarding from './pages/Onboarding';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
-import HelpSupport from './pages/HelpSupport';
 import TermsOfService from './pages/TermsOfService';
 import __Layout from './Layout.jsx';
 
@@ -70,6 +70,7 @@ export const PAGES = {
     "ArchetypeChat": ArchetypeChat,
     "EditProfile": EditProfile,
     "Friends": Friends,
+    "HelpSupport": HelpSupport,
     "Home": Home,
     "InsightDetail": InsightDetail,
     "Insights": Insights,
@@ -77,7 +78,6 @@ export const PAGES = {
     "Onboarding": Onboarding,
     "Profile": Profile,
     "Settings": Settings,
-    "HelpSupport": HelpSupport,
     "TermsOfService": TermsOfService,
 }
 
