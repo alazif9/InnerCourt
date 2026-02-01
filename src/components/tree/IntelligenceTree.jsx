@@ -98,14 +98,17 @@ export default function IntelligenceTree({ archetypeScores = {} }) {
         {Object.entries(positions).map(([name, pos], i) => {
           const x = parseFloat(pos.left);
           const y = parseFloat(pos.top);
+          // Center point calculated as average of all positions
+          const centerX = 50;
+          const centerY = 43;
           
           return (
             <motion.line
               key={`center-${name}`}
               x1={x}
               y1={y}
-              x2={50}
-              y2={46}
+              x2={centerX}
+              y2={centerY}
               stroke="rgba(255,255,255,0.3)"
               strokeWidth="0.15"
               filter="url(#neonGlow)"
@@ -119,9 +122,9 @@ export default function IntelligenceTree({ archetypeScores = {} }) {
         {/* Center convergence point */}
         <motion.circle
           cx={50}
-          cy={46}
-          r="1"
-          fill="rgba(255,255,255,0.8)"
+          cy={43}
+          r="1.2"
+          fill="rgba(255,255,255,0.9)"
           filter="url(#neonGlow)"
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
