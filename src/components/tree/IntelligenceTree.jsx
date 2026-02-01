@@ -4,28 +4,54 @@ import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import IntelligenceNode from './IntelligenceNode';
 
+// Traditional Tree of Life layout (Keter at top, Malkuth at bottom)
+// Using your archetype mappings to the Sephiroth
 const positions = {
-  SOL: { top: '8%', left: '50%' },
-  HERO: { top: '22%', left: '25%' },
-  SAGE: { top: '22%', left: '75%' },
-  MOTHER: { top: '42%', left: '18%' },
-  SHADOW: { top: '42%', left: '82%' },
-  ANIMA: { top: '58%', left: '30%' },
-  TRICKSTER: { top: '58%', left: '70%' },
-  CHILD: { top: '78%', left: '50%' },
+  // Row 1: Keter (top) - using SOL/Tiphareth mapping, we need to add KETER
+  // Row 2: Chokmah (right) & Binah (left)  
+  // Row 3: Chesed (right) & Geburah (left)
+  // Row 4: Tiphareth (center)
+  // Row 5: Netzach (right) & Hod (left)
+  // Row 6: Yesod (center)
+  // Row 7: Malkuth (bottom)
+  
+  HERO: { top: '5%', left: '30%' },      // Chokmah - top left
+  SAGE: { top: '5%', left: '70%' },      // Binah - top right
+  MOTHER: { top: '25%', left: '30%' },   // Chesed - left pillar
+  SHADOW: { top: '25%', left: '70%' },   // Geburah - right pillar
+  SOL: { top: '45%', left: '50%' },      // Tiphareth - center
+  ANIMA: { top: '62%', left: '30%' },    // Netzach - left pillar
+  TRICKSTER: { top: '62%', left: '70%' },// Hod - right pillar
+  CHILD: { top: '82%', left: '50%' },    // Yesod - center bottom
 };
 
+// Traditional Tree of Life paths (22 paths)
 const connections = [
-  { from: 'SOL', to: 'HERO' },
-  { from: 'SOL', to: 'SAGE' },
-  { from: 'HERO', to: 'MOTHER' },
-  { from: 'SAGE', to: 'SHADOW' },
-  { from: 'MOTHER', to: 'ANIMA' },
-  { from: 'SHADOW', to: 'TRICKSTER' },
-  { from: 'ANIMA', to: 'CHILD' },
-  { from: 'TRICKSTER', to: 'CHILD' },
-  { from: 'HERO', to: 'SAGE' },
-  { from: 'ANIMA', to: 'TRICKSTER' },
+  // Horizontal connections
+  { from: 'HERO', to: 'SAGE' },           // Chokmah-Binah
+  { from: 'MOTHER', to: 'SHADOW' },       // Chesed-Geburah
+  { from: 'ANIMA', to: 'TRICKSTER' },     // Netzach-Hod
+  
+  // Left pillar vertical
+  { from: 'HERO', to: 'MOTHER' },         // Chokmah-Chesed
+  { from: 'MOTHER', to: 'ANIMA' },        // Chesed-Netzach
+  
+  // Right pillar vertical
+  { from: 'SAGE', to: 'SHADOW' },         // Binah-Geburah
+  { from: 'SHADOW', to: 'TRICKSTER' },    // Geburah-Hod
+  
+  // To Tiphareth (center)
+  { from: 'HERO', to: 'SOL' },            // Chokmah-Tiphareth
+  { from: 'SAGE', to: 'SOL' },            // Binah-Tiphareth
+  { from: 'MOTHER', to: 'SOL' },          // Chesed-Tiphareth
+  { from: 'SHADOW', to: 'SOL' },          // Geburah-Tiphareth
+  { from: 'SOL', to: 'ANIMA' },           // Tiphareth-Netzach
+  { from: 'SOL', to: 'TRICKSTER' },       // Tiphareth-Hod
+  { from: 'SOL', to: 'CHILD' },           // Tiphareth-Yesod
+  
+  // To Yesod
+  { from: 'ANIMA', to: 'CHILD' },         // Netzach-Yesod
+  { from: 'TRICKSTER', to: 'CHILD' },     // Hod-Yesod
 ];
 
 export default function IntelligenceTree({ archetypeScores = {} }) {
