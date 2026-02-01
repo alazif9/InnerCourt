@@ -12,7 +12,7 @@ import { createPageUrl } from '@/utils';
 
 const settingsItems = [
   { icon: Download, label: 'EXPORT DATA', action: 'export', symbol: '⬡', description: 'Download your journal & insights' },
-  { icon: FileText, label: 'TERMS OF SERVICE', action: 'terms', symbol: '◈', description: 'Legal documentation' },
+  { icon: FileText, label: 'TERMS OF SERVICE', action: 'terms', symbol: '◈', description: 'Legal documentation', page: 'TermsOfService' },
   { icon: HelpCircle, label: 'HELP & SUPPORT', action: 'help', symbol: '?', description: 'FAQs and contact', page: 'HelpSupport' },
   { icon: Info, label: 'ABOUT', action: 'about', symbol: 'ℹ', description: 'App version and credits' },
 ];
