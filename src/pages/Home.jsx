@@ -73,9 +73,12 @@ export default function Home() {
       </motion.div>
 
       {/* Bottom micro-text */}
-      <div className="text-center font-data text-[8px] text-white/20 tracking-widest">
-        MATRIX_ID: SOL-{user?.id?.slice(0,8) || '00000000'} • PROTOCOL: HERMETIC_V2.1 • CIPHER: ACTIVE
-      </div>
+      <Link 
+        to={createPageUrl('Profile')}
+        className="block text-center font-data text-[8px] text-white/20 tracking-widest hover:text-white/40 transition-colors"
+      >
+        OPERATOR: {user?.full_name?.toUpperCase() || 'UNKNOWN'} • MATRIX_ID: SOL-{user?.id?.slice(0,8) || '00000000'} • PROTOCOL: HERMETIC_V2.1
+      </Link>
     </div>
   );
 }
