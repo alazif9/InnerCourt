@@ -92,22 +92,18 @@ export default function IntelligenceTree({ archetypeScores = {} }) {
         
         {/* Lines between spheres */}
         {connections.map((conn, i) => {
-          const from = positions[conn.from];
-          const to = positions[conn.to];
-          const x1 = parseFloat(from.left);
-          const y1 = parseFloat(from.top);
-          const x2 = parseFloat(to.left);
-          const y2 = parseFloat(to.top);
+          const from = getCoords(positions[conn.from]);
+          const to = getCoords(positions[conn.to]);
           
           return (
             <motion.line
               key={`conn-${i}`}
-              x1={x1}
-              y1={y1}
-              x2={x2}
-              y2={y2}
+              x1={from.x}
+              y1={from.y}
+              x2={to.x}
+              y2={to.y}
               stroke="rgba(255,255,255,0.6)"
-              strokeWidth="0.2"
+              strokeWidth="1"
               filter="url(#neonGlow)"
               initial={{ pathLength: 0, opacity: 0 }}
               animate={{ pathLength: 1, opacity: 1 }}
@@ -117,38 +113,46 @@ export default function IntelligenceTree({ archetypeScores = {} }) {
         })}
         
         {/* Lines from each sphere to center */}
-        {Object.entries(positions).map(([name, pos], i) => {
-          const x = parseFloat(pos.left);
-          const y = parseFloat(pos.top);
+        {(() => {
+          const centerX = containerSize.width / 2;
+          const centerY = containerSize.height * 0.42;
           
           return (
-            <motion.line
-              key={`center-${name}`}
-              x1={x}
-              y1={y}
-              x2={50}
-              y2={42}
-              stroke="rgba(255,255,255,0.3)"
-              strokeWidth="0.15"
-              filter="url(#neonGlow)"
-              initial={{ pathLength: 0, opacity: 0 }}
-              animate={{ pathLength: 1, opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.5 + i * 0.05 }}
-            />
+            <>
+              {Object.entries(positions).map(([name, pos], i) => {
+                const coords = getCoords(pos);
+                
+                return (
+                  <motion.line
+                    key={`center-${name}`}
+                    x1={coords.x}
+                    y1={coords.y}
+                    x2={centerX}
+                    y2={centerY}
+                    stroke="rgba(255,255,255,0.3)"
+                    strokeWidth="0.5"
+                    filter="url(#neonGlow)"
+                    initial={{ pathLength: 0, opacity: 0 }}
+                    animate={{ pathLength: 1, opacity: 1 }}
+                    transition={{ duration: 0.6, delay: 0.5 + i * 0.05 }}
+                  />
+                );
+              })}
+              
+              {/* Center convergence point */}
+              <motion.circle
+                cx={centerX}
+                cy={centerY}
+                r="4"
+                fill="rgba(255,255,255,0.9)"
+                filter="url(#neonGlow)"
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.5, delay: 1 }}
+              />
+            </>
           );
-        })}
-        
-        {/* Center convergence point */}
-        <motion.circle
-          cx={50}
-          cy={42}
-          r="1.2"
-          fill="rgba(255,255,255,0.9)"
-          filter="url(#neonGlow)"
-          initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.5, delay: 1 }}
-        />
+        })()}
       </svg>
 
       {/* Intelligence Nodes */}
