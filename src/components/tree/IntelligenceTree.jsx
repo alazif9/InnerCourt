@@ -69,12 +69,14 @@ export default function IntelligenceTree({ archetypeScores = {} }) {
   };
 
   // Convert percentage positions to actual coordinates
-  // The nodes use -translate-x-1/2 -translate-y-1/2, so the percentage IS the center
-  // But we need to account for the node size (w-11 = 44px for md, w-12 = 48px for lg)
-  // The visual center of the sphere is at the top position, not offset by the label
+  // The nodes are positioned with CSS transform -translate-x-1/2 -translate-y-1/2
+  // So the top/left percentage points to the CENTER of the sphere
+  // But the sphere has a label below it (mt-1.5 + 8px text = ~14px)
+  // The actual sphere visual center is slightly ABOVE the CSS anchor point
   const getCoords = (pos, name) => {
     const x = (parseFloat(pos.left) / 100) * containerSize.width;
-    const y = (parseFloat(pos.top) / 100) * containerSize.height;
+    // Offset upward to hit center of sphere (accounting for label below)
+    const y = (parseFloat(pos.top) / 100) * containerSize.height - 8;
     return { x, y };
   };
 
