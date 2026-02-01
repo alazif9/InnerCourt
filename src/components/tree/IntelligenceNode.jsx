@@ -74,9 +74,9 @@ export default function IntelligenceNode({
         </span>
       </div>
 
-      {/* Name Label - below sphere */}
+      {/* Archetype Label - below sphere */}
       <div className="mt-1.5 font-data text-[8px] tracking-wider whitespace-nowrap text-white/60 text-center">
-        {config.sephira}
+        {config.archetype}
       </div>
     </motion.button>
   );
