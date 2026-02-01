@@ -44,9 +44,6 @@ const connections = [
   { from: 'SHADOW', to: 'ANIMA' },
 ];
 
-// Center point for all lines to connect
-const CENTER = { x: 50, y: 46 };
-
 export default function IntelligenceTree({ archetypeScores = {} }) {
   const navigate = useNavigate();
 
@@ -56,41 +53,6 @@ export default function IntelligenceTree({ archetypeScores = {} }) {
 
   return (
     <div className="relative w-full h-[380px]">
-      
-      {/* Connection lines to center */}
-      <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-        <defs>
-          <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="rgba(255,255,255,0.05)" />
-            <stop offset="50%" stopColor="rgba(255,255,255,0.25)" />
-            <stop offset="100%" stopColor="rgba(255,255,255,0.05)" />
-          </linearGradient>
-        </defs>
-        
-        {/* Lines from each node to center */}
-        {Object.entries(positions).map(([name, pos], i) => {
-          const x = parseFloat(pos.left);
-          const y = parseFloat(pos.top);
-          
-          return (
-            <motion.line
-              key={name}
-              x1={x}
-              y1={y}
-              x2={CENTER.x}
-              y2={CENTER.y}
-              stroke="url(#lineGradient)"
-              strokeWidth="0.3"
-              initial={{ pathLength: 0, opacity: 0 }}
-              animate={{ pathLength: 1, opacity: 1 }}
-              transition={{ duration: 1, delay: i * 0.1 }}
-            />
-          );
-        })}
-        
-        {/* Center point */}
-        <circle cx={CENTER.x} cy={CENTER.y} r="0.8" fill="rgba(255,255,255,0.3)" />
-      </svg>
 
       {/* Intelligence Nodes */}
       {Object.entries(positions).map(([name, pos]) => (
@@ -110,6 +72,41 @@ export default function IntelligenceTree({ archetypeScores = {} }) {
           />
         </motion.div>
       ))}
+
+      {/* Connection lines between spheres - rendered on top */}
+      <svg className="absolute inset-0 w-full h-full pointer-events-none z-10" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="beamGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="rgba(255,255,255,0.1)" />
+            <stop offset="50%" stopColor="rgba(255,255,255,0.4)" />
+            <stop offset="100%" stopColor="rgba(255,255,255,0.1)" />
+          </linearGradient>
+        </defs>
+        
+        {connections.map((conn, i) => {
+          const from = positions[conn.from];
+          const to = positions[conn.to];
+          const x1 = parseFloat(from.left);
+          const y1 = parseFloat(from.top);
+          const x2 = parseFloat(to.left);
+          const y2 = parseFloat(to.top);
+          
+          return (
+            <motion.line
+              key={i}
+              x1={x1}
+              y1={y1}
+              x2={x2}
+              y2={y2}
+              stroke="url(#beamGradient)"
+              strokeWidth="0.25"
+              initial={{ pathLength: 0, opacity: 0 }}
+              animate={{ pathLength: 1, opacity: 1 }}
+              transition={{ duration: 0.8, delay: i * 0.05 }}
+            />
+          );
+        })}
+      </svg>
 
       {/* Floating data particles */}
       {[...Array(8)].map((_, i) => (
