@@ -53,11 +53,11 @@ import ArchetypeChat from './pages/ArchetypeChat';
 import EditProfile from './pages/EditProfile';
 import Friends from './pages/Friends';
 import Home from './pages/Home';
+import InsightDetail from './pages/InsightDetail';
 import Insights from './pages/Insights';
 import Journal from './pages/Journal';
 import Onboarding from './pages/Onboarding';
 import Profile from './pages/Profile';
-import InsightDetail from './pages/InsightDetail';
 import __Layout from './Layout.jsx';
 
 
@@ -68,11 +68,11 @@ export const PAGES = {
     "EditProfile": EditProfile,
     "Friends": Friends,
     "Home": Home,
+    "InsightDetail": InsightDetail,
     "Insights": Insights,
     "Journal": Journal,
     "Onboarding": Onboarding,
     "Profile": Profile,
-    "InsightDetail": InsightDetail,
 }
 
 export const pagesConfig = {
