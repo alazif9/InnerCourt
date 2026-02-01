@@ -119,6 +119,8 @@ export default function IntelligenceTree({ archetypeScores = {} }) {
         {/* Lines from each sphere to center - Tiphareth (SOL) is the center in traditional Tree of Life */}
         {(() => {
           // The center point is Tiphareth (SOL) - which is the heart of the Tree
+          // Offset to account for the label below each node (mt-1.5 + text height ~20px)
+          const labelOffset = 10; // Half of the label area to find true visual center of sphere
           const centerCoords = getCoords(positions.SOL);
 
           // Only draw lines from specific spheres that connect through Tiphareth
