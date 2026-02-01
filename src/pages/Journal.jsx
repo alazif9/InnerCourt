@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import GlassCard from '@/components/ui/GlassCard';
 import HUDCorners from '@/components/hud/HUDCorners';
-import { Plus, Calendar, ChevronRight, Book } from 'lucide-react';
+import { Plus, Calendar, ChevronRight, Book, Share2, Check } from 'lucide-react';
 import { format } from 'date-fns';
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -66,6 +66,18 @@ export default function Journal() {
       queryClient.invalidateQueries({ queryKey: ['journalEntries'] });
       setShowForm(false);
       setNewEntry({ title: '', content: '', archetype: '', mood: '' });
+    },
+  });
+
+  const shareMutation = useMutation({
+    mutationFn: async (entry) => {
+      return base44.entities.JournalEntry.update(entry.id, {
+        shared_with_friends: !entry.shared_with_friends,
+        shared_date: entry.shared_with_friends ? null : new Date().toISOString()
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['journalEntries'] });
     },
   });
 
@@ -290,7 +302,27 @@ export default function Journal() {
                       </div>
                     </div>
                     
-                    <ChevronRight className="w-4 h-4 text-white/20 flex-shrink-0 group-hover:text-white/60 transition-colors" />
+                    <div className="flex items-center gap-2 flex-shrink-0">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          shareMutation.mutate(entry);
+                        }}
+                        className={`p-1.5 rounded border transition-all ${
+                          entry.shared_with_friends 
+                            ? 'border-white/40 bg-white/10 text-white' 
+                            : 'border-white/20 text-white/30 hover:text-white/60 hover:border-white/30'
+                        }`}
+                        title={entry.shared_with_friends ? 'Shared with friends' : 'Share with friends'}
+                      >
+                        {entry.shared_with_friends ? (
+                          <Check className="w-3 h-3" />
+                        ) : (
+                          <Share2 className="w-3 h-3" />
+                        )}
+                      </button>
+                      <ChevronRight className="w-4 h-4 text-white/20 group-hover:text-white/60 transition-colors" />
+                    </div>
                   </div>
                 </GlassCard>
               </motion.div>
