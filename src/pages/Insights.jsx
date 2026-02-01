@@ -280,7 +280,7 @@ export default function Insights() {
                   </p>
                   
                   <div className="flex items-center gap-3 font-data text-[9px] text-white/30">
-                    <span>{format(insight.date, 'yyyy.MM.dd')}</span>
+                    <span>{format(insight.date || new Date(insight.created_date), 'yyyy.MM.dd')}</span>
                     <span className="text-white/20">•</span>
                     <span className="text-white/50">{insight.archetype}</span>
                     <span className="text-white/20">•</span>
@@ -288,7 +288,23 @@ export default function Insights() {
                   </div>
                 </div>
                 
-                <ChevronRight className="w-4 h-4 text-white/20 flex-shrink-0 group-hover:text-white/50 transition-colors" />
+                <div className="flex items-center gap-2 flex-shrink-0">
+                  {/* Share Button - only for database insights */}
+                  {insight.created_by && (
+                    <button
+                      onClick={(e) => handleShareToggle(e, insight)}
+                      className={`p-1.5 border rounded transition-all ${
+                        insight.shared_with_friends
+                          ? 'border-white/50 bg-white/10 text-white'
+                          : 'border-white/20 text-white/30 hover:border-white/40 hover:text-white/60'
+                      }`}
+                      title={insight.shared_with_friends ? 'Shared with friends' : 'Share with friends'}
+                    >
+                      <Share2 className="w-3 h-3" />
+                    </button>
+                  )}
+                  <ChevronRight className="w-4 h-4 text-white/20 group-hover:text-white/50 transition-colors" />
+                </div>
               </div>
             </GlassCard>
           </motion.div>
