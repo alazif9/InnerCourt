@@ -114,10 +114,9 @@ export default function IntelligenceTree({ archetypeScores = {} }) {
         
         {/* Lines from each sphere to center */}
         {(() => {
-          // Calculate true geometric center of all spheres
-          const allCoords = Object.values(positions).map(pos => getCoords(pos));
-          const centerX = allCoords.reduce((sum, c) => sum + c.x, 0) / allCoords.length;
-          const centerY = allCoords.reduce((sum, c) => sum + c.y, 0) / allCoords.length;
+          // Center point: horizontal center (50%) and vertical middle of the tree (~46.5% between top 5% and bottom 88%)
+          const centerX = containerSize.width * 0.50;
+          const centerY = containerSize.height * 0.465;
           
           return (
             <>
