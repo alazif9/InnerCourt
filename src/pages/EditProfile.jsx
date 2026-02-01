@@ -10,12 +10,15 @@ import { createPageUrl } from '@/utils';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 
 export default function EditProfile() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   
   const [formData, setFormData] = useState({
+    display_name: '',
+    about: '',
     birth_date: '',
     birth_location: '',
   });
@@ -37,6 +40,8 @@ export default function EditProfile() {
   useEffect(() => {
     if (userProfile) {
       setFormData({
+        display_name: userProfile.display_name || '',
+        about: userProfile.about || '',
         birth_date: userProfile.birth_date ? userProfile.birth_date.split('T')[0] : '',
         birth_location: userProfile.birth_location || '',
       });
@@ -60,6 +65,8 @@ export default function EditProfile() {
   const handleSubmit = (e) => {
     e.preventDefault();
     saveMutation.mutate({
+      display_name: formData.display_name || null,
+      about: formData.about || null,
       birth_date: formData.birth_date ? new Date(formData.birth_date).toISOString() : null,
       birth_location: formData.birth_location || null,
     });
@@ -100,11 +107,55 @@ export default function EditProfile() {
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Birth Date */}
+          {/* Identity */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
+          >
+            <GlassCard className="p-4">
+              <div className="font-data text-[8px] text-white/40 uppercase tracking-widest mb-3">
+                ┌─ OPERATOR IDENTITY ─┐
+              </div>
+              <div className="space-y-3">
+                <div>
+                  <Label className="font-data text-[10px] text-white/60 uppercase tracking-wider">
+                    Display Name
+                  </Label>
+                  <Input
+                    type="text"
+                    placeholder="Your name"
+                    value={formData.display_name}
+                    onChange={(e) => setFormData({ ...formData, display_name: e.target.value })}
+                    className="mt-1.5 bg-black/40 border-white/20 text-white font-data text-sm placeholder:text-white/30 focus:border-white/50"
+                  />
+                  <p className="font-data text-[9px] text-white/30 mt-1">
+                    How the system will address you
+                  </p>
+                </div>
+                <div>
+                  <Label className="font-data text-[10px] text-white/60 uppercase tracking-wider">
+                    About You
+                  </Label>
+                  <Textarea
+                    placeholder="Tell us about yourself - your goals, challenges, what you're working on..."
+                    value={formData.about}
+                    onChange={(e) => setFormData({ ...formData, about: e.target.value })}
+                    className="mt-1.5 bg-black/40 border-white/20 text-white font-data text-sm placeholder:text-white/30 focus:border-white/50 min-h-[100px]"
+                  />
+                  <p className="font-data text-[9px] text-white/30 mt-1">
+                    This information helps the archetypes guide you better
+                  </p>
+                </div>
+              </div>
+            </GlassCard>
+          </motion.div>
+
+          {/* Birth Date */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15 }}
           >
             <GlassCard className="p-4">
               <div className="font-data text-[8px] text-white/40 uppercase tracking-widest mb-3">
@@ -133,7 +184,7 @@ export default function EditProfile() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.15 }}
+            transition={{ delay: 0.2 }}
           >
             <GlassCard className="p-4">
               <div className="font-data text-[8px] text-white/40 uppercase tracking-widest mb-3">
@@ -163,7 +214,7 @@ export default function EditProfile() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
+            transition={{ delay: 0.25 }}
           >
             <Button
               type="submit"
