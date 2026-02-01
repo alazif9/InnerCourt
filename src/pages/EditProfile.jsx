@@ -21,6 +21,13 @@ export default function EditProfile() {
     about: '',
     birth_date: '',
     birth_location: '',
+    objectives: {
+      social: '',
+      physical: '',
+      spiritual: '',
+      economic: '',
+      technical: '',
+    },
   });
 
   const { data: user } = useQuery({
@@ -44,6 +51,13 @@ export default function EditProfile() {
         about: userProfile.about || '',
         birth_date: userProfile.birth_date ? userProfile.birth_date.split('T')[0] : '',
         birth_location: userProfile.birth_location || '',
+        objectives: {
+          social: userProfile.objectives?.social || '',
+          physical: userProfile.objectives?.physical || '',
+          spiritual: userProfile.objectives?.spiritual || '',
+          economic: userProfile.objectives?.economic || '',
+          technical: userProfile.objectives?.technical || '',
+        },
       });
     }
   }, [userProfile]);
@@ -69,6 +83,7 @@ export default function EditProfile() {
       about: formData.about || null,
       birth_date: formData.birth_date ? new Date(formData.birth_date).toISOString() : null,
       birth_location: formData.birth_location || null,
+      objectives: formData.objectives,
     });
   };
 
@@ -210,11 +225,53 @@ export default function EditProfile() {
             </GlassCard>
           </motion.div>
 
-          {/* Submit Button */}
+          {/* Growth Objectives */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.25 }}
+          >
+            <GlassCard className="p-4">
+              <div className="font-data text-[8px] text-white/40 uppercase tracking-widest mb-3">
+                ┌─ GROWTH OBJECTIVES ─┐
+              </div>
+              <p className="font-data text-[9px] text-white/40 mb-4">
+                Define your goals for each dimension of growth
+              </p>
+              <div className="space-y-4">
+                {[
+                  { key: 'social', label: 'Social', symbol: '☿', placeholder: 'e.g., Build deeper relationships, improve communication...' },
+                  { key: 'physical', label: 'Physical', symbol: '♂', placeholder: 'e.g., Train consistently, improve health habits...' },
+                  { key: 'spiritual', label: 'Spiritual', symbol: '☉', placeholder: 'e.g., Develop mindfulness, explore inner wisdom...' },
+                  { key: 'economic', label: 'Economic', symbol: '♃', placeholder: 'e.g., Financial stability, career growth...' },
+                  { key: 'technical', label: 'Technical', symbol: '⚙', placeholder: 'e.g., Learn new skills, master a craft...' },
+                ].map((dim) => (
+                  <div key={dim.key}>
+                    <Label className="font-data text-[10px] text-white/60 uppercase tracking-wider flex items-center gap-2">
+                      <span className="text-white/40">{dim.symbol}</span>
+                      {dim.label}
+                    </Label>
+                    <Input
+                      type="text"
+                      placeholder={dim.placeholder}
+                      value={formData.objectives[dim.key]}
+                      onChange={(e) => setFormData({ 
+                        ...formData, 
+                        objectives: { ...formData.objectives, [dim.key]: e.target.value } 
+                      })}
+                      className="mt-1.5 bg-black/40 border-white/20 text-white font-data text-sm placeholder:text-white/30 focus:border-white/50"
+                    />
+                  </div>
+                ))}
+              </div>
+            </GlassCard>
+          </motion.div>
+
+          {/* Submit Button */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
           >
             <Button
               type="submit"
