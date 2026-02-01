@@ -13,19 +13,7 @@ export default function HUDCorners() {
 
   return (
     <>
-      {/* Top Left HUD */}
-      <div className="fixed top-20 left-4 z-20 font-data text-[9px] leading-tight">
-        <div className="text-white/20 mb-1">┌─────────────</div>
-        <div className="text-[#ffffff]/60">│ RESONANCE</div>
-        <div className="flex items-center gap-1 text-[#ffffff]/80">
-          │ <span className="text-[#ffffff]">████████</span><span className="text-white/20">░░</span> 87%
-        </div>
-        <div className="text-[#ffffff]/60">│ COHERENCE</div>
-        <div className="flex items-center gap-1 text-[#ffffff]/80">
-          │ <span className="text-[#ffffff]">██████</span><span className="text-white/20">░░░░</span> 63%
-        </div>
-        <div className="text-white/20">└─────────────</div>
-      </div>
+
 
       {/* Top Right HUD */}
       <div className="fixed top-20 right-4 z-20 font-data text-[9px] text-right leading-tight">
