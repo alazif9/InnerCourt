@@ -68,15 +68,23 @@ export default function IntelligenceTree({ archetypeScores = {} }) {
     navigate(createPageUrl(`ArchetypeChat?archetype=${name}`));
   };
 
-  // Convert percentage positions to actual coordinates
-  // The nodes are positioned with CSS transform -translate-x-1/2 -translate-y-1/2
-  // So the top/left percentage points to the CENTER of the sphere
-  // But the sphere has a label below it (mt-1.5 + 8px text = ~14px)
-  // The actual sphere visual center is slightly ABOVE the CSS anchor point
+  // Node sizes in pixels
+  const NODE_SIZES = { sm: 40, md: 44, lg: 48 };
+  // Label height: mt-1.5 (6px) + text-[8px] line height (~12px) = ~18px
+  const LABEL_HEIGHT = 18;
+  
+  // Convert percentage positions to actual pixel coordinates for SVG lines
+  // The node div is positioned at (top%, left%) with -translate-x-1/2 -translate-y-1/2
+  // This means the CENTER of the entire node component (sphere + label) is at that point
+  // To get the center of just the SPHERE, we need to offset upward by half the label height
   const getCoords = (pos, name) => {
+    const nodeSize = name === 'SOL' ? NODE_SIZES.lg : NODE_SIZES.md;
+    const totalHeight = nodeSize + LABEL_HEIGHT;
+    
     const x = (parseFloat(pos.left) / 100) * containerSize.width;
-    // Offset upward to hit center of sphere (accounting for label below)
-    const y = (parseFloat(pos.top) / 100) * containerSize.height - 8;
+    // The translate centers the whole component, so position points to center of (sphere + label)
+    // Sphere center is above that by (totalHeight/2 - nodeSize/2) = LABEL_HEIGHT/2
+    const y = (parseFloat(pos.top) / 100) * containerSize.height - (LABEL_HEIGHT / 2);
     return { x, y };
   };
 
