@@ -54,16 +54,21 @@ export default function IntelligenceTree({ archetypeScores = {} }) {
   return (
     <div className="relative w-full h-[380px]">
 
-      {/* Connection lines between spheres */}
+      {/* Connection lines between spheres - neon beams */}
       <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 5 }} viewBox="0 0 100 100" preserveAspectRatio="none">
         <defs>
-          <linearGradient id="beamGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="rgba(255,255,255,0.1)" />
-            <stop offset="50%" stopColor="rgba(255,255,255,0.5)" />
-            <stop offset="100%" stopColor="rgba(255,255,255,0.1)" />
-          </linearGradient>
+          {/* Neon glow filter */}
+          <filter id="neonGlow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="0.8" result="coloredBlur"/>
+            <feMerge>
+              <feMergeNode in="coloredBlur"/>
+              <feMergeNode in="coloredBlur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
         </defs>
         
+        {/* Lines between spheres */}
         {connections.map((conn, i) => {
           const from = positions[conn.from];
           const to = positions[conn.to];
@@ -74,19 +79,54 @@ export default function IntelligenceTree({ archetypeScores = {} }) {
           
           return (
             <motion.line
-              key={i}
+              key={`conn-${i}`}
               x1={x1}
               y1={y1}
               x2={x2}
               y2={y2}
-              stroke="rgba(255,255,255,0.35)"
-              strokeWidth="0.3"
+              stroke="rgba(255,255,255,0.6)"
+              strokeWidth="0.2"
+              filter="url(#neonGlow)"
               initial={{ pathLength: 0, opacity: 0 }}
               animate={{ pathLength: 1, opacity: 1 }}
               transition={{ duration: 0.8, delay: i * 0.05 }}
             />
           );
         })}
+        
+        {/* Lines from each sphere to center */}
+        {Object.entries(positions).map(([name, pos], i) => {
+          const x = parseFloat(pos.left);
+          const y = parseFloat(pos.top);
+          
+          return (
+            <motion.line
+              key={`center-${name}`}
+              x1={x}
+              y1={y}
+              x2={50}
+              y2={46}
+              stroke="rgba(255,255,255,0.3)"
+              strokeWidth="0.15"
+              filter="url(#neonGlow)"
+              initial={{ pathLength: 0, opacity: 0 }}
+              animate={{ pathLength: 1, opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.5 + i * 0.05 }}
+            />
+          );
+        })}
+        
+        {/* Center convergence point */}
+        <motion.circle
+          cx={50}
+          cy={46}
+          r="1"
+          fill="rgba(255,255,255,0.8)"
+          filter="url(#neonGlow)"
+          initial={{ scale: 0, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 1 }}
+        />
       </svg>
 
       {/* Intelligence Nodes */}
