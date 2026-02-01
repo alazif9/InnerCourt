@@ -7,6 +7,7 @@ import HUDCorners from '@/components/hud/HUDCorners';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Search, UserPlus, UserCheck, Clock, X } from 'lucide-react';
+import SocialFeed from '@/components/social/SocialFeed';
 
 const archetypeSymbols = {
   SOL: '☉', SAGE: '☿', HERO: '♂', MOTHER: '☽',
@@ -345,6 +346,17 @@ export default function Friends() {
             </div>
           )}
         </GlassCard>
+      </motion.div>
+
+      {/* Social Feed */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.25 }}
+      >
+        <SocialFeed 
+          friendEmails={friends.map(f => f.user_email === user?.email ? f.friend_email : f.user_email)} 
+        />
       </motion.div>
 
       {/* Footer */}
