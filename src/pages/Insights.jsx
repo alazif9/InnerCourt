@@ -53,12 +53,31 @@ const sampleInsights = [
 
 export default function Insights() {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const urlParams = new URLSearchParams(window.location.search);
   const activeCategory = urlParams.get('category');
 
   const { data: user } = useQuery({
     queryKey: ['currentUser'],
     queryFn: () => base44.auth.me(),
+  });
+
+  const { data: insights = [] } = useQuery({
+    queryKey: ['insights', user?.email],
+    queryFn: () => base44.entities.Insight.filter({ created_by: user?.email }, '-created_date'),
+    enabled: !!user?.email,
+  });
+
+  const shareInsightMutation = useMutation({
+    mutationFn: async ({ id, shared }) => {
+      return base44.entities.Insight.update(id, {
+        shared_with_friends: shared,
+        shared_date: shared ? new Date().toISOString() : null
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['insights'] });
+    }
   });
 
   // Filter insights based on selected category
