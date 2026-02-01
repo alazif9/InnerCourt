@@ -2,6 +2,8 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
+import { useNavigate } from 'react-router-dom';
+import { createPageUrl } from '@/utils';
 import GlassCard from '@/components/ui/GlassCard';
 import HUDCorners from '@/components/hud/HUDCorners';
 import { Calendar, ArrowRight, ChevronRight } from 'lucide-react';
@@ -50,13 +52,31 @@ const sampleInsights = [
 ];
 
 export default function Insights() {
+  const navigate = useNavigate();
+  const urlParams = new URLSearchParams(window.location.search);
+  const activeCategory = urlParams.get('category');
+
   const { data: user } = useQuery({
     queryKey: ['currentUser'],
     queryFn: () => base44.auth.me(),
   });
 
-  const activeInsights = sampleInsights.length;
-  const highPriority = sampleInsights.filter(i => i.priority === 'HIGH').length;
+  // Filter insights based on selected category
+  const filteredInsights = activeCategory 
+    ? sampleInsights.filter(i => i.category === activeCategory)
+    : sampleInsights;
+
+  const activeInsights = filteredInsights.length;
+  const highPriority = filteredInsights.filter(i => i.priority === 'HIGH').length;
+
+  const handleCategoryClick = (categoryId) => {
+    if (activeCategory === categoryId) {
+      // If clicking the same category, clear filter
+      navigate(createPageUrl('Insights'));
+    } else {
+      navigate(createPageUrl('Insights') + `?category=${categoryId}`);
+    }
+  };
 
   return (
     <div className="space-y-4 relative">
@@ -96,15 +116,23 @@ export default function Insights() {
         transition={{ delay: 0.1 }}
         className="flex gap-2 justify-center"
       >
-        {insightCategories.map((cat) => (
-          <button
-            key={cat.id}
-            className="flex items-center gap-1.5 px-3 py-1.5 border border-white/20 bg-black/40 hover:bg-white/5 hover:border-white/40 transition-all font-data text-[10px] uppercase tracking-wider"
-          >
-            <span className="text-white/70">{cat.symbol}</span>
-            <span className="text-white/60">{cat.name}</span>
-          </button>
-        ))}
+        {insightCategories.map((cat) => {
+          const isActive = activeCategory === cat.id;
+          return (
+            <button
+              key={cat.id}
+              onClick={() => handleCategoryClick(cat.id)}
+              className={`flex items-center gap-1.5 px-3 py-1.5 border transition-all font-data text-[10px] uppercase tracking-wider ${
+                isActive 
+                  ? 'border-white/60 bg-white/10 text-white' 
+                  : 'border-white/20 bg-black/40 hover:bg-white/5 hover:border-white/40'
+              }`}
+            >
+              <span className={isActive ? 'text-white' : 'text-white/70'}>{cat.symbol}</span>
+              <span className={isActive ? 'text-white' : 'text-white/60'}>{cat.name}</span>
+            </button>
+          );
+        })}
       </motion.div>
 
       {/* Featured Insight - Primary Alert */}
@@ -172,11 +200,11 @@ export default function Insights() {
             Recent Discoveries
           </span>
           <span className="font-data text-[9px] text-white/30">
-            {sampleInsights.length} RECORDS
+            {filteredInsights.length} RECORDS
           </span>
         </div>
         
-        {sampleInsights.map((insight, i) => (
+        {filteredInsights.map((insight, i) => (
           <motion.div
             key={insight.id}
             initial={{ opacity: 0, y: 20 }}
