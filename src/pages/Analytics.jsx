@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import GlassCard from '@/components/ui/GlassCard';
 import HUDCorners from '@/components/hud/HUDCorners';
-import TopographicSphere from '@/components/analytics/TopographicSphere';
+import PentagonRadar from '@/components/analytics/PentagonRadar';
 import { 
   ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Cell
 } from 'recharts';
@@ -35,9 +35,9 @@ export default function Analytics() {
     value: userProfile?.archetype_scores?.[arch] || Math.floor(Math.random() * 60 + 20),
   }));
 
-  const wheelValues = ['career', 'finance', 'health', 'relationships', 'personal', 'spiritual', 'recreation', 'environment']
-    .map(k => userProfile?.wheel_of_life?.[k] || Math.floor(Math.random() * 40 + 40));
-  const overallScore = Math.round(wheelValues.reduce((a, b) => a + b, 0) / wheelValues.length);
+  const growthDimensions = ['social', 'physical', 'spiritual', 'economic', 'technical']
+    .map(k => userProfile?.growth_dimensions?.[k] || Math.floor(Math.random() * 40 + 40));
+  const overallScore = Math.round(growthDimensions.reduce((a, b) => a + b, 0) / growthDimensions.length);
   
   const totalArchetypeScore = archetypeData.reduce((a, b) => a + b.value, 0);
   const avgArchetype = Math.round(totalArchetypeScore / archetypeData.length);
@@ -86,10 +86,10 @@ export default function Analytics() {
                 ┌─ MODULE_01 ─┐
               </div>
               <h2 className="font-occult text-white font-medium text-sm">
-                Wheel of Life Matrix
+                Growth Dimensions
               </h2>
               <div className="font-data text-[9px] text-white/30 uppercase tracking-wider">
-                3D Topographic Balance Sphere
+                Pentagon Balance Matrix
               </div>
             </div>
             <div className="text-right font-data text-[9px]">
@@ -98,8 +98,8 @@ export default function Analytics() {
             </div>
           </div>
           
-          <TopographicSphere 
-            data={userProfile?.wheel_of_life || {}}
+          <PentagonRadar 
+            data={userProfile?.growth_dimensions || {}}
             overallScore={overallScore}
           />
         </GlassCard>
