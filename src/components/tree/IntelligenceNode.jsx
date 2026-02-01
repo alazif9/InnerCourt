@@ -16,35 +16,29 @@ const nodeConfig = {
 export default function IntelligenceNode({ 
   name, 
   size = 'md', 
-  activationLevel = 0,
   onClick 
 }) {
   const config = nodeConfig[name] || nodeConfig.SOL;
-  const percentage = activationLevel || Math.floor(Math.random() * 40 + 50);
   
   const sizeClasses = {
-    sm: 'w-12 h-12',
-    md: 'w-16 h-16',
-    lg: 'w-20 h-20',
+    sm: 'w-10 h-10',
+    md: 'w-11 h-11',
+    lg: 'w-12 h-12',
   };
 
-
+  const symbolSizes = {
+    sm: 'text-sm',
+    md: 'text-base',
+    lg: 'text-lg',
+  };
 
   return (
     <motion.button
       onClick={onClick}
-      className="relative group"
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.98 }}
+      className="relative group flex flex-col items-center"
+      whileHover={{ scale: 1.08 }}
+      whileTap={{ scale: 0.95 }}
     >
-      {/* Outer technical ring with rotation */}
-      <motion.div
-        className="absolute inset-0 rounded-full border border-white/20"
-        style={{ transform: 'scale(1.3)' }}
-        animate={{ rotate: 360 }}
-        transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-      />
-      
       {/* Main node circle */}
       <div
         className={cn(
@@ -54,42 +48,18 @@ export default function IntelligenceNode({
           "transition-all duration-300 group-hover:border-white/60"
         )}
         style={{ 
-          boxShadow: '0 0 20px rgba(255,255,255,0.15), inset 0 0 15px rgba(255,255,255,0.05)'
+          boxShadow: '0 0 12px rgba(255,255,255,0.1)'
         }}
       >
-        {/* Inner ring */}
-        <div className="absolute inset-2 rounded-full border border-white/10" />
-        
         {/* Central symbol */}
-        <span className="text-xl font-occult relative z-10 text-white/90">
+        <span className={cn(symbolSizes[size], "font-occult relative z-10 text-white/90")}>
           {config.symbol}
         </span>
       </div>
 
-      {/* Percentage indicator (top-right) */}
-      <div className="absolute -top-1 -right-1 font-data text-[8px] px-1 rounded bg-black/60 text-white/70">
-        {percentage}%
-      </div>
-
-      {/* Status indicator (bottom-left) */}
-      <div className="absolute -bottom-1 -left-1 flex items-center gap-0.5">
-        <div className="w-1 h-1 rounded-full bg-white/60 animate-pulse" />
-        <span className="font-data text-[7px] text-white/50">ACTIVE</span>
-      </div>
-
-      {/* Node ID (bottom) */}
-      <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 font-data text-[7px] text-white/30">
-        {config.hex}
-      </div>
-
-      {/* Sephira Label */}
-      <div className="absolute -bottom-7 left-1/2 -translate-x-1/2 font-data text-[9px] tracking-wider whitespace-nowrap text-white/70">
+      {/* Name Label - below sphere */}
+      <div className="mt-1.5 font-data text-[8px] tracking-wider whitespace-nowrap text-white/60 text-center">
         {config.sephira}
-      </div>
-      
-      {/* Archetype Label */}
-      <div className="absolute -bottom-11 left-1/2 -translate-x-1/2 font-data text-[7px] tracking-wider whitespace-nowrap text-white/40">
-        {config.archetype}
       </div>
     </motion.button>
   );
