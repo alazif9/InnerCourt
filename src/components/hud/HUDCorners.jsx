@@ -25,26 +25,7 @@ export default function HUDCorners() {
         </div>
       </div>
 
-      {/* Bottom Left Mini Graph */}
-      <motion.div 
-        className="fixed bottom-24 left-4 z-20 p-2 rounded bg-black/40 backdrop-blur-sm border border-[#ffffff]/20"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.5 }}
-      >
-        <div className="font-data text-[8px] text-[#ffffff]/50 mb-1">ACTIVITY_LOG</div>
-        <div className="flex items-end gap-0.5 h-4">
-          {[40, 65, 45, 80, 55, 70, 90, 60, 75, 85].map((h, i) => (
-            <motion.div
-              key={i}
-              className="w-1 bg-gradient-to-t from-[#ffffff]/60 to-[#ffffff]/60"
-              initial={{ height: 0 }}
-              animate={{ height: `${h}%` }}
-              transition={{ delay: i * 0.05, duration: 0.3 }}
-            />
-          ))}
-        </div>
-      </motion.div>
+
 
       {/* Bottom Center Progress */}
       <motion.div 
