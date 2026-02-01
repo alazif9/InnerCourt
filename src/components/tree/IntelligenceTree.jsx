@@ -44,6 +44,9 @@ const connections = [
   { from: 'SHADOW', to: 'ANIMA' },
 ];
 
+// Center point for all lines to connect
+const CENTER = { x: 50, y: 46 };
+
 export default function IntelligenceTree({ archetypeScores = {} }) {
   const navigate = useNavigate();
 
@@ -53,7 +56,41 @@ export default function IntelligenceTree({ archetypeScores = {} }) {
 
   return (
     <div className="relative w-full h-[380px]">
-
+      
+      {/* Connection lines to center */}
+      <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="rgba(255,255,255,0.05)" />
+            <stop offset="50%" stopColor="rgba(255,255,255,0.25)" />
+            <stop offset="100%" stopColor="rgba(255,255,255,0.05)" />
+          </linearGradient>
+        </defs>
+        
+        {/* Lines from each node to center */}
+        {Object.entries(positions).map(([name, pos], i) => {
+          const x = parseFloat(pos.left);
+          const y = parseFloat(pos.top);
+          
+          return (
+            <motion.line
+              key={name}
+              x1={x}
+              y1={y}
+              x2={CENTER.x}
+              y2={CENTER.y}
+              stroke="url(#lineGradient)"
+              strokeWidth="0.3"
+              initial={{ pathLength: 0, opacity: 0 }}
+              animate={{ pathLength: 1, opacity: 1 }}
+              transition={{ duration: 1, delay: i * 0.1 }}
+            />
+          );
+        })}
+        
+        {/* Center point */}
+        <circle cx={CENTER.x} cy={CENTER.y} r="0.8" fill="rgba(255,255,255,0.3)" />
+      </svg>
 
       {/* Intelligence Nodes */}
       {Object.entries(positions).map(([name, pos]) => (
