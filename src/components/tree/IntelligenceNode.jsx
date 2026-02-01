@@ -39,6 +39,23 @@ export default function IntelligenceNode({
       whileHover={{ scale: 1.08 }}
       whileTap={{ scale: 0.95 }}
     >
+      {/* Outer glow pulse */}
+      <motion.div
+        className={cn(sizeClasses[size], "absolute rounded-full")}
+        style={{ 
+          boxShadow: '0 0 20px rgba(255,255,255,0.15)',
+        }}
+        animate={{ 
+          opacity: [0.4, 0.8, 0.4],
+          scale: [1, 1.05, 1],
+        }}
+        transition={{ 
+          duration: 3 + Math.random() * 2,
+          repeat: Infinity,
+          ease: 'easeInOut',
+        }}
+      />
+      
       {/* Main node circle */}
       <div
         className={cn(
@@ -48,7 +65,7 @@ export default function IntelligenceNode({
           "transition-all duration-300 group-hover:border-white/60"
         )}
         style={{ 
-          boxShadow: '0 0 12px rgba(255,255,255,0.1)'
+          boxShadow: '0 0 15px rgba(255,255,255,0.12), inset 0 0 8px rgba(255,255,255,0.05)'
         }}
       >
         {/* Central symbol */}
