@@ -96,9 +96,9 @@ export default function IntelligenceTree({ archetypeScores = {} }) {
         
         {/* Lines between spheres */}
         {connections.map((conn, i) => {
-          const from = getCoords(positions[conn.from]);
-          const to = getCoords(positions[conn.to]);
-          
+          const from = getCoords(positions[conn.from], conn.from);
+          const to = getCoords(positions[conn.to], conn.to);
+
           return (
             <motion.line
               key={`conn-${i}`}
