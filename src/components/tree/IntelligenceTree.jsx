@@ -54,31 +54,12 @@ export default function IntelligenceTree({ archetypeScores = {} }) {
   return (
     <div className="relative w-full h-[380px]">
 
-      {/* Intelligence Nodes */}
-      {Object.entries(positions).map(([name, pos]) => (
-        <motion.div
-          key={name}
-          className="absolute -translate-x-1/2 -translate-y-1/2"
-          style={{ top: pos.top, left: pos.left }}
-          initial={{ opacity: 0, scale: 0.5 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-        >
-          <IntelligenceNode
-            name={name}
-            size={name === 'SOL' ? 'lg' : 'md'}
-            activationLevel={archetypeScores[name] || 0}
-            onClick={() => handleNodeClick(name)}
-          />
-        </motion.div>
-      ))}
-
-      {/* Connection lines between spheres - rendered on top */}
-      <svg className="absolute inset-0 w-full h-full pointer-events-none z-10" viewBox="0 0 100 100" preserveAspectRatio="none">
+      {/* Connection lines between spheres */}
+      <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 5 }} viewBox="0 0 100 100" preserveAspectRatio="none">
         <defs>
           <linearGradient id="beamGradient" x1="0%" y1="0%" x2="100%" y2="0%">
             <stop offset="0%" stopColor="rgba(255,255,255,0.1)" />
-            <stop offset="50%" stopColor="rgba(255,255,255,0.4)" />
+            <stop offset="50%" stopColor="rgba(255,255,255,0.5)" />
             <stop offset="100%" stopColor="rgba(255,255,255,0.1)" />
           </linearGradient>
         </defs>
@@ -98,8 +79,8 @@ export default function IntelligenceTree({ archetypeScores = {} }) {
               y1={y1}
               x2={x2}
               y2={y2}
-              stroke="url(#beamGradient)"
-              strokeWidth="0.25"
+              stroke="rgba(255,255,255,0.35)"
+              strokeWidth="0.3"
               initial={{ pathLength: 0, opacity: 0 }}
               animate={{ pathLength: 1, opacity: 1 }}
               transition={{ duration: 0.8, delay: i * 0.05 }}
@@ -107,6 +88,25 @@ export default function IntelligenceTree({ archetypeScores = {} }) {
           );
         })}
       </svg>
+
+      {/* Intelligence Nodes */}
+      {Object.entries(positions).map(([name, pos]) => (
+        <motion.div
+          key={name}
+          className="absolute -translate-x-1/2 -translate-y-1/2"
+          style={{ top: pos.top, left: pos.left, zIndex: 10 }}
+          initial={{ opacity: 0, scale: 0.5 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+        >
+          <IntelligenceNode
+            name={name}
+            size={name === 'SOL' ? 'lg' : 'md'}
+            activationLevel={archetypeScores[name] || 0}
+            onClick={() => handleNodeClick(name)}
+          />
+        </motion.div>
+      ))}
 
       {/* Floating data particles */}
       {[...Array(8)].map((_, i) => (
