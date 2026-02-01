@@ -3,14 +3,14 @@ import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
 const nodeConfig = {
-  SOL: { symbol: '☉', sephira: 'TIPHARETH', archetype: 'SOL', hex: '0x6A3F' },
-  SAGE: { symbol: '☿', sephira: 'BINAH', archetype: 'SAGE', hex: '0x3B21' },
-  HERO: { symbol: '♂', sephira: 'CHOKMAH', archetype: 'HERO', hex: '0x2C15' },
-  MOTHER: { symbol: '♀', sephira: 'CHESED', archetype: 'MOTHER', hex: '0x4D28' },
-  SHADOW: { symbol: '♄', sephira: 'GEBURAH', archetype: 'SHADOW', hex: '0x5E37' },
-  ANIMA: { symbol: '♃', sephira: 'NETZACH', archetype: 'ANIMA', hex: '0x7F4A' },
-  CHILD: { symbol: '☽', sephira: 'YESOD', archetype: 'CHILD', hex: '0x8G52' },
-  TRICKSTER: { symbol: '☊', sephira: 'HOD', archetype: 'TRICKSTER', hex: '0x1A09' },
+  SOL: { symbol: '☉', sephira: 'TIPHARETH', archetype: 'The Self', hex: '0x6A3F' },
+  SAGE: { symbol: '☿', sephira: 'BINAH', archetype: 'The Sage', hex: '0x3B21' },
+  HERO: { symbol: '♂', sephira: 'CHOKMAH', archetype: 'The Hero', hex: '0x2C15' },
+  MOTHER: { symbol: '♀', sephira: 'CHESED', archetype: 'The Mother', hex: '0x4D28' },
+  SHADOW: { symbol: '♄', sephira: 'GEBURAH', archetype: 'The Shadow', hex: '0x5E37' },
+  ANIMA: { symbol: '♃', sephira: 'NETZACH', archetype: 'The Anima', hex: '0x7F4A' },
+  CHILD: { symbol: '☽', sephira: 'YESOD', archetype: 'The Child', hex: '0x8G52' },
+  TRICKSTER: { symbol: '☊', sephira: 'HOD', archetype: 'The Trickster', hex: '0x1A09' },
 };
 
 export default function IntelligenceNode({ 
