@@ -93,7 +93,14 @@ export default function TreeOfLife({ archetypeScores = {}, onSelectArchetype }) 
   return (
     <div className="relative w-full h-[420px]">
       {/* Linhas conectando os arquétipos */}
-      <svg className="absolute inset-0 w-full h-full" style={{ zIndex: 5 }}>
+      <svg className="absolute inset-0 w-full h-full" style={{ zIndex: 1 }}>
+        <defs>
+          <linearGradient id="beamGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="rgba(255,255,255,0.1)" />
+            <stop offset="50%" stopColor="rgba(255,255,255,0.4)" />
+            <stop offset="100%" stopColor="rgba(255,255,255,0.1)" />
+          </linearGradient>
+        </defs>
         {paths.map(([from, to], idx) => (
           <motion.line
             key={idx}
@@ -101,8 +108,8 @@ export default function TreeOfLife({ archetypeScores = {}, onSelectArchetype }) 
             y1={`${archetypes[from].y}%`}
             x2={`${archetypes[to].x}%`}
             y2={`${archetypes[to].y}%`}
-            stroke="rgba(255,255,255,0.15)"
-            strokeWidth="1"
+            stroke="url(#beamGradient)"
+            strokeWidth="2"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: idx * 0.05 }}
@@ -116,10 +123,14 @@ export default function TreeOfLife({ archetypeScores = {}, onSelectArchetype }) 
         const isActive = key === 'SOL' || activation > 50;
         const isCentral = key === 'SOL';
         
+        // Position text labels based on node position
+        const isLeftSide = data.x < 40;
+        const isRightSide = data.x > 60;
+        
         return (
           <motion.div
             key={key}
-            className="absolute flex flex-col items-center cursor-pointer group"
+            className="absolute cursor-pointer group"
             style={{
               left: `${data.x}%`,
               top: `${data.y}%`,
@@ -133,52 +144,69 @@ export default function TreeOfLife({ archetypeScores = {}, onSelectArchetype }) 
             whileTap={{ scale: 0.95 }}
             onClick={() => handleClick(key)}
           >
-            {/* Percentage */}
-            <div className="font-data text-[10px] text-white/60 mb-1">
-              {activation}%
-            </div>
+            {/* Container for orb and labels */}
+            <div className="relative flex items-center gap-2">
+              {/* Left-side labels */}
+              {isLeftSide && (
+                <div className="flex flex-col items-end mr-1 min-w-[60px]">
+                  <div className="font-data text-[10px] text-white/70 tracking-wider">
+                    {data.sephira}
+                  </div>
+                  <div className="font-data text-[8px] text-white/40">
+                    {key}
+                  </div>
+                </div>
+              )}
 
-            {/* Círculo principal */}
-            <div
-              className={`${isCentral ? 'w-16 h-16' : 'w-14 h-14'} rounded-full border border-white/30 flex items-center justify-center backdrop-blur-sm transition-all duration-300 group-hover:border-white/50`}
-              style={{
-                backgroundColor: 'rgba(0,0,0,0.6)',
-                boxShadow: isActive 
-                  ? '0 0 20px rgba(255,255,255,0.15), inset 0 0 15px rgba(255,255,255,0.05)' 
-                  : '0 0 10px rgba(255,255,255,0.05)',
-              }}
-            >
-              {/* Inner ring */}
-              <div className="absolute inset-1.5 rounded-full border border-white/10" />
-              
-              {/* Símbolo */}
-              <span className={`${isCentral ? 'text-2xl' : 'text-xl'} font-data text-white/80`}>
-                {data.symbol}
-              </span>
-            </div>
+              {/* Orb container */}
+              <div className="relative flex flex-col items-center">
+                {/* Percentage badge */}
+                <div className="absolute -top-3 font-data text-[10px] text-white/60">
+                  {activation}%
+                </div>
 
-            {/* Status indicator */}
-            <div className="flex items-center gap-1 mt-1.5">
-              <div 
-                className="w-1 h-1 rounded-full"
-                style={{ 
-                  backgroundColor: isActive ? 'rgba(255,255,255,0.6)' : 'rgba(255,255,255,0.2)',
-                  boxShadow: isActive ? '0 0 4px rgba(255,255,255,0.5)' : 'none'
-                }}
-              />
-              <span className="font-data text-[7px] text-white/40">
-                {isActive ? 'ACTIVE' : data.nodeId}
-              </span>
-            </div>
+                {/* Círculo principal */}
+                <div
+                  className={`${isCentral ? 'w-14 h-14' : 'w-12 h-12'} rounded-full border border-white/40 flex items-center justify-center backdrop-blur-sm transition-all duration-300 group-hover:border-white/60`}
+                  style={{
+                    backgroundColor: 'rgba(0,0,0,0.7)',
+                    boxShadow: '0 0 20px rgba(255,255,255,0.15), inset 0 0 10px rgba(255,255,255,0.05)',
+                  }}
+                >
+                  {/* Inner ring */}
+                  <div className="absolute inset-1.5 rounded-full border border-white/15" />
+                  
+                  {/* Símbolo */}
+                  <span className={`${isCentral ? 'text-xl' : 'text-lg'} font-data text-white/90`}>
+                    {data.symbol}
+                  </span>
+                </div>
 
-            {/* Sephira name */}
-            <div className="font-data text-[9px] text-white/70 tracking-wider mt-0.5">
-              {data.sephira}
-            </div>
-            
-            {/* Archetype name */}
-            <div className="font-data text-[7px] text-white/40">
-              {key}
+                {/* Status indicator */}
+                <div className="flex items-center gap-1 mt-1">
+                  <div 
+                    className="w-1 h-1 rounded-full bg-white/50"
+                    style={{ 
+                      boxShadow: isActive ? '0 0 4px rgba(255,255,255,0.5)' : 'none'
+                    }}
+                  />
+                  <span className="font-data text-[7px] text-white/40">
+                    {isActive ? 'ACTIVE' : data.nodeId}
+                  </span>
+                </div>
+              </div>
+
+              {/* Right-side or center labels */}
+              {(isRightSide || (!isLeftSide && !isRightSide)) && (
+                <div className={`flex flex-col ${isRightSide ? 'items-start ml-1' : 'items-start ml-1'} min-w-[60px]`}>
+                  <div className="font-data text-[10px] text-white/70 tracking-wider">
+                    {data.sephira}
+                  </div>
+                  <div className="font-data text-[8px] text-white/40">
+                    {key}
+                  </div>
+                </div>
+              )}
             </div>
           </motion.div>
         );
