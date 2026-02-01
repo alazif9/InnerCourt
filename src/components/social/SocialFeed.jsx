@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import GlassCard from '@/components/ui/GlassCard';
-import { Calendar, Share2, BookOpen } from 'lucide-react';
+import { Calendar, Share2, BookOpen, Sparkles } from 'lucide-react';
 import { format } from 'date-fns';
 
 const archetypeSymbols = {
@@ -27,7 +27,7 @@ export default function SocialFeed({ friendEmails = [] }) {
       if (friendEmails.length === 0) return [];
       
       // Fetch shared journal entries from friends
-      const allEntries = await Promise.all(
+      const journalEntries = await Promise.all(
         friendEmails.map(email =>
           base44.entities.JournalEntry.filter({ 
             created_by: email, 
@@ -36,9 +36,22 @@ export default function SocialFeed({ friendEmails = [] }) {
         )
       );
       
-      // Flatten and sort by shared_date
-      return allEntries
-        .flat()
+      // Fetch shared insights from friends
+      const insightEntries = await Promise.all(
+        friendEmails.map(email =>
+          base44.entities.Insight.filter({ 
+            created_by: email, 
+            shared_with_friends: true 
+          }, '-shared_date', 5)
+        )
+      );
+      
+      // Mark entry types and flatten
+      const journals = journalEntries.flat().map(e => ({ ...e, _type: 'journal' }));
+      const insights = insightEntries.flat().map(e => ({ ...e, _type: 'insight' }));
+      
+      // Combine and sort by shared_date
+      return [...journals, ...insights]
         .sort((a, b) => new Date(b.shared_date) - new Date(a.shared_date))
         .slice(0, 10);
     },
@@ -112,8 +125,14 @@ export default function SocialFeed({ friendEmails = [] }) {
                     <span className="font-data text-[10px] text-white/60">
                       @{entry.created_by?.split('@')[0]}
                     </span>
-                    <BookOpen className="w-3 h-3 text-white/30" />
-                    <span className="font-data text-[9px] text-white/30">shared</span>
+                    {entry._type === 'insight' ? (
+                      <Sparkles className="w-3 h-3 text-white/30" />
+                    ) : (
+                      <BookOpen className="w-3 h-3 text-white/30" />
+                    )}
+                    <span className="font-data text-[9px] text-white/30">
+                      shared {entry._type === 'insight' ? 'insight' : 'journal'}
+                    </span>
                     {moodData && (
                       <span style={{ color: moodData.color }} className="text-xs">
                         {moodData.symbol}
@@ -128,7 +147,7 @@ export default function SocialFeed({ friendEmails = [] }) {
                   
                   {/* Content preview */}
                   <p className="text-white/40 font-data text-[10px] line-clamp-3 leading-relaxed">
-                    {entry.content}
+                    {entry._type === 'insight' ? entry.summary : entry.content}
                   </p>
                   
                   {/* Meta */}
