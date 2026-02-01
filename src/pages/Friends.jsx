@@ -118,10 +118,10 @@ export default function Friends() {
         className="text-center pt-2 space-y-2"
       >
         <h1 className="font-occult text-3xl font-semibold text-gradient-gold tracking-wide">
-          Network Grid
+          Social Nexus
         </h1>
         <div className="font-data text-xs text-white/70 tracking-[0.2em] uppercase">
-          Social Matrix Interface
+          Connection Resonance Network
         </div>
         <div className="flex items-center justify-center gap-2 font-data text-[10px] text-white/40">
           <span>CONNECTIONS:</span>
