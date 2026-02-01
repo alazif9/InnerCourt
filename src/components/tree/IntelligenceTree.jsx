@@ -55,7 +55,7 @@ export default function IntelligenceTree({ archetypeScores = {} }) {
     <div className="relative w-full h-[380px]">
 
       {/* Connection lines between spheres - neon beams */}
-      <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 5 }} viewBox="0 0 100 100" preserveAspectRatio="none">
+      <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 5 }} viewBox="0 0 100 100">
         <defs>
           {/* Neon glow filter */}
           <filter id="neonGlow" x="-50%" y="-50%" width="200%" height="200%">
