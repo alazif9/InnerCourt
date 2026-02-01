@@ -5,8 +5,8 @@ import { base44 } from '@/api/base44Client';
 import GlassCard from '@/components/ui/GlassCard';
 import HUDCorners from '@/components/hud/HUDCorners';
 import { 
-  User, Settings, Moon, Bell, Shield, LogOut, 
-  ChevronRight, Calendar, Sparkles
+  User, Settings, LogOut, 
+  ChevronRight, Sparkles
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
@@ -15,10 +15,7 @@ import { Button } from "@/components/ui/button";
 
 const menuItems = [
   { icon: User, label: 'EDIT PROFILE', action: 'profile', symbol: '◇', page: 'EditProfile' },
-  { icon: Bell, label: 'NOTIFICATIONS', action: 'notifications', symbol: '◈' },
-  { icon: Moon, label: 'APPEARANCE', action: 'appearance', symbol: '☽' },
-  { icon: Shield, label: 'PRIVACY', action: 'privacy', symbol: '△' },
-  { icon: Settings, label: 'SETTINGS', action: 'settings', symbol: '⚙' },
+  { icon: Settings, label: 'SETTINGS', action: 'settings', symbol: '⚙', page: 'Settings' },
 ];
 
 const archetypeSymbols = {
