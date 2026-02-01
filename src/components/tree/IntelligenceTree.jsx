@@ -94,42 +94,49 @@ export default function IntelligenceTree({ archetypeScores = {} }) {
           );
         })}
         
-        {/* Lines from each sphere to center */}
-        {Object.entries(positions).map(([name, pos], i) => {
-          const x = parseFloat(pos.left);
-          const y = parseFloat(pos.top);
-          // Center point calculated as average of all positions
-          const centerX = 50;
-          const centerY = 43;
+        {/* Lines from each sphere to center - calculate true center */}
+        {(() => {
+          const allPositions = Object.values(positions);
+          const centerX = allPositions.reduce((sum, p) => sum + parseFloat(p.left), 0) / allPositions.length;
+          const centerY = allPositions.reduce((sum, p) => sum + parseFloat(p.top), 0) / allPositions.length;
           
           return (
-            <motion.line
-              key={`center-${name}`}
-              x1={x}
-              y1={y}
-              x2={centerX}
-              y2={centerY}
-              stroke="rgba(255,255,255,0.3)"
-              strokeWidth="0.15"
-              filter="url(#neonGlow)"
-              initial={{ pathLength: 0, opacity: 0 }}
-              animate={{ pathLength: 1, opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.5 + i * 0.05 }}
-            />
+            <>
+              {Object.entries(positions).map(([name, pos], i) => {
+                const x = parseFloat(pos.left);
+                const y = parseFloat(pos.top);
+                
+                return (
+                  <motion.line
+                    key={`center-${name}`}
+                    x1={x}
+                    y1={y}
+                    x2={centerX}
+                    y2={centerY}
+                    stroke="rgba(255,255,255,0.3)"
+                    strokeWidth="0.15"
+                    filter="url(#neonGlow)"
+                    initial={{ pathLength: 0, opacity: 0 }}
+                    animate={{ pathLength: 1, opacity: 1 }}
+                    transition={{ duration: 0.6, delay: 0.5 + i * 0.05 }}
+                  />
+                );
+              })}
+              
+              {/* Center convergence point */}
+              <motion.circle
+                cx={centerX}
+                cy={centerY}
+                r="1.2"
+                fill="rgba(255,255,255,0.9)"
+                filter="url(#neonGlow)"
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.5, delay: 1 }}
+              />
+            </>
           );
-        })}
-        
-        {/* Center convergence point */}
-        <motion.circle
-          cx={50}
-          cy={43}
-          r="1.2"
-          fill="rgba(255,255,255,0.9)"
-          filter="url(#neonGlow)"
-          initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.5, delay: 1 }}
-        />
+        })()}
       </svg>
 
       {/* Intelligence Nodes */}
