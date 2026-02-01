@@ -59,6 +59,7 @@ import Journal from './pages/Journal';
 import Onboarding from './pages/Onboarding';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
+import HelpSupport from './pages/HelpSupport';
 import __Layout from './Layout.jsx';
 
 
@@ -75,6 +76,7 @@ export const PAGES = {
     "Onboarding": Onboarding,
     "Profile": Profile,
     "Settings": Settings,
+    "HelpSupport": HelpSupport,
 }
 
 export const pagesConfig = {

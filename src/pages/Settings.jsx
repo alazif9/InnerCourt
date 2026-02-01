@@ -13,7 +13,7 @@ import { createPageUrl } from '@/utils';
 const settingsItems = [
   { icon: Download, label: 'EXPORT DATA', action: 'export', symbol: '⬡', description: 'Download your journal & insights' },
   { icon: FileText, label: 'TERMS OF SERVICE', action: 'terms', symbol: '◈', description: 'Legal documentation' },
-  { icon: HelpCircle, label: 'HELP & SUPPORT', action: 'help', symbol: '?', description: 'FAQs and contact' },
+  { icon: HelpCircle, label: 'HELP & SUPPORT', action: 'help', symbol: '?', description: 'FAQs and contact', page: 'HelpSupport' },
   { icon: Info, label: 'ABOUT', action: 'about', symbol: 'ℹ', description: 'App version and credits' },
 ];
 
@@ -62,26 +62,46 @@ export default function Settings() {
         transition={{ delay: 0.1 }}
       >
         <GlassCard className="divide-y divide-white/10">
-          {settingsItems.map((item) => (
-            <button
-              key={item.action}
-              onClick={item.action === 'export' ? handleExportData : undefined}
-              className="w-full flex items-center justify-between p-4 hover:bg-white/5 transition-colors group"
-            >
-              <div className="flex items-center gap-3">
-                <span className="text-white/40 text-sm">{item.symbol}</span>
-                <div className="text-left">
-                  <span className="font-data text-[11px] text-white/70 uppercase tracking-wider block">
-                    {item.label}
-                  </span>
-                  <span className="font-data text-[9px] text-white/40">
-                    {item.description}
-                  </span>
+          {settingsItems.map((item) => {
+            const content = (
+              <>
+                <div className="flex items-center gap-3">
+                  <span className="text-white/40 text-sm">{item.symbol}</span>
+                  <div className="text-left">
+                    <span className="font-data text-[11px] text-white/70 uppercase tracking-wider block">
+                      {item.label}
+                    </span>
+                    <span className="font-data text-[9px] text-white/40">
+                      {item.description}
+                    </span>
+                  </div>
                 </div>
-              </div>
-              <ChevronRight className="w-4 h-4 text-white/20 group-hover:text-white/50 transition-colors" />
-            </button>
-          ))}
+                <ChevronRight className="w-4 h-4 text-white/20 group-hover:text-white/50 transition-colors" />
+              </>
+            );
+
+            if (item.page) {
+              return (
+                <Link
+                  key={item.action}
+                  to={createPageUrl(item.page)}
+                  className="w-full flex items-center justify-between p-4 hover:bg-white/5 transition-colors group"
+                >
+                  {content}
+                </Link>
+              );
+            }
+
+            return (
+              <button
+                key={item.action}
+                onClick={item.action === 'export' ? handleExportData : undefined}
+                className="w-full flex items-center justify-between p-4 hover:bg-white/5 transition-colors group"
+              >
+                {content}
+              </button>
+            );
+          })}
         </GlassCard>
       </motion.div>
 
