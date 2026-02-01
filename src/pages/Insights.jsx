@@ -80,13 +80,24 @@ export default function Insights() {
     }
   });
 
+  // Combine database insights with sample data for display
+  const allInsights = insights.length > 0 ? insights : sampleInsights;
+  
   // Filter insights based on selected category
   const filteredInsights = activeCategory 
-    ? sampleInsights.filter(i => i.category === activeCategory)
-    : sampleInsights;
+    ? allInsights.filter(i => i.category === activeCategory)
+    : allInsights;
 
   const activeInsights = filteredInsights.length;
   const highPriority = filteredInsights.filter(i => i.priority === 'HIGH').length;
+
+  const handleShareToggle = (e, insight) => {
+    e.stopPropagation();
+    shareInsightMutation.mutate({ 
+      id: insight.id, 
+      shared: !insight.shared_with_friends 
+    });
+  };
 
   const handleCategoryClick = (categoryId) => {
     if (activeCategory === categoryId) {
