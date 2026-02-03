@@ -180,12 +180,14 @@ export default function Profile() {
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <GlassCard className="p-3 text-center cursor-help relative">
-                <HelpCircle className="w-3 h-3 text-white/30 absolute top-2 right-2" />
-                <div className="text-white/50 text-lg mb-1">✦</div>
-                <p className="text-white font-occult text-2xl">?</p>
-                <p className="font-data text-[8px] text-white/40 uppercase tracking-wider">Rank</p>
-              </GlassCard>
+              <div>
+                <GlassCard className="p-3 text-center cursor-help relative">
+                  <HelpCircle className="w-3 h-3 text-white/30 absolute top-2 right-2" />
+                  <div className="text-white/50 text-lg mb-1">✦</div>
+                  <p className="text-white font-occult text-2xl">?</p>
+                  <p className="font-data text-[8px] text-white/40 uppercase tracking-wider">Rank</p>
+                </GlassCard>
+              </div>
             </TooltipTrigger>
             <TooltipContent side="bottom" className="max-w-[200px] bg-black/90 border-white/20 text-white/80">
               <p className="font-data text-[10px]">Rank is measured by daily use and progress in your growth objectives (C → S)</p>
