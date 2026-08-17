@@ -1,0 +1,28 @@
+{
+  "name": "User",
+  "type": "object",
+  "properties": {
+    "handle": {
+      "type": "string",
+      "description": "Unique @ handle for the user"
+    },
+    "bio": {
+      "type": "string",
+      "description": "User bio/description"
+    },
+    "dominant_archetype": {
+      "type": "string",
+      "description": "Primary archetype"
+    },
+    "is_public": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether profile is discoverable"
+    }
+  },
+  "required": [
+    "handle",
+    "bio",
+    "dominant_archetype"
+  ]
+}

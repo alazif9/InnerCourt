@@ -1,0 +1,59 @@
+{
+  "name": "Insight",
+  "type": "object",
+  "properties": {
+    "category": {
+      "type": "string",
+      "enum": [
+        "shadow",
+        "dreams",
+        "patterns",
+        "growth"
+      ],
+      "description": "Insight category"
+    },
+    "title": {
+      "type": "string",
+      "description": "Insight title"
+    },
+    "summary": {
+      "type": "string",
+      "description": "Brief insight summary"
+    },
+    "content": {
+      "type": "string",
+      "description": "Full insight content"
+    },
+    "archetype": {
+      "type": "string",
+      "description": "Related archetype"
+    },
+    "priority": {
+      "type": "string",
+      "enum": [
+        "LOW",
+        "MEDIUM",
+        "HIGH"
+      ],
+      "default": "MEDIUM"
+    },
+    "confidence": {
+      "type": "number",
+      "description": "Confidence score 0-100"
+    },
+    "shared_with_friends": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether this insight is shared with friends"
+    },
+    "shared_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the insight was shared"
+    }
+  },
+  "required": [
+    "title",
+    "summary"
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "name": "Friend",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string",
+      "description": "The user who initiated the friendship"
+    },
+    "friend_email": {
+      "type": "string",
+      "description": "The friend's email"
+    },
+    "friend_name": {
+      "type": "string",
+      "description": "Friend's display name"
+    },
+    "friend_handle": {
+      "type": "string",
+      "description": "Friend's @ handle"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "accepted",
+        "blocked"
+      ],
+      "default": "pending"
+    }
+  },
+  "required": [
+    "user_email",
+    "friend_email"
+  ]
+}

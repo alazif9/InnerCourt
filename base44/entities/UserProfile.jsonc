@@ -1,0 +1,78 @@
+{
+  "name": "UserProfile",
+  "type": "object",
+  "properties": {
+    "display_name": {
+      "type": "string",
+      "description": "User's display name"
+    },
+    "about": {
+      "type": "string",
+      "description": "About the user - information for agents to work with"
+    },
+    "birth_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "User's birth date and time"
+    },
+    "birth_location": {
+      "type": "string",
+      "description": "Birth location for chart calculation"
+    },
+    "dominant_archetype": {
+      "type": "string",
+      "description": "Primary archetype based on assessment"
+    },
+    "archetype_scores": {
+      "type": "object",
+      "description": "Activation level for each archetype (0-100)"
+    },
+    "growth_dimensions": {
+      "type": "object",
+      "description": "Scores for 5 growth dimensions: social, physical, spiritual, economic, technical",
+      "properties": {
+        "social": {
+          "type": "number"
+        },
+        "physical": {
+          "type": "number"
+        },
+        "spiritual": {
+          "type": "number"
+        },
+        "economic": {
+          "type": "number"
+        },
+        "technical": {
+          "type": "number"
+        }
+      }
+    },
+    "objectives": {
+      "type": "object",
+      "description": "User objectives for each growth dimension",
+      "properties": {
+        "social": {
+          "type": "string"
+        },
+        "physical": {
+          "type": "string"
+        },
+        "spiritual": {
+          "type": "string"
+        },
+        "economic": {
+          "type": "string"
+        },
+        "technical": {
+          "type": "string"
+        }
+      }
+    },
+    "onboarding_completed": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": []
+}

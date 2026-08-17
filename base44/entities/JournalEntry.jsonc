@@ -1,0 +1,49 @@
+{
+  "name": "JournalEntry",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Entry title"
+    },
+    "content": {
+      "type": "string",
+      "description": "Journal content"
+    },
+    "archetype": {
+      "type": "string",
+      "description": "Related archetype"
+    },
+    "mood": {
+      "type": "string",
+      "enum": [
+        "transcendent",
+        "peaceful",
+        "curious",
+        "challenged",
+        "struggling",
+        "transforming"
+      ]
+    },
+    "insights": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Key insights from this entry"
+    },
+    "shared_with_friends": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether this entry is shared with friends"
+    },
+    "shared_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the entry was shared"
+    }
+  },
+  "required": [
+    "content"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "name": "Archetype",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Name of the archetype"
+    },
+    "symbol": {
+      "type": "string",
+      "description": "Icon/symbol for the archetype"
+    },
+    "color": {
+      "type": "string",
+      "description": "Primary color hex code"
+    },
+    "description": {
+      "type": "string",
+      "description": "Brief description of the archetype"
+    },
+    "position": {
+      "type": "object",
+      "description": "Position in the Tree of Life",
+      "properties": {
+        "tier": {
+          "type": "string"
+        },
+        "order": {
+          "type": "number"
+        }
+      }
+    },
+    "affirmations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Key affirmations for this archetype"
+    },
+    "shadow_aspects": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Shadow aspects to integrate"
+    }
+  },
+  "required": [
+    "name",
+    "symbol",
+    "color"
+  ]
+}
