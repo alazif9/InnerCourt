@@ -1,39 +1,56 @@
-**Welcome to your Base44 project** 
+# temenos
 
-**About**
+This project was created with Shipper.
 
-View and Edit  your app on [Base44.com](http://Base44.com) 
+## 🚀 Tech Stack
 
-This project contains everything you need to run your app locally.
+- **Framework:** React
+- **Package Manager:** bun
 
-**Edit the code in your local development environment**
+## 📋 Prerequisites
 
-Any change pushed to the repo will also be reflected in the Base44 Builder.
+Before you begin, ensure you have the following installed:
 
-**Prerequisites:** 
+- [Node.js](https://nodejs.org/) (v18 or higher recommended)
+- [bun](https://www.npmjs.com/package/bun)
 
-1. Clone the repository using the project's Git URL 
-2. Navigate to the project directory
-3. Install dependencies: `npm install`
-4. Create an `.env.local` file and set the right environment variables
+## 🛠️ Getting Started
 
-```
-VITE_BASE44_APP_ID=your_app_id
-VITE_BASE44_APP_BASE_URL=your_backend_url
+### 1. Install Dependencies
 
-e.g.
-VITE_BASE44_APP_ID=cbef744a8545c389ef439ea6
-VITE_BASE44_APP_BASE_URL=https://my-to-do-list-81bfaad7.base44.app
+```bash
+bun install
 ```
 
-Run the app: `npm run dev`
+### 2. Run the Development Server
 
-**Publish your changes**
+```bash
+bun dev
+```
 
-Open [Base44.com](http://Base44.com) and click on Publish.
+The application will start and display the local URL in your terminal.
 
-**Docs & Support**
+## 📜 Available Scripts
 
-Documentation: [https://docs.base44.com/Integrations/Using-GitHub](https://docs.base44.com/Integrations/Using-GitHub)
+- `bun dev` - Start development server
+- `bun build` - Build for production
+- `bun lint` - Run linter
 
-Support: [https://app.base44.com/support](https://app.base44.com/support)
+## 🏗️ Building for Production
+
+```bash
+bun build
+```
+
+## 📚 Learn More
+
+- [React Documentation](https://react.dev)
+- [React Tutorial](https://react.dev/learn)
+- [React GitHub](https://github.com/facebook/react)
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+---
+
+Built with ❤️ using [Shipper](https://shipper.now)
