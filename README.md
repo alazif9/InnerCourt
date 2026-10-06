@@ -1,4 +1,4 @@
-# temenos
+# InnerCourt
 
 This project was created with Shipper.
 
@@ -28,7 +28,7 @@ bun install
 bun dev
 ```
 
-The application will start and display the local URL in your terminal.
+Open [http://localhost:5173](http://localhost:5173) in your browser to see the application.
 
 ## 📜 Available Scripts
 

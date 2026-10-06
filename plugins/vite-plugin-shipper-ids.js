@@ -1,25 +1,21 @@
 // shipper-ids-plugin-version: 2025-12-30-v4
-// NOTE: Keep this version in sync with the API's expected version in `ai-tools.ts`
+// NOTE: Keep this version in sync with the API's expected version
 export const SHIPPER_IDS_PLUGIN_VERSION = "2025-12-30-v4";
 
-import { Plugin } from "vite";
 import { parse } from "@babel/parser";
-import _traverse, { NodePath } from "@babel/traverse";
+import _traverse from "@babel/traverse";
 import _generate from "@babel/generator";
 import * as t from "@babel/types";
 import path from "path";
 
 // Handle default exports for CommonJS modules
-type TraverseModule = typeof _traverse & { default?: typeof _traverse };
-type GenerateModule = typeof _generate & { default?: typeof _generate };
-
-const traverse = (((_traverse as TraverseModule).default || _traverse) as typeof _traverse);
-const generate = (((_generate as GenerateModule).default || _generate) as typeof _generate);
+const traverse = _traverse.default || _traverse;
+const generate = _generate.default || _generate;
 
 // Debug flag - set to true to see all processed files
 const DEBUG_SHIPPER_IDS = process.env.DEBUG_SHIPPER_IDS === "true";
 
-export function shipperIdsPlugin(): Plugin {
+export function shipperIdsPlugin() {
   let root = "";
 
   return {
@@ -44,10 +40,10 @@ export function shipperIdsPlugin(): Plugin {
         return null;
       }
 
-      // Only process JSX/TSX files (including virtual modules from TanStack Router)
+      // Only process JSX files (including virtual modules from TanStack Router)
       // TanStack Router may use module IDs like: /absolute/path/to/routes/index.tsx?v=xxx
       const cleanId = id.split("?")[0]; // Remove query params
-      if (!/\.[jt]sx$/.test(cleanId)) {
+      if (!/\.jsx$/.test(cleanId)) {
         return null;
       }
 
@@ -61,7 +57,7 @@ export function shipperIdsPlugin(): Plugin {
         // Parse and transform
         const ast = parse(code, {
           sourceType: "module",
-          plugins: ["jsx", "typescript"],
+          plugins: ["jsx"],
         });
 
         let hasChanges = false;
@@ -69,23 +65,23 @@ export function shipperIdsPlugin(): Plugin {
 
         // Get relative path from src directory
         // Handle both normal paths and virtual module paths
-        let sourceFile: string;
+        let sourceFile;
         if (cleanId.startsWith(root)) {
           const relativePath = path.relative(path.join(root, "src"), cleanId);
-          sourceFile = relativePath.replace(/\.[jt]sx$/, "");
+          sourceFile = relativePath.replace(/\.jsx$/, "");
         } else {
           // For virtual modules, try to extract a meaningful path
           const srcIndex = cleanId.indexOf("/src/");
           if (srcIndex !== -1) {
-            sourceFile = cleanId.slice(srcIndex + 5).replace(/\.[jt]sx$/, "");
+            sourceFile = cleanId.slice(srcIndex + 5).replace(/\.jsx$/, "");
           } else {
-            sourceFile = path.basename(cleanId).replace(/\.[jt]sx$/, "");
+            sourceFile = path.basename(cleanId).replace(/\.jsx$/, "");
           }
         }
 
         traverse(ast, {
-          JSXElement(nodePath: NodePath<t.JSXElement>) {
-            const { openingElement } = nodePath.node;
+          JSXElement(nodePath) {
+            const openingElement = nodePath.node.openingElement;
             const elementName = openingElement.name;
 
             // Only process JSX identifiers (skip member expressions like <Foo.Bar />)
@@ -100,7 +96,7 @@ export function shipperIdsPlugin(): Plugin {
 
             // Check if already has data-shipper-id
             const hasId = openingElement.attributes.some(
-              (attr: t.JSXAttribute | t.JSXSpreadAttribute) =>
+              (attr) =>
                 t.isJSXAttribute(attr) &&
                 t.isJSXIdentifier(attr.name) &&
                 attr.name.name === "data-shipper-id"
@@ -108,16 +104,14 @@ export function shipperIdsPlugin(): Plugin {
 
             if (hasId) return;
 
-            // Skip elements with spread attributes - they pass through props from parent
-            // (e.g., <Comp {...props} /> in wrapper components)
+            // Skip elements with spread attributes
             const hasSpread = openingElement.attributes.some(
-              (attr: t.JSXAttribute | t.JSXSpreadAttribute) =>
-                t.isJSXSpreadAttribute(attr)
+              (attr) => t.isJSXSpreadAttribute(attr)
             );
 
             if (hasSpread) return;
 
-            // Generate stable ID based on location with full relative path
+            // Generate stable ID based on location
             const loc = openingElement.loc;
             if (!loc) return;
 

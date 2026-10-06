@@ -1,16 +1,14 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
-import { TreePine, BookOpen, BarChart3, Eye } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { cn } from "@/lib/utils";
 
 const navItems = [
-  { icon: TreePine, label: 'TREE', page: 'Home', symbol: '△' },
-  { icon: BookOpen, label: 'JOURNAL', page: 'Journal', symbol: '◐' },
-  { icon: BarChart3, label: 'DATA', page: 'Analytics', symbol: '▭' },
-  { icon: Eye, label: 'INSIGHT', page: 'Insights', symbol: '◉' },
-  { icon: null, label: 'NETWORK', page: 'Friends', symbol: '◎' },
+  { label: 'HOME', page: 'Home', symbol: '△' },
+  { label: 'JOURNAL', page: 'Journal', symbol: '◐' },
+  { label: 'INSIGHT', page: 'Insights', symbol: '◉' },
+  { label: 'LIBRARY', page: 'Library', symbol: '☿' },
 ];
 
 export default function BottomNav() {

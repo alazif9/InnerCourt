@@ -260,12 +260,12 @@ export default function InsightDetail() {
         transition={{ delay: 0.3 }}
       >
         <button 
-          onClick={() => navigate(createPageUrl('ArchetypeChat') + `?archetype=${insight.archetype}`)}
+          onClick={() => navigate(createPageUrl('Journal'))}
           className="w-full py-3 border border-white/30 bg-black/40 text-white font-data text-xs uppercase tracking-wider hover:bg-white/5 hover:border-white/50 transition-all flex items-center justify-center gap-2"
           style={{ boxShadow: '0 0 15px rgba(255,255,255,0.05)' }}
         >
           <MessageCircle className="w-4 h-4" />
-          Dialogue with {insight.archetype} →
+          Reflect on this in your Journal →
         </button>
       </motion.div>
 

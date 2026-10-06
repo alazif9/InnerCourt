@@ -7,39 +7,7 @@
  * THE ONLY EDITABLE VALUE: mainPage
  * This controls which page is the landing page (shown when users visit the app).
  * 
- * Example file structure:
- * 
- *   import HomePage from './pages/HomePage';
- *   import Dashboard from './pages/Dashboard';
- *   import Settings from './pages/Settings';
- *   
- *   export const PAGES = {
- *       "HomePage": HomePage,
- *       "Dashboard": Dashboard,
- *       "Settings": Settings,
- *   }
- *   
- *   export const pagesConfig = {
- *       mainPage: "HomePage",
- *       Pages: PAGES,
- *   };
- * 
- * Example with Layout (wraps all pages):
- *
- *   import Home from './pages/Home';
- *   import Settings from './pages/Settings';
- *   import __Layout from './Layout.jsx';
- *
- *   export const PAGES = {
- *       "Home": Home,
- *       "Settings": Settings,
- *   }
- *
- *   export const pagesConfig = {
- *       mainPage: "Home",
- *       Pages: PAGES,
- *       Layout: __Layout,
- *   };
+ * PAGES maps a page name to its component; Layout wraps every page.
  *
  * To change the main page from HomePage to Dashboard, use find_replace:
  *   Old: mainPage: "HomePage",
@@ -48,33 +16,29 @@
  * The mainPage value must match a key in the PAGES object exactly.
  */
 import AboutYou from './pages/AboutYou';
-import Analytics from './pages/Analytics';
-import ArchetypeChat from './pages/ArchetypeChat';
 import EditProfile from './pages/EditProfile';
-import Friends from './pages/Friends';
 import HelpSupport from './pages/HelpSupport';
 import Home from './pages/Home';
 import InsightDetail from './pages/InsightDetail';
 import Insights from './pages/Insights';
 import Journal from './pages/Journal';
+import Library from './pages/Library';
 import Onboarding from './pages/Onboarding';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
 import TermsOfService from './pages/TermsOfService';
-import __Layout from './Layout.jsx';
+import __Layout from './Layout';
 
 
 export const PAGES = {
     "AboutYou": AboutYou,
-    "Analytics": Analytics,
-    "ArchetypeChat": ArchetypeChat,
     "EditProfile": EditProfile,
-    "Friends": Friends,
     "HelpSupport": HelpSupport,
     "Home": Home,
     "InsightDetail": InsightDetail,
     "Insights": Insights,
     "Journal": Journal,
+    "Library": Library,
     "Onboarding": Onboarding,
     "Profile": Profile,
     "Settings": Settings,

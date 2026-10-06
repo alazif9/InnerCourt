@@ -11,7 +11,7 @@ export default function Layout({ children, currentPageName }) {
     queryFn: () => base44.auth.me(),
   });
 
-  const hideNavPages = ['Onboarding', 'ArchetypeChat'];
+  const hideNavPages = ['Onboarding'];
   const showNav = !hideNavPages.includes(currentPageName);
 
   return (

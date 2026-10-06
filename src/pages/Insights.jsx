@@ -325,21 +325,21 @@ export default function Insights() {
           <div className="flex items-center gap-3 mb-3">
             <span className="text-white text-lg">✦</span>
             <h3 className="font-occult text-white">
-              Shadow Dialogue Protocol
+Journal Reflection Protocol
             </h3>
           </div>
           
           <p className="text-white/50 font-data text-xs mb-4">
-            Based on pattern analysis, initiate conversation with your Shadow archetype
-            regarding the avoidance sequence detected.
+            The oracle reads what you write. Record tonight's dream or a thought that
+            keeps returning, and new insights will form around it.
           </p>
           
           <button 
-            onClick={() => navigate(createPageUrl('ArchetypeChat') + '?archetype=SHADOW')}
+            onClick={() => navigate(createPageUrl('Journal'))}
             className="w-full py-2.5 border border-white/30 bg-black/40 text-white font-data text-xs uppercase tracking-wider hover:bg-white/5 hover:border-white/50 transition-all"
             style={{ boxShadow: '0 0 15px rgba(255,255,255,0.05)' }}
           >
-            Initialize Dialogue →
+            Open Journal →
           </button>
         </GlassCard>
       </motion.div>

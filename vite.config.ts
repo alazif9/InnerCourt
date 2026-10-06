@@ -37,9 +37,10 @@ export default defineConfig({
     ],
   },
   server: {
+    port: 5173,
     host: "0.0.0.0",
     strictPort: false,
-    allowedHosts: [".modal.host", "shipper.now", "localhost", ".localhost"],
+    allowedHosts: [".modal.host", "shipper.now", "localhost", ".localhost", ".modal.host", "shipper.now", "localhost", ".localhost"],
     // Skip watching large generated trees so the dev server doesn't crash with
     // ENAMETOOLONG while crawling them. Baked in here so it no longer needs to
     // be patched into every sandbox at boot.
